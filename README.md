@@ -48,17 +48,29 @@ The following are key features listed in no particular order
 
 ### Tech Stack
 We will be using a **MERN** set up. 
+
 **M** - MongoDB - Document based **database**. Ideal due to scalability and lack of relationships. Works well with NodeJS.
+
 **E** - Express - **Backend**: Web app framework for Nodejs
+
 **R** - React - Javascript **frontend framework** which will generate the UI.
+
 **N** - NodeJS - Javascript run time environment which will execute code outside of a browser such as a **server**
 
 ### Deployment
 We will be using **Cloud Amazon Gamelift**.
 
-It is intended to deploy, operate, and scale dedicated, low-cost servers in the cloud for session-based multiplayer games.
+It is intended to deploy, operate, and scale dedicated, low-cost and high-performing servers in the cloud for session-based multiplayer games.
+
+Game sessions will be made which are instances of the game run on Gamelift. Players will find and join existing sessions to play. 
+
+We haven't used Gamelift before and so not sure if this will fully deploy the app. 
+
+In that case, the app can be deployed using AWS on some domain. 
 
 ### Collaborators
 Andy Phy Lim
+
 Calvin Cheng
+
 Annas Rahuma
