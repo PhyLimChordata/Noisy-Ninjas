@@ -3,19 +3,20 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-require('dotenv').config();
+require('dotenv').config({path: '../../.env'});
 
 const app = express();
 const port = process.env.PORT || 5000;
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
 //Mongoose connects to the db based on uri
 const uri = process.env.URI;
+
 mongoose.connect(uri, {
 	useNewUrlParser: true,
-	useCreateIndex: true,
 	useUnifiedTopology: true,
 });
 const connection = mongoose.connection;
