@@ -6,12 +6,15 @@ import { BossHexagonGrid } from './components/hexagon/hexagongrid-boss'
 
 import { BossHexagonGrids } from './components/hexagon/hex-test'
 
+import { Moveset } from './components/overlay/moveset'
+
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <BossHexagonGrids/>
+        <Moveset></Moveset>
+        {/* <BossHexagonGrids/> */}
 
         {/* <NinjaHexagonGrid/>
         <BossHexagonGrid/> */}
