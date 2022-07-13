@@ -1,17 +1,21 @@
 import logo from './logo.svg'
 import './App.css'
 
-import { Hexagon } from './components/hexagon'
-import { NinjaHexagonGrid } from './components/hexagongrid-ninja'
-import { BossHexagonGrid } from './components/hexagongrid-boss'
+import { NinjaHexagonGrid } from './components/hexagon/hexagongrid-ninja'
+import { BossHexagonGrid } from './components/hexagon/hexagongrid-boss'
+
+import { BossHexagonGrids } from './components/hexagon/hex-test'
 
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <NinjaHexagonGrid/>
-        <BossHexagonGrid/>
+      <BossHexagonGrids/>
+
+        {/* <NinjaHexagonGrid/>
+        <BossHexagonGrid/> */}
+
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.

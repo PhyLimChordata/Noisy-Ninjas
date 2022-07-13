@@ -1,5 +1,5 @@
 import React from 'react'
-import '../style/hexagon.css'
+import '../../style/hexagon.css'
 import { Hexagon } from './hexagon'
 
 export function BossHexagonGrid(props) {
