@@ -3,7 +3,7 @@ import '../../style/hexagon.css'
 import { Hexagon } from './hexagon'
 import { DynamicHexagon } from './dynamichexagon.js'
 
-export function BossHexagonGrids(props) {
+export function HexTest(props) {
 
   return <div className="main">
     <DynamicHexagon id="A1"/>

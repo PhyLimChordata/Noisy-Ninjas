@@ -61,10 +61,10 @@
 
 .main {
   display: grid;
-  grid-column-gap: 2.3vw;
-  grid-row-gap: 9vw;
-  grid-template-columns: repeat(13, 7vw);
-  grid-auto-rows: 7vw;
+
+  grid-row-gap: 3.5vw;
+  grid-template-columns: repeat(13, 5.8vw);
+  grid-auto-rows: 5.8vw;
   grid-template-areas: ". . . gA1 . gA2 . gA3 . gA4 . . ." 
   ". . gB1 . gB2 . gB3 . gB4 . gB5 . ." 
   ". gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 ."
@@ -83,7 +83,7 @@
   width: 90%;
   height: 100%;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  transform: scale(2.5);
+  transform: scale(1.8);
   transition: 0.3s;
 }
 

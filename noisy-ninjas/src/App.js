@@ -4,9 +4,11 @@ import './App.css'
 import { NinjaHexagonGrid } from './components/hexagon/hexagongrid-ninja'
 import { BossHexagonGrid } from './components/hexagon/hexagongrid-boss'
 
-import { BossHexagonGrids } from './components/hexagon/hex-test'
+import { HexTest} from './components/hexagon/hex-test'
 
 import { Moveset } from './components/overlay/moveset'
+
+import './style/overlay.css'
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
 
       <header className="App-header">
        
-        <BossHexagonGrids/>
+        <div className="SDS">
+          <HexTest></HexTest>
+        </div>
 
         {/* <NinjaHexagonGrid/>
         <BossHexagonGrid/> */}
