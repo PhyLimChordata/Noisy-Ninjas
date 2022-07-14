@@ -62,9 +62,9 @@
 .main {
   display: grid;
 
-  grid-row-gap: 3.5vw;
-  grid-template-columns: repeat(13, 5.8vw);
-  grid-auto-rows: 5.8vw;
+  grid-row-gap: 2.5vw;
+  grid-template-columns: repeat(13, 4.3vw);
+  grid-auto-rows: 4.3vw;
   grid-template-areas: ". . . gA1 . gA2 . gA3 . gA4 . . ." 
   ". . gB1 . gB2 . gB3 . gB4 . gB5 . ." 
   ". gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 ."
