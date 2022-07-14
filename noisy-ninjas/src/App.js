@@ -14,7 +14,7 @@ function App() {
        <Moveset/>
 
       <header className="App-header">
-        <Character/>
+        <Character role="screamer"/>
         <HexTest></HexTest>
         
         {/* <NinjaHexagonGrid/>

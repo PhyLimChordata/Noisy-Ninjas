@@ -1,10 +1,37 @@
 .ninja {
-  background-image: url("../assets/images/ninja.png");
+  background-image: url("../assets/images/characters/ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
   width: 70px;
   margin-bottom: 3vw;
+}
+
+/* Bosses */
+.draco {
+  background-image: url("../assets/images/characters/draco.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 6vw;
+  height: 30vw;
+  width: 25vw;
+}
+
+.screamer {
+  background-image: url("../assets/images/characters/screamer.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 30vw;
+  width: 25vw;
+  margin-left: 6vw;
+}
+
+.tiny {
+  background-image: url("../assets/images/characters/tiny.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 28vw;
+  width: 22vw;
 }
 
 .container {
