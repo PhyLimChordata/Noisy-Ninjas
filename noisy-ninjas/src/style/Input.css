@@ -1,0 +1,11 @@
+input:focus,input:not(:placeholder-shown) {
+  opacity: 1;
+  outline: none !important;
+  border-style: solid;
+}
+
+input:not(:focus):placeholder-shown {
+  opacity: 0.5;
+  border-color: transparent !important;
+  border-style: solid;
+}
