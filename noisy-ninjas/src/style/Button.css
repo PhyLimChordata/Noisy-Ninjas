@@ -1,3 +1,21 @@
+@import "../assets/fonts.css";
+
 .btn:not(:disabled) {
     cursor: pointer;
+}
+
+.btn {
+    font-family: Minecraftia;
+    text-align: center;
+}
+
+
+.grey-btn {
+    background-color: #9A9A9A;
+    color: #ffffff;
+    font-size: 24px;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    width:100%;
 }

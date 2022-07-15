@@ -1,3 +1,5 @@
+@import "./assets/fonts.css";
+
 .App {
   text-align: center;
 }
@@ -6,4 +8,5 @@ main {
   background-color: #2E2E2E;
   height: 100vh;
   color: white;
+  font-family: 'Minecraftia';
 }
