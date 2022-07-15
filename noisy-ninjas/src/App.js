@@ -1,37 +1,29 @@
-import logo from './logo.svg'
-import './App.css'
-import './style/Input.css'
+import { useRoutes } from "react-router-dom";
 
-import {Button} from "./components/Button";
-import {Input} from "./components/Input";
-
+import routes from "./routes";
+import "./App.css"
 function App() {
-  return (
-    <div className="App">
-       <Moveset/>
+    const routeResult = useRoutes(routes);
+    return (
+        <>
+            {/*<header>*/}
+            {/*    <strong>React Router v6</strong>*/}
+            {/*    <nav>*/}
+            {/*        <ul>*/}
+            {/*            <li>*/}
+            {/*                <Link to="/">Home</Link>*/}
+            {/*            </li>*/}
+            {/*            <li>*/}
+            {/*            </li>*/}
+            {/*        </ul>*/}
+            {/*    </nav>*/}
+            {/*</header>*/}
 
-      <header className="App-header">
-      {/*<BossHexagonGrids/>*/}
-
-        {/* <NinjaHexagonGrid/>
-        <BossHexagonGrid/> */}
-        <Button width={"40%"} content={"BROOOOOO"} onPress={() => console.log("MY DUDE")}></Button>
-        <Input width={"40%"}/>
-          <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
+            <main>
+                 {routeResult}
+            </main>
+        </>
+    );
 }
 
-export default App
+export default App;

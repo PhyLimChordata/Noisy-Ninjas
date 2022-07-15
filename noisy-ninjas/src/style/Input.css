@@ -1,11 +1,15 @@
 input:focus,input:not(:placeholder-shown) {
   opacity: 1;
   outline: none !important;
-  border-style: solid;
 }
 
 input:not(:focus):placeholder-shown {
-  opacity: 0.5;
+  opacity: 0.8;
   border-color: transparent !important;
+}
+
+input {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
   border-style: solid;
 }
