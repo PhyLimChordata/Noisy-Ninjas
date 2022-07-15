@@ -1,11 +1,9 @@
 .moveset {
   position: absolute;
-  z-index: 999;
+  z-index: 0;
   display: grid;
   width: 100%;
   height: 100%;
-
-  /* grid-column-gap: 2.3vw; */
 
   grid-template-columns: repeat(7, 18%);
 
@@ -29,9 +27,18 @@
 }
 
 .move {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  text-align: center;
+  background-color: #FF8A00;
+  color: white;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+  padding: 4px;
+
+  display: flex;
+  font-weight: bolder;
+  font-size: 1.2vw;
+  align-items: center;
+  justify-content: center;
 }
 
 #move1 { 
@@ -52,10 +59,15 @@
 
 #timer {
   grid-area: timer;
+  color: white;
+  font-size: 10vw;
 }
 
 #movesRemaining {
   grid-area: movesRemaining;
+  color: white;
+  font-size: 4vw;
+  text-align: center;
 }
 
 #turns {
@@ -64,4 +76,20 @@
 
 #hearts {
   grid-area: hearts;
+}
+
+.heart {
+  background-image: url("../assets/images/heart.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+}
+
+.user {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  flex-direction: row;
 }
