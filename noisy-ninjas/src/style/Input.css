@@ -1,0 +1,27 @@
+@import "../assets/fonts.css";
+
+input:focus,input:not(:placeholder-shown) {
+  opacity: 1;
+  outline: none !important;
+}
+
+input:not(:focus):placeholder-shown {
+  opacity: 0.8;
+  border-color: transparent !important;
+}
+
+input {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-style: solid;
+  font-family: Minecraftia;
+}
+
+.black-input {
+  background-color: #222222;
+  color: #ffffff;
+  width:100%;
+  font-size: 18px;
+  padding: 8px;
+  border-color: #ffffff;
+}

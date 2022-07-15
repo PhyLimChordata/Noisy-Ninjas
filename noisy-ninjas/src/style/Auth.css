@@ -1,0 +1,77 @@
+.title {
+    font-size: 46px;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+Button + Button {
+    margin-left: 10px;
+}
+
+.form-element + .form-element {
+    margin-top: 10px;
+}
+
+.auth-form {
+    margin-bottom: 10px;
+    width:100%
+}
+#img-col {
+    flex:1;
+    overflow: hidden;
+}
+#form-col {
+    display: flex;
+    flex:1;
+    flex-direction:column;
+    text-align:center;
+    justify-content:center;
+    align-items: center;
+    margin:0px 50px;
+}
+
+#body-container {
+    display:flex;
+    flex-direction:row;
+    height:100%;
+}
+
+.input-container {
+    flex: 1;
+    margin:20px 0px 20px 0px;
+    justify-content: space-between;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+}
+
+.oauth-container {
+    display:flex;
+    flex-direction:row;
+    margin-bottom:10px;
+    justify-content: center;
+}
+
+.oauth-btn {
+    width:100px;
+    height:50px;
+    background-color:#ffffff;
+    border-radius:5px;
+    justify-content:center;
+    align-items:center;
+    display:flex;
+}
+
+.oauth-btn + .oauth-btn {
+    margin-left:10px;
+}
+
+.oauth-icon {
+    height: 80%;
+}
+
+.background-img {
+    height: 100%;
+}

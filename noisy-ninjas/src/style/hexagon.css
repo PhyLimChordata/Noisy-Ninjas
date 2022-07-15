@@ -1,0 +1,236 @@
+.container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.hexagon {
+  width: 60px;
+  height: 65px;
+  background: #9980fa;
+  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+}
+
+.hexagon::before {
+  content: '';
+  position: absolute;
+
+  width: 60px;
+  height: 65px;
+  color: red;
+  background-color: rgb(255, 255, 255, 0.3);
+}
+
+.hexagon:hover:before {
+  background-color: rgb(24, 29, 35, 0);
+} 
+
+.hex3row {
+  display: grid;
+  justify-content:center;
+  grid-template-columns: 70px 70px 70px;
+  margin: -10px 0 0 10px;
+}
+
+.hex4row {
+  display: grid;
+  justify-content:center;
+  grid-template-columns: 70px 70px 70px 70px;
+  margin: -10px 0 0 10px;
+}
+
+.hex5row {
+  display:grid;
+  justify-content: center;
+  grid-template-columns: 70px 70px 70px 70px 70px;
+  margin: -10px 0 0 10px;
+}
+.hex6row {
+  display:grid;
+  justify-content: center;
+  grid-template-columns: 70px 70px 70px 70px 70px 70px;
+  margin: -10px 0 0 10px;
+}
+.hex7row {
+  display:grid;
+  justify-content: center;
+  grid-template-columns: 70px 70px 70px 70px 70px 70px 70px;
+  margin: -10px 0 0 10px;
+}
+
+
+.main {
+  display: grid;
+
+  grid-row-gap: 3.5vw;
+  grid-template-columns: repeat(13, 5.8vw);
+  grid-auto-rows: 5.8vw;
+  grid-template-areas: ". . . gA1 . gA2 . gA3 . gA4 . . ." 
+  ". . gB1 . gB2 . gB3 . gB4 . gB5 . ." 
+  ". gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 ."
+  "gD1 . gD2 . gD3 . gD4 . gD5 . gD6 . gD7"
+  ". gE1 . gE2 . gE3 . gE4 .  gE5 . gE6 ."
+  ". . gF1 . gF2 . gF3 . gF4 . gF5 . ." 
+  ". . . gG1 . gG2 . gG3 . gG4 . . ." 
+  ;
+
+  justify-content: space-evenly;
+}
+
+.clip {
+  position:"relative";
+  background-color: #9980fa;
+  width: 90%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transform: scale(1.8);
+  transition: 0.3s;
+}
+
+#hexA1 {
+  grid-area: gA1;
+}
+
+#hexA2 {
+  grid-area: gA2;
+}
+
+#hexA3 {
+  grid-area: gA3;
+}
+
+#hexA4 {
+  grid-area: gA4;
+}
+
+#hexB1 {
+  grid-area: gB1;
+}
+
+#hexB2 {
+  grid-area: gB2;
+}
+
+#hexB3 {
+  grid-area: gB3;
+}
+
+#hexB4 {
+  grid-area: gB4;
+}
+
+#hexB5 {
+  grid-area: gB5;
+}
+
+#hexC1 {
+  grid-area: gC1;
+}
+
+#hexC2 {
+  grid-area: gC2;
+}
+
+#hexC3 {
+  grid-area: gC3;
+}
+
+#hexC4 {
+  grid-area: gC4;
+}
+
+#hexC5 {
+  grid-area: gC5;
+}
+
+#hexC6 {
+  grid-area: gC6;
+}
+
+#hexD1 {
+  grid-area: gD1;
+}
+
+#hexD2 {
+  grid-area: gD2;
+}
+
+#hexD3 {
+  grid-area: gD3;
+}
+
+#hexD4 {
+  grid-area: gD4;
+}
+
+#hexD5 {
+  grid-area: gD5;
+}
+
+#hexD6 {
+  grid-area: gD6;
+}
+
+#hexD7 {
+  grid-area: gD7;
+}
+
+#hexE1 {
+  grid-area: gE1;
+}
+
+#hexE2 {
+  grid-area: gE2;
+}
+
+#hexE3 {
+  grid-area: gE3;
+}
+
+#hexE4 {
+  grid-area: gE4;
+}
+
+#hexE5 {
+  grid-area: gE5;
+}
+
+#hexE6 {
+  grid-area: gE6;
+}
+
+#hexF1 {
+  grid-area: gF1;
+}
+
+#hexF2 {
+  grid-area: gF2;
+}
+
+#hexF3 {
+  grid-area: gF3;
+}
+
+#hexF4 {
+  grid-area: gF4;
+}
+
+#hexF5 {
+  grid-area: gF5;
+}
+
+#hexG1 {
+  grid-area: gG1;
+}
+
+#hexG2 {
+  grid-area: gG2;
+}
+
+#hexG3 {
+  grid-area: gG3;
+}
+
+#hexG4 {
+  grid-area: gG4;
+}
