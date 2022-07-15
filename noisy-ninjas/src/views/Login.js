@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Login.css"
 import {Button} from "../components/Button";
 import {Checkbox} from "../components/Checkbox";
 import {White} from "../assets/colors";
 export function Login ()  {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    function handleSubmit(event) {
+        event.preventDefault();
+        alert(`${username}, ${password}`)
+    }
+
     return (
         <div style={{display:"flex", flexDirection:"row", height:"100%"}}>
             <div style={{flex:1, overflow:"hidden"}}>
@@ -12,10 +19,12 @@ export function Login ()  {
             </div>
             <div style={{display: "flex", flex:1, flexDirection:'column', textAlign:"center", justifyContent:"center", margin:"0px 50px 0px 50px"}}>
                 <div className={"title"}> Noisy Ninjas </div>
-                <form >
+                <form onSubmit={handleSubmit}>
                     <div style={{flex: 1, height:"130px", margin:"20px 0px 20px 0px", justifyContent:"space-between", flexDirection:"column", display:"flex",  alignItems:"flex-start"}}>
-                        <Input backgroundColor={"#222222"} placeholder={"username"} width={"100%"}/>
-                        <Input backgroundColor={"#222222"} placeholder={"password"} width={"100%"}/>
+                        <Input backgroundColor={"#222222"} placeholder={"username"} width={"100%"} value={username}
+                               onChange={(e) => setUsername(e.target.value)}/>
+                        <Input backgroundColor={"#222222"} placeholder={"password"} width={"100%"} value={password}
+                               onChange={(e) => setPassword(e.target.value)} type={"password"}/>
                         <div>
                             <Checkbox backgroundColor={"#222222"}/>
                             <label> stay signed in </label>
