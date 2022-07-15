@@ -6,7 +6,8 @@ import { Moveset } from './components/overlay/moveset'
 import { Character } from './components/Character'
 import './style/overlay.css'
 
-
+import { NinjaHexagonGrid } from './components/hexagon/hexagongrid-ninja'
+import { BossHexagonGrid } from './components/hexagon/hexagongrid-boss'
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
         <Character role="screamer"/>
         <HexTest></HexTest>
         
-        {/* <NinjaHexagonGrid/>
-        <BossHexagonGrid/> */}
+        {/* <NinjaHexagonGrid/> */}
+        {/* <BossHexagonGrid/> */}
       </header>
     </div>
   )
