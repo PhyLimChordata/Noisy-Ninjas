@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Auth.css"
 import {Button} from "../components/Button";
-import {login, signUp} from "../apiService";
+import {signUp} from "../apiService";
 import {useNavigate} from "react-router";
 export function SignUp ()  {
     const [username, setUsername] = useState("")
@@ -16,17 +16,17 @@ export function SignUp ()  {
     function handleSubmit(event) {
         event.preventDefault();
         let errored = false;
-        if (username == "") {
+        if (username === "") {
             setUsernameError(true)
             setErrorMessage("Missing Fields")
             errored = true
         }
-        if (password == "") {
+        if (password === "") {
             setPasswordError(true)
             setErrorMessage("Missing Fields")
             errored = true
         }
-        if (!errorMessage && password != password2) {
+        if (!errorMessage && password !== password2) {
             setPasswordError(true)
             setPasswordError2(true)
             setErrorMessage("Passwords dont match")
@@ -105,10 +105,10 @@ export function SignUp ()  {
                 <div>
                     <div className={"oauth-container"}>
                         <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div>
                     </div>
                     <div className={"clickable"} onClick={() => navigate("/")}>
@@ -117,7 +117,7 @@ export function SignUp ()  {
                 </div>
             </div>
             <div id={"img-col"}>
-                <img className={"background-img"} src={require("../assets/static/sign-up-background.png")}/>
+                <img className={"background-img"} src={require("../assets/static/sign-up-background.png")} alt={"sign-up-background"}/>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Auth.css"
 import {Button} from "../components/Button";
@@ -16,12 +16,12 @@ export function Login ()  {
     function handleSubmit(event) {
         event.preventDefault();
         let errored = false;
-        if (username == "") {
+        if (username === "") {
             setUsernameError(true)
             setErrorMessage("Missing Fields")
             errored = true
         }
-        if (password == "") {
+        if (password === "") {
             setPasswordError(true)
             setErrorMessage("Missing Fields")
             errored = true
@@ -37,7 +37,7 @@ export function Login ()  {
     return (
         <div id={"body-container"}>
             <div id={"img-col"}>
-                <img className={"background-img"} src={require("../assets/static/log-in-background.png")}/>
+                <img className={"background-img"} src={require("../assets/static/log-in-background.png")} alt={"log-in-background"}/>
             </div>
             <div id={"form-col"}>
                 <div className={"title"}> Noisy Ninjas </div>
@@ -93,10 +93,10 @@ export function Login ()  {
                 <div>
                     <div className={"oauth-container"}>
                         <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
-                            <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div>
                     </div>
                     <div className={"clickable"} onClick={() => console.log('forgot pass?')}>

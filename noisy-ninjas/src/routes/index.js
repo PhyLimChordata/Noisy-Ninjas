@@ -1,5 +1,6 @@
 import {Login} from "../views/Login";
 import {SignUp} from "../views/SignUp";
+import {Lobby} from "../views/Lobby";
 
 const mainRoutes = [
     {
@@ -9,6 +10,10 @@ const mainRoutes = [
     {
         path: "/sign-up",
         element: <SignUp/>
+    },
+    {
+        path: "/lobby",
+        element: <Lobby/>
     }
 ];
 
