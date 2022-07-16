@@ -1,13 +1,10 @@
 import './App.css'
 
-import { HexTest} from './components/hexagon/hex-test'
+import { HexagonGrid } from './components/hexagon/HexagonGrid'
 
 import { Moveset } from './components/overlay/moveset'
 import { Character } from './components/Character'
 import './style/overlay.css'
-
-import { NinjaHexagonGrid } from './components/hexagon/hexagongrid-ninja'
-import { BossHexagonGrid } from './components/hexagon/hexagongrid-boss'
 
 function App() {
   return (
@@ -16,10 +13,7 @@ function App() {
 
       <header className="App-header">
         <Character role="screamer"/>
-        <HexTest></HexTest>
-        
-        {/* <NinjaHexagonGrid/> */}
-        {/* <BossHexagonGrid/> */}
+        <HexagonGrid></HexagonGrid>
       </header>
     </div>
   )
