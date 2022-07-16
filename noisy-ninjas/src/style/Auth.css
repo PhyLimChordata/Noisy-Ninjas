@@ -75,3 +75,7 @@ Button + Button {
 .background-img {
     height: 100%;
 }
+
+.error-text {
+    color: red
+}

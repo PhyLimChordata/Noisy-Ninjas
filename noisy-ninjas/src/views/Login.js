@@ -1,17 +1,39 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Auth.css"
 import {Button} from "../components/Button";
 import {Checkbox} from "../components/Checkbox";
+import {googleLogin, login} from "../apiService";
+import {useNavigate} from "react-router";
 export function Login ()  {
-
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [usernameError, setUsernameError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
+    const navigate = useNavigate();
+
     function handleSubmit(event) {
         event.preventDefault();
-        alert(`${username}, ${password}`)
+        let errored = false;
+        if (username == "") {
+            setUsernameError(true)
+            setErrorMessage("Missing Fields")
+            errored = true
+        }
+        if (password == "") {
+            setPasswordError(true)
+            setErrorMessage("Missing Fields")
+            errored = true
+        }
+        if (!errored) {
+            login(username, password).then((r) => {
+                alert(`Logged in ${r}`)
+            }).catch(() => {
+                setErrorMessage("Invalid Login")
+            })
+        }
     }
-
     return (
         <div id={"body-container"}>
             <div id={"img-col"}>
@@ -21,10 +43,45 @@ export function Login ()  {
                 <div className={"title"}> Noisy Ninjas </div>
                 <form className={"auth-form"} onSubmit={handleSubmit}>
                     <div className={"input-container"}>
-                        <Input className={"form-element black-input"} placeholder={"username"} value={username}
-                               onChange={(e) => setUsername(e.target.value)}/>
-                        <Input className={"form-element black-input"} placeholder={"password"} value={password}
-                               onChange={(e) => setPassword(e.target.value)} type={"password"}/>
+                        {(errorMessage) && <div className={"error-text"}>{errorMessage}</div>}
+                        {usernameError ?
+                            <Input className={"form-element error-input"} placeholder={"username"} value={username}
+                                   onChange={(e) => {
+                                       setUsernameError(false)
+                                       setUsername(e.target.value)
+                                       if (!passwordError) {
+                                           setErrorMessage(null)
+                                       }
+                                   }} />
+                            :
+                            <Input className={"form-element black-input"} placeholder={"username"} value={username}
+                                   onChange={(e) => {
+                                       setUsername(e.target.value)
+                                       if (errorMessage) {
+                                           setErrorMessage(null)
+                                       }
+                                   }} />
+                        }
+
+                        {passwordError ?
+                            <Input className={"form-element error-input"} placeholder={"password"} value={password}
+                                   onChange={(e) => {
+                                       setPasswordError(false)
+                                       setPassword(e.target.value)
+                                       if (!usernameError) {
+                                           setErrorMessage(null)
+                                       }
+                                   }} type={"password"}/>
+                            :
+                            <Input className={"form-element black-input"} placeholder={"password"} value={password}
+                                   onChange={(e) => {
+                                       setPassword(e.target.value)
+                                       if (errorMessage) {
+                                           setErrorMessage(null)
+                                       }
+                                   }} type={"password"}/>
+                        }
+
                         <div className={"form-element start"}>
                             <Checkbox backgroundColor={"#222222"}/>
                             <label> stay signed in </label>
@@ -35,7 +92,7 @@ export function Login ()  {
                 </form>
                 <div>
                     <div className={"oauth-container"}>
-                        <div className={"clickable oauth-btn"}>
+                        <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
@@ -45,7 +102,7 @@ export function Login ()  {
                     <div className={"clickable"} onClick={() => console.log('forgot pass?')}>
                         forgot password?
                     </div>
-                    <div className={"clickable"} onClick={() => console.log("create acc")}>
+                    <div className={"clickable"} onClick={() => navigate("/sign-up")}>
                         create account
                     </div>
                 </div>

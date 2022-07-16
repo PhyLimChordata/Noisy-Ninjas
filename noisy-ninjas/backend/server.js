@@ -12,6 +12,7 @@ const cookie = require('cookie');
 const bcrypt = require('bcrypt');
 require('./passport-google');
 
+const saltRounds = 10;
 
 /*
 Annas: Code for Passport.js and any google authentication has been derived or manipulated from this tutorial: https://www.youtube.com/watch?v=o9e3ex-axzA
@@ -35,7 +36,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next){
-    let username = (req.session.user)? req.session.user._id : '';
+    let username = (req.session.user)? req.session.user.displayName : '';
     res.setHeader('Set-Cookie', cookie.serialize('username', username, {
           path : '/', 
           maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
@@ -157,55 +158,58 @@ app.get('/signout/', function(req, res, next){
   });
 
   app.post('/signin/', function (req, res, next) {
-    // extract data from HTTP request
-    if (!('displayName' in req.body)) return res.status(400).end('displayName is missing');
-    if (!('password' in req.body)) return res.status(400).end('password is missing');
-    let displayName = req.body.displayName;
-    let password = req.body.password;
-	if (password == "N/A") return res.status(401).json({message: "access denied"});
-    // retrieve user from the database
-    users.findOne({displayName: displayName}, function(err, user){
-        if (err) return res.status(500).end(err);
-        if (!user) return res.status(401).json({message: "access denied"});
-        bcrypt.compare(password, user.hash, function(err, valid) {
-           if (err) return res.status(500).end(err);
-           if (!valid) return res.status(401).json({message: "access denied"});
-           // start a session
-           req.session.user = user;
-           res.setHeader('Set-Cookie', cookie.serialize('displayName', user.displayName, {
-                 path : '/', 
-                 maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
-           }));
-           return res.json(displayName);
-        });
-    });
+      if (!("displayName" in req.body))
+          return res.status(422).end("displayName is missing");
+      if (!("password" in req.body))
+          return res.status(422).end("password is missing");
+      const displayName = req.body.displayName;
+      const password = req.body.password;
+      // retrieve user from the database
+      User.findOne({ displayName: displayName }, function (err, user) {
+          if (err) return res.status(500).end(err);
+          if (!user) return res.status(401).end("access denied");
+          const hash = user.hash;
+          bcrypt.compare(password, hash, function (err, result) {
+              if (err) return res.status(500).end(err);
+              if (result) {
+                  // initialize cookie
+                  res.setHeader(
+                      "Set-Cookie",
+                      cookie.serialize("displayName", displayName, {
+                          path: "/",
+                          maxAge: 60 * 60 * 24 * 7,
+                      })
+                  );
+                  req.session.displayName = displayName;
+                  return res.json(displayName);
+              } else {
+                  return res.status(401).end("access denied");
+              }
+          });
+      });
   });
 
   app.post('/signup/', function (req, res, next) {
-
-	// extract data from HTTP request
-	if (!('displayName' in req.body)) return res.status(400).end('displayName is missing');
-	if (!('password' in req.body)) return res.status(400).end('password is missing');
-	let displayName = req.body.displayName;
-	let password = req.body.password;
-	console.log("kek")
-	User.findOne({displayName: displayName}, function(err, user){
-		if (err) return res.status(500).end(err);
-		if (user) return res.status(409).json({message: "displayName " + displayName + " already exists"});
-		
-		bcrypt.genSalt(10, function(err, salt) {
-			bcrypt.hash(password, salt, function(err, hash) {
-				ninja = "https://api.time.com/wp-content/uploads/2019/04/tyler-blevins-ninja-time-100-2019-002-1.jpg?quality=85&zoom=2"
-				const new_user = new User({googleID: "N/A",  displayName: req.body.displayName, imageURL: ninja, points: 0, hash: hash})
-				new_user.save(function(err, newuser){
-					if (err) return res.status(500).end(err);
-
-					return res.json(displayName);
-				}
-			);
-			});
-		});
-	});
+      if (!("displayName" in req.body))
+          return res.status(422).end("displayName is missing");
+      if (!("password" in req.body))
+          return res.status(422).end("password is missing");
+      const displayName = req.body.displayName;
+      const password = req.body.password;
+      User.findOne({ displayName }, function (err, user) {
+          if (err) return res.status(500).end(err);
+          if (user)
+              return res.status(409).end("displayName " + displayName + " already exists");
+          bcrypt.hash(password, saltRounds, function (err, hash) {
+              const ninja = "https://api.time.com/wp-content/uploads/2019/04/tyler-blevins-ninja-time-100-2019-002-1.jpg?quality=85&zoom=2"
+              const new_user = new User({googleID: "N/A",  displayName: req.body.displayName, imageURL: ninja, points: 0, hash: hash})
+              new_user.save(function(err){
+                      if (err) return res.status(500).end(err);
+                      return res.json(displayName);
+                  }
+              );
+          });
+      });
   });
 
 
