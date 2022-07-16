@@ -4,68 +4,17 @@
   width: 100%;
 }
 
-.hexagon {
-  width: 60px;
-  height: 65px;
-  background: #9980fa;
-  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-}
-
-.hexagon:hover {
-  background-color: #FF8A00;
-}
-
-.hexagon::before {
-  content: '';
-  position: absolute;
-
-  width: 60px;
-  height: 65px;
-
-  background-color: rgb(255, 255, 255, 0.3);
-}
-
-.hexagon:hover:before {
-  background-color: rgb(24, 29, 35, 0);
-} 
-
-.hex3row {
-  display: grid;
-  justify-content:center;
-  grid-template-columns: 70px 70px 70px;
-  margin: -10px 0 0 10px;
-}
-
-.hex4row {
-  display: grid;
-  justify-content:center;
-  grid-template-columns: 70px 70px 70px 70px;
-  margin: -10px 0 0 10px;
-}
-
-.hex5row {
+.gamescreen {
   display:grid;
   justify-content: center;
-  grid-template-columns: 70px 70px 70px 70px 70px;
-  margin: -10px 0 0 10px;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
 }
-.hex6row {
-  display:grid;
-  justify-content: center;
-  grid-template-columns: 70px 70px 70px 70px 70px 70px;
-  margin: -10px 0 0 10px;
-}
-.hex7row {
-  display:grid;
-  justify-content: center;
-  grid-template-columns: 70px 70px 70px 70px 70px 70px 70px;
-  margin: -10px 0 0 10px;
-}
-
 
 .main {
   display: grid;
-
   grid-row-gap: 2.5vw;
   grid-template-columns: repeat(13, 4.3vw);
   grid-auto-rows: 4.3vw;
@@ -81,7 +30,7 @@
   justify-content: space-evenly;
 }
 
-.clip {
+.hexagon {
   background-color: #9980fa;
   width: 90%;
   height: 100%;
@@ -94,7 +43,7 @@
   align-items: center;
 }
 
-.clip:hover {
+.hexagon:hover {
   background-color: white;
 }
 
