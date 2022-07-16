@@ -1,0 +1,36 @@
+.ninja_ {
+  background-image: url("../assets/images/characters/ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 4vw;
+  width: 2vw;
+  margin: 10px;
+}
+
+/* Bosses */
+.draco_ {
+  background-image: url("../assets/images/characters/draco.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 8vw;
+  width: 4vw;
+  margin: 10px;
+}
+
+.screamer_ {
+  background-image: url("../assets/images/characters/screamer.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 8vw;
+  width: 4vw;
+  margin: 10px;
+}
+
+.tiny_ {
+  background-image: url("../assets/images/characters/tiny.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 8vw;
+  width: 4vw;
+  margin: 10px;
+}
