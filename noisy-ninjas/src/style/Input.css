@@ -5,7 +5,7 @@ input:focus,input:not(:placeholder-shown) {
   outline: none !important;
 }
 
-input:not(:focus):placeholder-shown {
+input:not(:focus):placeholder-shown:not(.error-input) {
   opacity: 0.8;
   border-color: transparent !important;
 }
@@ -24,4 +24,13 @@ input {
   font-size: 18px;
   padding: 8px;
   border-color: #ffffff;
+}
+
+.error-input {
+  background-color: #222222;
+  color: #ffffff;
+  width:100%;
+  font-size: 18px;
+  padding: 8px;
+  border-color: red;
 }
