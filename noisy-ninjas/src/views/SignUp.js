@@ -42,7 +42,7 @@ export function SignUp ()  {
     }
 
     return (
-        <div id={"body-container"}>
+        <div className={"auth-page"}>
             <div id={"form-col"}>
                 <div className={"title"}> Noisy Ninjas </div>
                 <form className={"auth-form"} onSubmit={handleSubmit}>

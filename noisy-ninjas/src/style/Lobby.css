@@ -1,6 +1,4 @@
-
-
-#body-container {
+.lobby-page {
     display:flex;
     flex:1;
     flex-direction: column;
@@ -11,6 +9,46 @@
 }
 
 
-Button + Button {
+.lobby-page Button + Button {
     margin-top: 20px;
+}
+
+
+.lobby-page .body {
+    display:flex;
+    flex-direction:row;
+    width:100%;
+    justify-content:center;
+}
+
+.ninja-select {
+    flex:1;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    margin-right:25px
+}
+
+.ninja-img {
+    height:400px
+}
+
+.arrow-img {
+    height:40px
+}
+
+.arrow-img.left {
+    transform: rotateY(180deg);
+}
+
+.button-container {
+    flex:1;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    margin-left: 25px;
+}
+
+.button-inner-container {
+    width:300px
 }

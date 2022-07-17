@@ -1,23 +1,23 @@
 @import "../assets/fonts.css";
 
-input:focus,input:not(:placeholder-shown) {
+.input-component:focus,input:not(:placeholder-shown) {
   opacity: 1;
   outline: none !important;
 }
 
-input:not(:focus):placeholder-shown:not(.error-input) {
+.input-component:not(:focus):placeholder-shown:not(.error-input) {
   opacity: 0.8;
   border-color: transparent !important;
 }
 
-input {
+.input-component {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-style: solid;
   font-family: Minecraftia;
 }
 
-.black-input {
+.input-component.black-input {
   background-color: #222222;
   color: #ffffff;
   width:100%;
@@ -26,7 +26,7 @@ input {
   border-color: #ffffff;
 }
 
-.error-input {
+.input-component.error-input {
   background-color: #222222;
   color: #ffffff;
   width:100%;

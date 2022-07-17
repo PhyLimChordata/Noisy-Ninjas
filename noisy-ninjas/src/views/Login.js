@@ -35,7 +35,7 @@ export function Login ()  {
         }
     }
     return (
-        <div id={"body-container"}>
+        <div className={"auth-page"}>
             <div id={"img-col"}>
                 <img className={"background-img"} src={require("../assets/static/log-in-background.png")} alt={"log-in-background"}/>
             </div>

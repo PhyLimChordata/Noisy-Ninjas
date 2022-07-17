@@ -1,41 +1,43 @@
-import React from "react";
+import React, {useState} from "react";
 import "../style/Lobby.css"
 import {Button} from "../components/Button";
+import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
+import {QueuePopup} from "../components/popups/QueuePopup";
 export function Lobby ()  {
+    const [signOutPopup, setSignOutPopup] = useState(false)
+    const [lobbyPopup, setLobbyPopup] = useState(false)
+
+    function toggleSignOutPopup() {
+        setSignOutPopup(!signOutPopup)
+    }
+    function toggleLobbyPopup() {
+        setLobbyPopup(!lobbyPopup)
+    }
+
     return (
-        <div id={"body-container"}>
+        <div className={"lobby-page"}>
             <div className={"title"}> Welcome KingSlayer69420 </div>
-            <div style={{display:"flex", flexDirection:"row", width:"100%", justifyContent:"center", alignItems:"center"}}>
-                <div style={{flex:1, display:"flex", justifyContent:"flex-end", alignItems:"center", marginRight:"25px"}}>
-                    <img style={{height:"40px", transform: "rotateY(180deg)"}} src={require("../assets/static/triangle.png")} alt={"left-arrow"}/>
-                    <img style={{height:"400px"}} src={require("../assets/static/ninja.png")} alt={"current-ninja"}/>
-                    <img style={{height:"40px"}} src={require("../assets/static/triangle.png")} alt={"right-arrow"}/>
+            <div className={"body"}>
+                <div className={"ninja-select"}>
+                    <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"}/>
+                    <img className={"ninja-img"} src={require("../assets/static/ninja.png")} alt={"current-ninja"}/>
+                    <img className={"arrow-img"} src={require("../assets/static/triangle-right.png")} alt={"right-arrow"}/>
                 </div>
-                <div style={{flex:1, display:"flex", justifyContent:"flex-start", alignItems:"center", marginLeft:"25px"}}>
-                    <div style={{width:"300px"}}>
-                        <Button content={"play"} className={"orange-btn skinny"}></Button>
+                <div className={"button-container"}>
+                    <div className={"button-inner-container"}>
+                        <Button content={"play"} className={"orange-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
                         <Button content={"profile"} className={"hollow-btn skinny"}></Button>
                         <Button content={"leaderboard"} className={"hollow-btn skinny"}></Button>
-                        <Button content={"sign out"} className={"hollow-btn skinny"}></Button>
+                        <Button content={"sign out"} className={"hollow-btn skinny"} onPress={() => toggleSignOutPopup()}></Button>
                     </div>
                 </div>
             </div>
+            {signOutPopup && <ConfirmationPopup cancelAction={() => toggleSignOutPopup()} confirmText={"sign out"}
+                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}
 
-            {/*<div id={"form-col"}>*/}
-            {/*    <div>*/}
-            {/*        <div className={"oauth-container"}>*/}
-            {/*            <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>*/}
-            {/*                <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")}/>*/}
-            {/*            </div>*/}
-            {/*            <div className={"clickable oauth-btn"}>*/}
-            {/*                <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")}/>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"clickable"} onClick={() => console.log('forgot pass?')}>*/}
-            {/*            forgot password?*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
+                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}
+
         </div>
     );
 };

@@ -10,3 +10,15 @@ main {
   color: white;
   font-family: 'Minecraftia';
 }
+
+.title {
+  font-size: 46px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.display-linebreak {
+  white-space: pre-line;
+}
