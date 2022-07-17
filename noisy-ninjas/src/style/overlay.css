@@ -11,8 +11,8 @@
 
   grid-template-areas: 
   ". . . . . . ."
-  ". timer . . . movesRemaining ." 
-  ". turns . . . hearts ."
+  ". timer . . . hearts ." 
+  ". . . . . . ."
   ". . . . . . ."
   ". . . . . . ."
   ". . . . . . ."
@@ -60,30 +60,22 @@
 #timer {
   grid-area: timer;
   color: white;
-  font-size: 10vw;
-}
-
-#movesRemaining {
-  grid-area: movesRemaining;
-  color: white;
-  font-size: 4vw;
-  text-align: center;
-}
-
-#turns {
-  grid-area: turns;
+  font-size: 8vw;
 }
 
 #hearts {
   grid-area: hearts;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5vw;
 }
 
-.heart {
+.live-heart {
   background-image: url("../assets/images/heart.png");
   background-size: contain;
   background-repeat: no-repeat;
-  height: 100px;
-  width: 70px;
+  height: 100%;
+  width: 100%;
 }
 
 .user {
