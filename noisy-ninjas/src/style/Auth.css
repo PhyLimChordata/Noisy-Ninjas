@@ -1,28 +1,16 @@
-.title {
-    font-size: 46px;
-}
-
-.clickable{
-    cursor: pointer;
-}
-
-Button + Button {
-    margin-left: 10px;
-}
-
-.form-element + .form-element {
+.auth-page .form-element + .form-element {
     margin-top: 10px;
 }
 
-.auth-form {
+.auth-page .auth-form {
     margin-bottom: 10px;
     width:100%
 }
-#img-col {
+.auth-page #img-col {
     flex:1;
     overflow: hidden;
 }
-#form-col {
+.auth-page #form-col {
     display: flex;
     flex:1;
     flex-direction:column;
@@ -32,13 +20,13 @@ Button + Button {
     margin:0px 50px;
 }
 
-#body-container {
+.auth-page {
     display:flex;
     flex-direction:row;
     height:100%;
 }
 
-.input-container {
+.auth-page .input-container {
     flex: 1;
     margin:20px 0px 20px 0px;
     justify-content: space-between;
@@ -47,14 +35,14 @@ Button + Button {
     align-items: flex-start;
 }
 
-.oauth-container {
+.auth-page .oauth-container {
     display:flex;
     flex-direction:row;
     margin-bottom:10px;
     justify-content: center;
 }
 
-.oauth-btn {
+.auth-page .oauth-btn {
     width:100px;
     height:50px;
     background-color:#ffffff;
@@ -64,18 +52,18 @@ Button + Button {
     display:flex;
 }
 
-.oauth-btn + .oauth-btn {
+.auth-page  .oauth-btn + .oauth-btn {
     margin-left:10px;
 }
 
-.oauth-icon {
+.auth-page .oauth-icon {
     height: 80%;
 }
 
-.background-img {
+.auth-page .background-img {
     height: 100%;
 }
 
-.error-text {
+.auth-page .error-text {
     color: red
 }
