@@ -12,7 +12,6 @@ export function Login ()  {
     const [passwordError, setPasswordError] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
     const navigate = useNavigate();
-
     function handleSubmit(event) {
         event.preventDefault();
         let errored = false;
@@ -29,6 +28,7 @@ export function Login ()  {
         if (!errored) {
             login(username, password).then((r) => {
                 alert(`Logged in ${r}`)
+                navigate("/lobby")
             }).catch(() => {
                 setErrorMessage("Invalid Login")
             })

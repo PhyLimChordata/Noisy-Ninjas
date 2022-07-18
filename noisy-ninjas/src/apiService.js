@@ -1,38 +1,33 @@
-function send(method, url, data) {
-    const config = {
-        method: method,
-    };
-    if (!["GET", "DELETE"].includes(method)) {
-        config.headers = {
-            "Content-Type": "application/json",
-        };
-        config.body = JSON.stringify(data);
-    }
+import axios from "axios";
 
-    return fetch(url, config).then((res) => {
-        if(res.ok) {
-            return res.json()
-        }
-        return res.text().then(text => {throw new Error(text)})
-    });
-}
 
 export function login (username, password) {
-    return send("POST", `http://localhost:5000/signin/`, {
+    return axios.post("/signin", {
         displayName: username,
         password
-    });
+    }, {withCredentials:true}).then((res) => {
+        return res.data
+    })
 }
 
 export function signUp (username, password) {
-    return send("POST", `http://localhost:5000/signUp/`, {
+    return axios.post("/signup", {
         displayName: username,
         password
-    });
+    }, {withCredentials:true}).then((res) => {
+        return res.data
+    })
 }
 
 
 export function googleLogin () {
     console.log('bruh')
-    return send("GET", `http://localhost:5000/google`);
+    // return send("GET", `http://localhost:5000/google`);
+}
+
+export function getUsername () {
+    return document.cookie.replace(
+        /(?:(?:^|.*;\s*)displayName\s*=\s*([^;]*).*$)|^.*$/,
+        "$1"
+    );
 }

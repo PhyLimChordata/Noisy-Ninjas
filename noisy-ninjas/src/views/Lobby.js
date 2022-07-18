@@ -3,10 +3,15 @@ import "../style/Lobby.css"
 import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
+import {useNavigate} from "react-router";
+import {getUsername} from "../apiService";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
-
+    const navigate = useNavigate();
+    const username = getUsername()
+    console.log(username)
+    console.log(document.cookie)
     function toggleSignOutPopup() {
         setSignOutPopup(!signOutPopup)
     }
@@ -16,7 +21,7 @@ export function Lobby ()  {
 
     return (
         <div className={"lobby-page"}>
-            <div className={"title"}> Welcome KingSlayer69420 </div>
+            <div className={"title"}> Welcome {username}</div>
             <div className={"body"}>
                 <div className={"ninja-select"}>
                     <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"}/>
@@ -26,8 +31,8 @@ export function Lobby ()  {
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
                         <Button content={"play"} className={"orange-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
-                        <Button content={"profile"} className={"hollow-btn skinny"}></Button>
-                        <Button content={"leaderboard"} className={"hollow-btn skinny"}></Button>
+                        <Button content={"profile"} className={"hollow-btn skinny"} onPress={() => navigate("/account")}></Button>
+                        <Button content={"leaderboard"} className={"hollow-btn skinny"} onPress={() => navigate("/leaderboard")}></Button>
                         <Button content={"sign out"} className={"hollow-btn skinny"} onPress={() => toggleSignOutPopup()}></Button>
                     </div>
                 </div>
