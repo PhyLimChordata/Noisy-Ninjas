@@ -2,6 +2,7 @@ import {Login} from "../views/Login";
 import {SignUp} from "../views/SignUp";
 import {Lobby} from "../views/Lobby";
 import { GameScreen } from "../views/GameScreen";
+import {Account} from "../views/Account";
 
 const mainRoutes = [
     {
@@ -19,6 +20,11 @@ const mainRoutes = [
     {
         path: "/game",
         element: <GameScreen/>
+    },
+    {
+        path: "/account",
+        element: <Account/>
+
     }
 
 ];

@@ -10,6 +10,8 @@ function send(method, url, data) {
     }
 
     return fetch(url, config).then((res) => {
+        console.log(res.headers);
+
         if(res.ok) {
             return res.json()
         }
@@ -35,4 +37,11 @@ export function signUp (username, password) {
 export function googleLogin () {
     console.log('bruh')
     return send("GET", `http://localhost:5000/google`);
+}
+
+export function getUsername () {
+    return document.cookie.replace(
+        /(?:(?:^|.*;\s*)displayName\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+    );
 }

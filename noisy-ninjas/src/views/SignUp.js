@@ -35,6 +35,7 @@ export function SignUp ()  {
         if (!errored) {
             signUp(username, password).then((r) => {
                 alert(`Signed up ${r}`)
+                navigate("/")
             }).catch((r) => {
                 setErrorMessage(r.toString())
             })
