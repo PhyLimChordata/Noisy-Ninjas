@@ -28,8 +28,7 @@ export function Login ()  {
         if (!errored) {
             login(username, password).then((r) => {
                 alert(`Logged in ${r}`)
-                console.log(document.cookie)
-                // navigate("/lobby")
+                navigate("/lobby")
             }).catch(() => {
                 setErrorMessage("Invalid Login")
             })

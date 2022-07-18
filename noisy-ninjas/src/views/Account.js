@@ -8,7 +8,10 @@ export function Account ()  {
     const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
     const navigate = useNavigate();
-
+    function getUserStats() {
+        return  {wins: 64, gamesPlayed: 119}
+    }
+    const {wins, gamesPlayed} = getUserStats()
     function toggleDeleteAccountPopup() {
         setDeleteAccountPopup(!deleteAccountPopup)
     }
@@ -32,8 +35,8 @@ export function Account ()  {
                             <img style={{height:"30px", flex:1}} className={"clickable"} src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>
                         </div>
                         <div className={"stats-container"}>
-                            <div className={"stats"}>wins: 64</div>
-                            <div className={"stats"}>games played: 140</div>
+                            <div className={"stats"}>wins: {wins}</div>
+                            <div className={"stats"}>games played: {gamesPlayed}</div>
                         </div>
                         <Button content={"change password"} className={"hollow-btn skinny"}></Button>
                         <Button content={"delete account"} className={"hollow-btn skinny"} onPress={()=>  toggleDeleteAccountPopup()}></Button>

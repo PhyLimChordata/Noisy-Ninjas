@@ -20,12 +20,12 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
        Code related to basic session has been derived from assignment and lecture code
 */
 
+
 const app = express();
 const port = process.env.PORT || 3000;
 const corsOptions = {
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true,
-    exposedHeaders: ["Set-Cookie"]
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({extended: false}))
@@ -36,13 +36,24 @@ app.use(session({
     secret: "secretboy",
     resave: false,
     saveUninitialized: true,
+    cookie: {
+        sameSite: "lax", //TODO: CHANGE THIS to none
+        secure: false //TODO: CHANGE THIS to true
+    }
 }));
+// app.use(function(req, res, next) {
+//     res.header('Access-Control-Allow-Credentials', true);
+//     res.header('Access-Control-Allow-Origin', req.headers.origin);
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//     next();
+// });
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next){
     let username = (req.session.user)? req.session.user.displayName : '';
     res.setHeader('Set-Cookie',
-
         cookie.serialize('displayName', username, {
           path : '/',
           maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
@@ -170,7 +181,6 @@ app.get('/signout/', function(req, res, next){
           return res.status(422).end("password is missing");
       const displayName = req.body.displayName;
       const password = req.body.password;
-      console.log("I REACHED DUDE")
 
       // retrieve user from the database
       User.findOne({ displayName: displayName }, function (err, user) {
@@ -178,12 +188,14 @@ app.get('/signout/', function(req, res, next){
           if (!user) return res.status(401).end("access denied");
           const hash = user.hash;
           bcrypt.compare(password, hash, function (err, result) {
-              console.log(result)
-              console.log("I REACHED DUDE")
               if (err) return res.status(500).end(err);
               if (result) {
                   // initialize cookie
-                  console.log(displayName)
+                  const a = cookie.serialize('displayName', displayName, {
+                      path : '/',
+                      maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+                  })
+                  console.log(a)
                   res.setHeader(
                       "Set-Cookie",
                       cookie.serialize("displayName", displayName, {
