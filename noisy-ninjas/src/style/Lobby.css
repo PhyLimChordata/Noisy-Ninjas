@@ -21,7 +21,7 @@
     justify-content:center;
 }
 
-.ninja-select {
+.lobby-page .ninja-select {
     flex:1;
     display:flex;
     justify-content:flex-end;
@@ -29,19 +29,19 @@
     margin-right:25px
 }
 
-.ninja-img {
+.lobby-page .ninja-img {
     height:400px
 }
 
-.arrow-img {
+.lobby-page .arrow-img {
     height:40px
 }
 
-.arrow-img.left {
+.lobby-page .arrow-img.left {
     transform: rotateY(180deg);
 }
 
-.button-container {
+.lobby-page .button-container {
     flex:1;
     display:flex;
     justify-content:flex-start;
@@ -49,6 +49,6 @@
     margin-left: 25px;
 }
 
-.button-inner-container {
+.lobby-page .button-inner-container {
     width:300px
 }

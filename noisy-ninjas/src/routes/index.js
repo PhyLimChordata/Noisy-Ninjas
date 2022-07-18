@@ -15,7 +15,7 @@ const mainRoutes = [
     {
         path: "/lobby",
         element: <Lobby/>
-    }
+    },
     {
         path: "/game",
         element: <GameScreen/>
