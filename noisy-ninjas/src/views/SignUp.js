@@ -33,11 +33,14 @@ export function SignUp ()  {
             errored = true
         }
         if (!errored) {
-            signUp(username, password).then((r) => {
-                alert(`Signed up ${r}`)
+            signUp(username, password).then(() => {
                 navigate("/")
-            }).catch((r) => {
-                setErrorMessage(r.toString())
+            }).catch((err) => {
+                const res = err.response
+                if (res.status === 409) {
+                    setUsernameError(true)
+                }
+                setErrorMessage(res.data)
             })
         }
     }

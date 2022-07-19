@@ -26,11 +26,17 @@ export function Login ()  {
             errored = true
         }
         if (!errored) {
-            login(username, password).then((r) => {
-                alert(`Logged in ${r}`)
+            login(username, password).then(() => {
                 navigate("/lobby")
-            }).catch(() => {
-                setErrorMessage("Invalid Login")
+            }).catch((err) => {
+                const res = err.response
+                if (res.status === 401) {
+                    setErrorMessage("Invalid Login")
+                    setUsernameError(true)
+                    setPasswordError(true)
+                } else {
+                    setErrorMessage(res.data)
+                }
             })
         }
     }
@@ -99,7 +105,7 @@ export function Login ()  {
                             <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div>
                     </div>
-                    <div className={"clickable"} onClick={() => console.log('forgot pass?')}>
+                    <div className={"clickable disabled-text"} onClick={() => console.log('forgot pass?')}>
                         forgot password?
                     </div>
                     <div className={"clickable"} onClick={() => navigate("/sign-up")}>

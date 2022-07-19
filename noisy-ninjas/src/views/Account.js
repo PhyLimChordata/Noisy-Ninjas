@@ -4,6 +4,7 @@ import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
 import {useNavigate} from "react-router";
+import {deleteAccount, getUsername} from "../apiService";
 export function Account ()  {
     const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -11,6 +12,7 @@ export function Account ()  {
     function getUserStats() {
         return  {wins: 64, gamesPlayed: 119}
     }
+    const username = getUsername()
     const {wins, gamesPlayed} = getUserStats()
     function toggleDeleteAccountPopup() {
         setDeleteAccountPopup(!deleteAccountPopup)
@@ -31,8 +33,8 @@ export function Account ()  {
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
                         <div className={"end"}>
-                            <div className={"username"}> KingSlayer69420</div>
-                            <img style={{height:"30px", flex:1}} className={"clickable"} src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>
+                            <div className={"username"}> {username}</div>
+                            <img style={{height:"30px"}} className={"clickable"} src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>
                         </div>
                         <div className={"stats-container"}>
                             <div className={"stats"}>wins: {wins}</div>
@@ -44,7 +46,11 @@ export function Account ()  {
                 </div>
             </div>
             {deleteAccountPopup && <ConfirmationPopup cancelAction={() => toggleDeleteAccountPopup()} confirmText={"delete account"}
-                                                      title={"delete account"} body={"are you sure you want to delete your account?"} confirmAction={() => console.log("deleted account")}/>}
+                                                      title={"delete account"} body={"are you sure you want to delete your account?"} confirmAction={() => {
+                deleteAccount().then(() => {
+                    navigate("/")
+                })
+            }}/>}
 
             {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
                                        title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}

@@ -78,16 +78,29 @@ connection.once('open', () => {
 
 
 app.use(function (req, res, next) {
-	console.log("HTTP request", port, req.method, req.url, req.body);
-	next();
-  });
-
-let isAuthenticated = function(req, res, next) {
-    if (!req.session.user) return res.status(401).end("access denied");
+    const displayName = req.session.displayName;
+    req.displayName = displayName || null;
+    console.log("HTTP request", port, req.method, req.url, req.body);
     next();
-  };
+});
+
+
+
+
+const isAuthenticated = function(req, res, next) {
+    if (!req.displayName) return res.status(401).end("access denied");
+    next();
+};
+
+const hasAccess = function (req, res, next) {
+    const displayName = req.params.displayName;
+    if (!req.displayName) return res.status(401).end("access denied");
+    if (displayName !== req.displayName) return res.status(403).end("access forbidden");
+    next();
+};
 
 app.get('/google',
+
   passport.authenticate('google', { scope:
       [ 'email', 'profile' ] }
 ));
@@ -125,8 +138,6 @@ app.get("/api/users",  function (req, res) {
   });
 
   app.get("/api/users/:displayName",  function (req, res) {
-    
-      
       User
       .findOne({displayName: req.params.displayName})
       .exec(function (err, user) {
@@ -134,36 +145,40 @@ app.get("/api/users",  function (req, res) {
         delete user.hash;
         return res.json(user);
       });
-    
-    
   });
 
-  app.patch("/api/users/:displayName/password",  function (req, res) {
+
+app.delete("/api/users/:displayName", hasAccess,  function (req, res) {
+    const displayName = req.params.displayName
+    User.deleteOne({displayName}).then(() => {
+        req.session.destroy();
+        res.setHeader('Set-Cookie', cookie.serialize('displayName', '', {
+            path : '/',
+            maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+        }));
+        return res.json({})
+    }).catch(err => {
+        return res.status(500).end(err)
+    })
+});
+
+app.patch("/api/users/:displayName/password",  function (req, res) {
+    const displayName = req.params.displayName
     if (!('password' in req.body)) return res.status(400).end('password is missing');
-	  let password = req.body.password;
-      
-      User
-      .findOneAndUpdate({displayName: req.params.displayName}, req.body.password)
-      .exec(function (err, user) {
-        if (err) return res.status(500).end(err);
-        delete user.hash;
-        return res.json(user);
-      });
+    const password = req.body.password;
 
-      bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
-          if (err) return res.status(500).end(err);
-          User
-      .findOneAndUpdate({displayName: req.params.displayName}, {hash: hash})
-      .exec(function (err, user) {
-        if (err) return res.status(500).end(err);
-        return res.json(user);
-      });
+            if (err) return res.status(500).end(err);
+            User
+                .findOneAndUpdate({displayName}, {new: true}, {hash})
+                .exec(function (err) {
+                    if (err) return res.status(500).end(err);
+                    return res.json(displayName);
+                });
         });
-      });
-    
-    
-  });
+    });
+});
 
 app.get('/signout/', function(req, res, next){
     req.session.destroy();
@@ -171,8 +186,8 @@ app.get('/signout/', function(req, res, next){
           path : '/', 
           maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
     }));
-    return res.redirect("/loggedoutTest");
-  });
+    return res.json({});
+});
 
   app.post('/signin/', function (req, res, next) {
       if (!("displayName" in req.body))
