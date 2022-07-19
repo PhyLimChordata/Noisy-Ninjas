@@ -89,7 +89,7 @@ app.use(function (req, res, next) {
 
 const isAuthenticated = function(req, res, next) {
     console.log(req)
-    if (!req.displayName) return res.status(401).end("access denied");
+    if (!req.user) return res.status(401).end("access denied");
     next();
 };
 
