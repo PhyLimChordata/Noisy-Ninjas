@@ -112,7 +112,7 @@ app.get( '/google/callback',
 function(req, res) {
     // Successful authentication, redirect home.
     req.session.user = req.user;
-    res.redirect('/google/success');
+    res.redirect('http://localhost:3000/lobby');
   }
 );
 
