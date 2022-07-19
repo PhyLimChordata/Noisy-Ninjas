@@ -30,6 +30,23 @@
   justify-content: space-evenly;
 }
 
+.hexagon-move {
+  background-color: #9980fa;
+  width: 90%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transform: scale(1.8);
+  transition: 0.5s;
+  z-index: 3;
+
+  display: grid;
+  align-items: center;
+}
+
+.hexagon-move:hover {
+  background-color: white;
+}
+
 .hexagon {
   background-color: #9980fa;
   width: 90%;
@@ -43,17 +60,17 @@
   align-items: center;
 }
 
-.hexagon:hover {
-  background-color: white;
+.clickable {
+  pointer-events: all;
 }
 
 .background-hex {
-  background-color: #282c34;
+  background-color: #2e2e2e;
   width: 100%;
   height: 100%;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transform: scale(0.9);
-  transition: 0.5s;
+  transition: 0.3s;
 
   display: grid;
   align-items: center;
@@ -61,23 +78,16 @@
 }
 
 .content-hex {
-  background-color: #9980fa;
+  background-color: #2e2e2e;
   width: 100%;
   height: 100%;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transform: scale(0.85);
   transition: 0.5s;
   z-index: 5;
-
 }
-
 
 #hexA1 {
-  grid-area: gA1;
-  z-index: 0;
-}
-
-#hexA1:hover {
   grid-area: gA1;
 }
 
@@ -223,4 +233,197 @@
 
 #hexG4 {
   grid-area: gG4;
+}
+
+
+#hexS-L1 {
+  grid-area: gD1;
+}
+
+#hexS-L2 {
+  grid-area: gD2;
+}
+
+#hexS-L3 {
+  grid-area: gD3;
+}
+
+
+#hexS-R1 {
+  grid-area: gD5;
+}
+
+#hexS-R2 {
+  grid-area: gD6;
+}
+
+#hexS-R3 {
+  grid-area: gD7;
+}
+
+
+
+#hexS-U1 {
+  grid-area: gA2;
+}
+
+#hexS-U2 {
+  grid-area: gB3;
+}
+
+#hexS-U3 {
+  grid-area: gC3;
+}
+
+
+
+#hexS-D1 {
+  grid-area: gG3;
+}
+
+#hexS-D2 {
+  grid-area: gF3;
+}
+
+#hexS-D3 {
+  grid-area: gE4;
+}
+
+
+#hexE-UL1 {
+  grid-area: gA1;
+}
+
+#hexE-UL2 {
+  grid-area: gB2;
+}
+
+#hexE-UL3 {
+  grid-area: gC3;
+}
+
+#hexE-U1 {
+  grid-area: gA2;
+}
+
+#hexE-U2 {
+  grid-area: gA3;
+}
+
+#hexE-U3 {
+  grid-area: gB3;
+}
+
+#hexE-UR1 {
+  grid-area: gA4;
+}
+
+#hexE-UR2 {
+  grid-area: gB4;
+}
+
+#hexE-UR3 {
+  grid-area: gC4;
+}
+
+#hexE-DL1 {
+  grid-area: gE3;
+}
+
+#hexE-DL2 {
+  grid-area: gF2;
+}
+
+#hexE-DL3 {
+  grid-area: gG1;
+}
+
+
+#hexE-D1 {
+  grid-area: gF3;
+}
+
+#hexE-D2 {
+  grid-area: gG2;
+}
+
+#hexE-D3 {
+  grid-area: gG3;
+}
+
+#hexE-DR1 {
+  grid-area: gE4;
+}
+#hexE-DR2 {
+  grid-area: gF4;
+}
+
+#hexE-DR3 {
+  grid-area: gG4;
+}
+
+#hexE-L1 {
+  grid-area: gB1;
+}
+#hexE-L2 {
+  grid-area: gC1;
+}
+#hexE-L3 {
+  grid-area: gC2;
+}
+#hexE-L4 {
+  grid-area: gD1;
+}
+
+#hexE-L5 {
+  grid-area: gD2;
+}
+
+#hexE-L6 {
+  grid-area: gD3;
+}
+
+#hexE-L7 {
+  grid-area: gE1;
+}
+
+#hexE-L8 {
+  grid-area: gE2;
+}
+
+#hexE-L9 {
+  grid-area: gF1;
+}
+
+#hexE-R1 {
+  grid-area: gB5;
+}
+#hexE-R2 {
+  grid-area: gC5;
+}
+#hexE-R3 {
+  grid-area: gC6;
+}
+#hexE-R4 {
+  grid-area: gD5;
+}
+
+#hexE-R5 {
+  grid-area: gD6;
+}
+
+#hexE-R6 {
+  grid-area: gD7;
+}
+
+#hexE-R7 {
+  grid-area: gE5;
+}
+
+#hexE-R8 {
+  grid-area: gE6;
+}
+
+#hexE-R9 {
+  grid-area: gF5;
 }

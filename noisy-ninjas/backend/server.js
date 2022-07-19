@@ -252,6 +252,9 @@ app.use('/match', require('./routes/matchRoute'));
 // const loginRouter = require('./routes/login');
 // app.use('/login', loginRouter);
 
+const hexRouter = require('./routes/hex');
+app.use('/map', hexRouter);
+
 //App is now listening for calls
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

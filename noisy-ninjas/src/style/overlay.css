@@ -1,4 +1,4 @@
-.moveset {
+.overlay {
   position: absolute;
   z-index: 0;
   display: grid;
@@ -12,7 +12,7 @@
   grid-template-areas: 
   ". . . . . . ."
   ". timer . . . hearts ." 
-  ". . . . . . ."
+  ". action . . . . ."
   ". . . . . . ."
   ". . . . . . ."
   ". . . . . . ."
@@ -33,6 +33,8 @@
   height: 100%;
   width: 100%;
   padding: 4px;
+
+  visibility: hidden;
 
   display: flex;
   font-weight: bolder;
@@ -61,6 +63,12 @@
   grid-area: timer;
   color: white;
   font-size: 8vw;
+}
+
+#action{
+  grid-area: action;
+  color: white;
+  font-size: 3vw;
 }
 
 #hearts {

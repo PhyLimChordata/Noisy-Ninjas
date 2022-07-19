@@ -7,8 +7,8 @@ import "./index.css";
 import App from "./App";
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
-root.render(    <React.StrictMode>
+root.render( 
     <BrowserRouter>
         <App />
     </BrowserRouter>
-</React.StrictMode>);
+    );

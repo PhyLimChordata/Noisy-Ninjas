@@ -31,3 +31,20 @@ export function getUsername () {
         "$1"
     );
 }
+
+export function newPOV (x, y, radius) {
+
+    return axios.get(`/map/source?x=${x}&y=${y}&radius=${radius}`, {}, {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
+
+
+// export function movePlayer (x, y, radius) {
+    // return send("PATCH", `http://localhost:5000/match/move/player`);
+// }
+
+// export function movePlayer (x, y, radius) {
+//     return {};
+// }
+
