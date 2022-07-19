@@ -241,6 +241,12 @@ app.get('/', (req, res) => res.send('Not logged in'))
 app.get('/google/failure', (req, res) => res.send('Login fail'))
 app.get('/google/success',isAuthenticated, (req, res) => res.send(`You ${req.session.user.displayName}`))
 
+
+
+app.use('/map', require('./routes/mapRoute'));
+app.use('/match', require('./routes/matchRoute'));
+
+
 //Adds routes for express to use
 //Example route: http://localhost:5000/example/add
 // const loginRouter = require('./routes/login');
