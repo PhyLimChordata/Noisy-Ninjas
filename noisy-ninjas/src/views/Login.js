@@ -26,11 +26,17 @@ export function Login ()  {
             errored = true
         }
         if (!errored) {
-            login(username, password).then((r) => {
-                alert(`Logged in ${r}`)
+            login(username, password).then(() => {
                 navigate("/lobby")
-            }).catch(() => {
-                setErrorMessage("Invalid Login")
+            }).catch((err) => {
+                const res = err.response
+                if (res.status === 401) {
+                    setErrorMessage("Invalid Login")
+                    setUsernameError(true)
+                    setPasswordError(true)
+                } else {
+                    setErrorMessage(res.data)
+                }
             })
         }
     }
@@ -92,14 +98,15 @@ export function Login ()  {
                 </form>
                 <div>
                     <div className={"oauth-container"}>
-                        <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
+                        {/*TODO: CHANGE LOCALHOST:5000*/}
+                        <div className={"clickable oauth-btn"} onClick={() => window.location = "http://localhost:5000/google"}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
                             <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div>
                     </div>
-                    <div className={"clickable"} onClick={() => console.log('forgot pass?')}>
+                    <div className={"clickable disabled-text"} onClick={() => console.log('forgot pass?')}>
                         forgot password?
                     </div>
                     <div className={"clickable"} onClick={() => navigate("/sign-up")}>

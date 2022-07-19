@@ -4,14 +4,12 @@ import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
 import {useNavigate} from "react-router";
-import {getUsername} from "../apiService";
+import {getUsername, signOut} from "../apiService";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
     const navigate = useNavigate();
     const username = getUsername()
-    console.log(username)
-    console.log(document.cookie)
     function toggleSignOutPopup() {
         setSignOutPopup(!signOutPopup)
     }
@@ -38,7 +36,11 @@ export function Lobby ()  {
                 </div>
             </div>
             {signOutPopup && <ConfirmationPopup cancelAction={() => toggleSignOutPopup()} confirmText={"sign out"}
-                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}
+                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => {
+                                                    signOut().then(() => {
+                                                        navigate("/")
+                                                    })
+            }}/>}
 
             {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
                                                 title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}

@@ -19,10 +19,24 @@ export function signUp (username, password) {
     })
 }
 
+export function signOut () {
+    return axios.get("/signout", {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
+
+export function deleteAccount () {
+    const username = getUsername()
+    return axios.delete(`/api/users/${username}`, {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
 
 export function googleLogin () {
     console.log('bruh')
-    // return send("GET", `http://localhost:5000/google`);
+    return axios.get(`/google`, {withCredentials:true}).then((res) => {
+        return res.data
+    })
 }
 
 export function getUsername () {

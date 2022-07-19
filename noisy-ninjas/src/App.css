@@ -22,3 +22,9 @@ main {
 .display-linebreak {
   white-space: pre-line;
 }
+
+.disabled-text {
+  text-decoration: line-through;
+  cursor: default;
+
+}
