@@ -4,6 +4,16 @@ import {Lobby} from "../views/Lobby";
 import { GameScreen } from "../views/GameScreen";
 import {Account} from "../views/Account";
 import {Leaderboard} from "../views/Leaderboard";
+import {Navigate} from "react-router-dom";
+import {getUsername} from "../apiService";
+
+const username = getUsername()
+const ProtectedRoute = ({children}) => {
+    if (!username) {
+        return <Navigate to="/" replace />;
+    }
+    return children;
+};
 
 const mainRoutes = [
     {
@@ -16,19 +26,19 @@ const mainRoutes = [
     },
     {
         path: "/lobby",
-        element: <Lobby/>
+        element: <ProtectedRoute> <Lobby/> </ProtectedRoute>
     },
     {
         path: "/game",
-        element: <GameScreen/>
+        element: <ProtectedRoute> <GameScreen/> </ProtectedRoute>
     },
     {
         path: "/account",
-        element: <Account/>
+        element: <ProtectedRoute> <Account/> </ProtectedRoute>
     },
     {
         path: "/leaderboard",
-        element: <Leaderboard/>
+        element: <ProtectedRoute> <Leaderboard/> </ProtectedRoute>
     }
 
 ];
