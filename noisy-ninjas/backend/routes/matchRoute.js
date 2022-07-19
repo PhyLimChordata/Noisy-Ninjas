@@ -599,7 +599,7 @@ Match
 
 
 //sample call 'map/source?x=2&y=2&radius=2
-router.get('/source', function (req, res) {
+router.post('/source', function (req, res) {
     Match
     .findById(req.body.matchID)
     .exec(function (err, match) {
