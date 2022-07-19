@@ -19,10 +19,24 @@ export function signUp (username, password) {
     })
 }
 
+export function signOut () {
+    return axios.get("/signout", {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
+
+export function deleteAccount () {
+    const username = getUsername()
+    return axios.delete(`/api/users/${username}`, {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
 
 export function googleLogin () {
     console.log('bruh')
-    // return send("GET", `http://localhost:5000/google`);
+    return axios.get(`/google`, {withCredentials:true}).then((res) => {
+        return res.data
+    })
 }
 
 export function getUsername () {
@@ -33,8 +47,8 @@ export function getUsername () {
 }
 
 export function newPOV (x, y, radius) {
-
-    return axios.get(`/map/source?x=${x}&y=${y}&radius=${radius}`, {}, {withCredentials:true}).then((res) => {
+    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62d30bc3a05ed76de9b84a4a"}, {withCredentials:true}).then((res) => {
+        console.log(res);
         return res.data
     })
 }

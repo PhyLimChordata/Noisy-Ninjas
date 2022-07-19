@@ -51,15 +51,15 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next){
-    let username = (req.session.user)? req.session.user.displayName : '';
-    res.setHeader('Set-Cookie',
-        cookie.serialize('displayName', username, {
-          path : '/',
-          maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
-    }));
-    next();
-});
+// app.use(function(req, res, next){
+//     let username = (req.session.user)? req.session.user.displayName : '';
+//     res.setHeader('Set-Cookie',
+//         cookie.serialize('displayName', username, {
+//           path : '/',
+//           maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+//     }));
+//     next();
+// });
 
 //Mongoose connects to the db based on uri
 const uri = process.env.URI;
