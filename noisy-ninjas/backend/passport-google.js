@@ -10,15 +10,18 @@ const mongoose = require("mongoose")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.serializeUser(function(user, done) {
-    
+    console.log("serailize???")
+    console.log(user)
+
     done(null, user);
   });
   
   passport.deserializeUser(function(username, done) {
-    
+      console.log("there")
    User.findOne({_id: username}, function(err, user){
-    
-    done(null, user);
+       console.log("asdasd")
+
+       done(null, user);
     
    })
     
@@ -27,11 +30,14 @@ passport.serializeUser(function(user, done) {
 passport.use(new GoogleStrategy({
     clientID: "1042176168336-9d9980j4hn9ij9hk534lvhjdmt86o0qq.apps.googleusercontent.com",
     clientSecret: "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",
-    callbackURL: "http://localhost:3000/google/callback"
+    callbackURL: "http://localhost:5000/google/callback",
   },
   function(accessToken, refreshToken, profile, cb) {
+    console.log(profile)
   User.findOne({ googleId: profile.id}, function(err, user){
-  
+      console.log("GOT HERE")
+      console.log(user)
+      console.log(err)
     if (err) return res.status(500).end(err);
     console.log(user)
     if (user) return cb(err, user);

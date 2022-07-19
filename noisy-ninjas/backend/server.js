@@ -88,6 +88,7 @@ app.use(function (req, res, next) {
 
 
 const isAuthenticated = function(req, res, next) {
+    console.log(req)
     if (!req.displayName) return res.status(401).end("access denied");
     next();
 };
@@ -100,9 +101,7 @@ const hasAccess = function (req, res, next) {
 };
 
 app.get('/google',
-
-  passport.authenticate('google', { scope:
-      [ 'email', 'profile' ] }
+    passport.authenticate('google', { scope: [ 'email', 'profile' ]}
 ));
 
 app.get( '/google/callback',
@@ -254,7 +253,7 @@ app.get('/signout/', function(req, res, next){
 //Primitive tests for Authentication / Authorization
 app.get('/', (req, res) => res.send('Not logged in'))
 app.get('/google/failure', (req, res) => res.send('Login fail'))
-app.get('/google/success',isAuthenticated, (req, res) => res.send(`You ${req.session.user.displayName}`))
+app.get('/google/success', isAuthenticated, (req, res) => res.send(`You ${req.session.user.displayName}`))
 
 //Adds routes for express to use
 //Example route: http://localhost:5000/example/add

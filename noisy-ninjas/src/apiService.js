@@ -34,7 +34,7 @@ export function deleteAccount () {
 
 export function googleLogin () {
     console.log('bruh')
-    return axios.get(`/google`, {withCredentials:true, headers: {"Access-Control-Allow-Origin": "http://localhost:5000"}}).then((res) => {
+    return axios.get(`/google`, {withCredentials:true}).then((res) => {
         return res.data
     })
 }
