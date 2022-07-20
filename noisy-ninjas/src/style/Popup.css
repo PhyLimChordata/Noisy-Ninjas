@@ -40,6 +40,10 @@
     padding-top: 20px;
 }
 
+.modal-component .confirmation-footer Button + Button {
+    margin-top: 20px;
+}
+
 .modal-component .close-modal {
     margin-left: auto;
     z-index: 1

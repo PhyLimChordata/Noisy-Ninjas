@@ -4,7 +4,7 @@ import {Button} from "../Button";
 import {Popup} from "./Popup";
 export function ConfirmationPopup(props) {
     const {confirmText, cancelText="cancel", body, title, confirmAction, cancelAction, modalStyle} = props
-    const footer = <div>
+    const footer = <div className={"confirmation-footer"}>
         <Button content={confirmText} className={"orange-btn skinny"} onPress={() => confirmAction()}></Button>
         <Button content={cancelText} className={"hollow-btn skinny"} onPress={() => cancelAction()}></Button>
     </div>

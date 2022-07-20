@@ -9,7 +9,7 @@
 }
 
 
-.lobby-page Button + Button {
+.lobby-page .button-container Button + Button {
     margin-top: 20px;
 }
 
