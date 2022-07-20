@@ -139,7 +139,7 @@
 .monster {
   height:  100%;
   width: 100%;
-  background-image: url("../assets/images/characters/monster.png");
+  background-image: url("../assets/images/characters/screamer.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
