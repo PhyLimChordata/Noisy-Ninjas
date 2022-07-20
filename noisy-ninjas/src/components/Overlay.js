@@ -9,6 +9,8 @@ export function Overlay(props) {
   let finishAction = (action) => {
     console.log(action);
     if (mode !== "dead") {
+      setTimer(5);
+
       setMode(action)
       document.getElementById("move1").style.visibility = "hidden";
       document.getElementById("move2").style.visibility = "hidden";
@@ -16,7 +18,6 @@ export function Overlay(props) {
       document.getElementById("move4").style.visibility = "hidden";
   
       console.log("FROM OVERLAY: " + mode);
-      setTimer(5);
     }
   }
   

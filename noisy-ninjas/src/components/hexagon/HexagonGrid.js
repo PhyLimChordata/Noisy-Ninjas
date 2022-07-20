@@ -26,7 +26,7 @@ export function HexagonGrid(props) {
             if (updated_health === 0) {
               setMode("dead");
               setTimer(0);
-            }
+            } 
           });
         }
       } else {
@@ -37,18 +37,20 @@ export function HexagonGrid(props) {
             if (updated_health === 0) {
               setMode("ninjas won");
               setTimer(0);
-            }
+            } 
           })
         }
       }
 
       updatePOV(x, y, 3);
 
+      setTimer(5);
       setSrcX(x);
       setSrcY(y);
     }
 
     if (mode === "direction-S") {
+      setTimer(5);
       if (role === "ninja") {
         if (!throwShuriken(3, direction)) {
           return;
@@ -61,6 +63,8 @@ export function HexagonGrid(props) {
     }
 
     if (mode === "direction-E") {
+      setTimer(5);
+
       if (role === "ninja") {
         if (!throwBomb(3, direction)) {
           return;
@@ -92,14 +96,12 @@ export function HexagonGrid(props) {
       document.getElementById("move2").style.visibility = "hidden";
       document.getElementById("move3").style.visibility = "hidden";
       document.getElementById("move4").style.visibility = "hidden";
-      setTimer(5); 
     } else if (mode === "move") {
       setMode("action");
       document.getElementById("move1").style.visibility = "visible";
       document.getElementById("move2").style.visibility = "visible";
       document.getElementById("move3").style.visibility = "visible";
       document.getElementById("move4").style.visibility = "visible";
-      setTimer(5); 
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
       console.log(mode);
@@ -277,42 +279,21 @@ export function HexagonGrid(props) {
   }
 
   let unshowdirection = (id, range) => {
-    if (mode === "direction-S") {
-      if (id.slice(0,1) != "S") {
-        return;
-      }
-      id = id.slice(0, id.length - 1);
-      for (let i = 1; i < range + 1; i++) {
-        document.getElementById("hex" + id + i).style.backgroundColor = '#9980fa';
-      } 
+
+    for (let i = 1; i < 5; i++) {
+      document.getElementById("hexA" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexG" + i).style.backgroundColor = '#9980fa';
     }
-    else if (mode === "direction-E") {
-      id = id.slice(0, id.length - 1);
-
-      let dir = id.slice(2,id.length);
-      let prefix = id.slice(0,2);
-      if (id.length == 4) {
-        dir = id.slice(id.length-2, id.length-1);
-      }
-      let i = 1;
-      while (document.getElementById("hex" + prefix + dir + i)) {
-        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = '#9980fa';
-        i++;
-      }
-
-      if (dir) {
-        i = 1; 
-        while(document.getElementById("hex" + prefix + dir + "L" + i)) {
-          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = '#9980fa';
-          i++;
-        } 
-
-        i = 1;
-        while(document.getElementById("hex" + prefix + dir + "R" + i)) {
-          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = '#9980fa';
-          i++;
-        } 
-      }
+    for (let i = 1; i < 6; i++) {
+      document.getElementById("hexB" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexF" + i).style.backgroundColor = '#9980fa';
+    }
+    for (let i = 1; i < 7; i++){ 
+      document.getElementById("hexC" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexE" + i).style.backgroundColor = '#9980fa';
+    }
+    for (let i = 1; i < 8; i++) {
+      document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
     }
   }  
  
