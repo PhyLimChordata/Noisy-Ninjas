@@ -50,6 +50,23 @@ export function newPOV (x, y, radius) {
     })
 }
 
+export function changePassword (password) {
+    const username = getUsername()
+    return axios.patch(`/api/users/${username}/password`, {
+        password
+    }, {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
+
+export function changeUsername (newUsername) {
+    const username = getUsername()
+    return axios.patch(`/api/users/${username}/username`, {
+        username: newUsername
+    }, {withCredentials:true}).then((res) => {
+        return res.data
+    })
+}
 
 // export function movePlayer (x, y, radius) {
     // return send("PATCH", `http://localhost:5000/match/move/player`);

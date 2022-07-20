@@ -9,7 +9,7 @@
 }
 
 
-.account-page Button + Button {
+.account-page .button-container Button + Button {
     margin-top: 20px;
 }
 
@@ -83,4 +83,12 @@
 
 .account-page .stats-container {
     margin-bottom: 20px;
+}
+
+.account-page #change-password-popup-body Input {
+    margin-bottom: 10px;
+}
+
+.account-page .error-text {
+    color: red
 }

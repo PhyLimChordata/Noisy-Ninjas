@@ -569,7 +569,7 @@ Match
 });
 
 router.patch('/ninjas/:player/health', function (req, res) {
-      
+   
 
 Match
     .findById(req.body.matchID)

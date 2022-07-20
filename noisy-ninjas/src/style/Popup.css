@@ -25,7 +25,7 @@
     font-size: 40px;
 }
 
-.modal-component .confirmation-title {
+.modal-component .confirmation-title,.modal-component .input-title {
     padding-bottom: 20px;
     border-bottom: #6B6B6B 2px solid;
 }
@@ -36,7 +36,7 @@
     margin-top:-20px
 }
 
-.modal-component .confirmation-body {
+.modal-component .confirmation-body,.modal-component .input-body {
     padding-top: 20px;
 }
 
@@ -62,5 +62,3 @@
 .modal-component .ninja-img + .ninja-img {
     margin-left:10px
 }
-
-

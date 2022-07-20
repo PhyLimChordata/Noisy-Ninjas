@@ -158,13 +158,39 @@ app.patch("/api/users/:displayName/password",  function (req, res) {
         bcrypt.hash(password, salt, function(err, hash) {
             if (err) return res.status(500).end(err);
             User
-                .findOneAndUpdate({displayName}, {new: true}, {hash})
+                .findOneAndUpdate({displayName},  {hash}, {new: true})
                 .exec(function (err) {
                     if (err) return res.status(500).end(err);
                     return res.json(displayName);
                 });
         });
     });
+});
+
+app.patch("/api/users/:displayName/username",  function (req, res) {
+    const displayName = req.params.displayName
+    const newName = req.body.username;
+    if (!('username' in req.body)) return res.status(400).end('username is missing');
+    
+    User.findOne({ displayName: newName }, function (err, user) {
+        if (err) return res.status(500).end(err);
+        if (user) return res.status(403).end(`Display name: ${newName} already exists!`);
+            User
+                .findOneAndUpdate({displayName},  {displayName: newName}, {new: true})
+                .exec(function (err) {
+                    if (err) return res.status(500).end(err);
+                    res.setHeader(
+                        "Set-Cookie",
+                        cookie.serialize("displayName", newName, {
+                            path: "/",
+                            maxAge: 60 * 60 * 24 * 7,
+                        })
+                    );
+                    req.session.displayName = newName;
+                    return res.json(newName);
+                });
+        
+            });
 });
 
 app.get('/signout/', function(req, res, next){
