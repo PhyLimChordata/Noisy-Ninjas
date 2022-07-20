@@ -95,6 +95,15 @@
   background-repeat: no-repeat;
 }
 
+.monster {
+  height:  100%;
+  width: 100%;
+  background-image: url("../assets/images/actions/shuriken.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
 .bomb {
   height:  100%;
   width: 100%;
