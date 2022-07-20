@@ -3,10 +3,7 @@ import { HexagonGrid } from "../components/hexagon/HexagonGrid";
 import { Overlay } from "../components/Overlay";
 import { Character } from "../components/Character";
 
-// import { ShurikenDirection } from "../components/ShurikenDirection";
-// import { ExplosionDirection } from "../components/ExplosionDirection";
-
-import { newPOV } from "../apiService";
+import { newPOV, getNinja, getUsername } from "../apiService";
 
 export function GameScreen (props)  {
   const [mode, setMode] = useState("move");
@@ -54,34 +51,34 @@ export function GameScreen (props)  {
   }, []);
 
   let grid = {};
-  if (!loaded) {
-//     http://localhost:3000/match/ninjas
-// {
-//     "matchID": "62d5e0a452086a8d4671e528"
-// }
-// .then((ninjas) => {
-// ninjas.forEach((ninja) => {
-// if ninja.displayName === cookie.displayName
-// TODO: Update 3 with the ninja.x and ninja.y
-    newPOV(3,3,3).then((hexes) => {
-      hexes.forEach((hex) => {
-        grid[hex["newCor"]] = hex;
-      });
-      setPOV(grid)
-      setLoaded(true);
-    }); 
-// })
-// })
+  
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
 
-     
+  if (!loaded) {
+    getNinja().then((ninjas) => {
+      ninjas.forEach((ninja) => {
+        if (ninja.displayName === getUsername()) {
+          console.log("Ninjas Coordinate: " + ninja.x + ", " + ninja.y);
+          newPOV(ninja.x,ninja.y,3).then((hexes) => {
+            hexes.forEach((hex) => {
+              grid[hex["newCor"]] = hex;
+            });
+            setPOV(grid)
+            console.log(hexes);
+            setLoaded(true);
+
+            setX(ninja.x);
+            setY(ninja.y);
+          }); 
+        }
+      })
+    });
   }
   
   return <div className = "gamescreen">
-      {/* <ShurikenDirection mode={"-shuriken-" + mode} setMode={setMode}/>
-      <ExplosionDirection mode={mode} setMode={setMode}/> */}
       <Overlay mode={mode} timer={timer} setMode={setMode} setTimer={setTimer}/>
       <Character role="ninja"/>
-      {loaded && <HexagonGrid POV={POV} mode={mode} setMode={setMode} setTimer={setTimer}/>}
-      
+      {loaded && <HexagonGrid POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y}/>}
   </div>
 }

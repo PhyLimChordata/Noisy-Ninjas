@@ -7,12 +7,14 @@ export function Overlay(props) {
   const {timer, mode, setMode, setTimer} = props
 
   let finishAction = (action) => {
+    console.log(action);
     setMode(action)
     document.getElementById("move1").style.visibility = "hidden";
     document.getElementById("move2").style.visibility = "hidden";
     document.getElementById("move3").style.visibility = "hidden";
     document.getElementById("move4").style.visibility = "hidden";
 
+    console.log("FROM OVERLAY: " + mode);
     setTimer(5);
   }
   

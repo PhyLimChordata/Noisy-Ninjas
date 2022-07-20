@@ -47,18 +47,32 @@ export function getUsername () {
 }
 
 export function newPOV (x, y, radius) {
-    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62d30bc3a05ed76de9b84a4a"}, {withCredentials:true}).then((res) => {
-        console.log(res);
+    console.log(x);
+    console.log(y);
+    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
         return res.data
-    })
+    });
 }
 
+export function getNinja () {
+    return axios.post(`/match/ninjas`, {matchID: "62d75dfb26ea56e6e3b2c898"},  {withCredentials:true}).then((res) => {
+        console.log(res);
+        return res.data
+    });
+}
 
-// export function movePlayer (x, y, radius) {
-    // return send("PATCH", `http://localhost:5000/match/move/player`);
-// }
+export function movePlayer (srcx, srcy, tarx, tary) {
 
-// export function movePlayer (x, y, radius) {
-//     return {};
-// }
+    console.log("MOVING");
+
+    console.log("SRCX: " + srcx);
+    console.log(srcy);
+    console.log(tarx);
+    console.log(tary);
+    
+    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
+        console.log("OK");
+        return res.data;
+    });
+}
 

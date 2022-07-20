@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { newPOV } from "../../apiService";
+import { movePlayer, newPOV } from "../../apiService";
 
 export function HexagonGrid(props) {
   const {mode, setMode, setTimer, POV, x, y} = props;
@@ -12,7 +12,14 @@ export function HexagonGrid(props) {
 
   const update = (x, y, direction) => {
     if (mode === "move") {
+      console.log("SOURCE X: " + srcx);
+      console.log("SOURCE Y: " + srcy);
+      console.log("XA: " + x);
+      console.log("YA: " + y);
+
       updatePOV(x, y, 3);
+      setSrcX(x);
+      setSrcY(y);
     }
 
     if (mode === "direction-S") {
@@ -28,8 +35,6 @@ export function HexagonGrid(props) {
     }
 
     updateMode();
-    setSrcX(x);
-    setSrcY(y);
   }
 
   const updateMode = () => {
@@ -38,9 +43,12 @@ export function HexagonGrid(props) {
       setTimer(5); 
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
+      console.log(mode);
       setTimer(0);
     } else if (mode === "wait") {
       setMode("move");
+
+      console.log(mode);
       setTimer(5);
       //TODO: Delete after testing iss finished 
     }
@@ -56,11 +64,15 @@ export function HexagonGrid(props) {
     document.getElementById("move4").style.visibility = "visible";
     let grid = {};
   
-    //TODO: Move endpoint 
-    // http://localhost:3000/match/move/Annas%20Rahuma?srcx=${srcy}&srcy=${srcy}&tarx=${x}&tary=${y}
-    // {
-    //     "matchID": "62d5e0a452086a8d4671e528"
-    // }
+    console.log("FRONTEND:")
+    console.log(srcx);
+    console.log(srcy);
+    console.log();
+    console.log(x);
+    console.log(y);
+  
+    movePlayer(srcx, srcy, x, y);
+
     newPOV(x,y,radius).then((hexes) => {
       hexes.forEach((hex) => {
         grid[hex["newCor"]] = hex;
@@ -72,7 +84,9 @@ export function HexagonGrid(props) {
   const throwShuriken = (range=0, direction) => {
     let dir = "up";
     let dirLetter= direction.slice(2, direction.length-1);
-    if (dirLetter = "U") {
+    console.log(dirLetter);
+
+    if (dirLetter == "U") {
       dir = "up";
     } else if (dirLetter == "D") {
       dir = "down";
@@ -84,13 +98,19 @@ export function HexagonGrid(props) {
       return false;
     }
 
+    console.log(dir);
+
     // http://localhost:3000/match/shuriken/${dir}?x=${srcx}&y={srcy}&range=3
 
     return true;
   }
 
   const throwBomb = (range=0, direction) => {
-    let dirLetter= direction.slice(2, direction.length-1) || direction.slice(2, direction.length-2);
+    let dirLetter= direction.slice(2, direction.length-1);
+
+    if (dirLetter.length == 2) {
+      dirLetter = dirLetter.slice(0, dirLetter.length-1);
+    }
 
     let dir = "up";
     if (dirLetter == "U") {
@@ -104,7 +124,6 @@ export function HexagonGrid(props) {
     } else {
       return false;
     }
-
     // http://localhost:3000/match/explosion/${dir}?x=${srcx}&y={srcy}&range=3
     return true;
   }
