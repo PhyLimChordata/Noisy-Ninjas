@@ -23,6 +23,10 @@ export function HexagonGrid(props) {
         if (hexInfo.type.includes("scream")) {
           ninjaHealth().then((updated_health) => {
             setHearts(updated_health);
+            if (updated_health === 0) {
+              setMode("dead");
+              setTimer(0);
+            }
           });
         }
       } else {
@@ -30,6 +34,10 @@ export function HexagonGrid(props) {
           monsterHealth().then((updated_health) => {
             console.log(updated_health);
             setHearts(updated_health);
+            if (updated_health === 0) {
+              setMode("ninjas won");
+              setTimer(0);
+            }
           })
         }
       }
@@ -67,7 +75,25 @@ export function HexagonGrid(props) {
   }
 
   const updateMode = () => {
-    if (mode === "move") {
+    if (mode === "dead") {
+      console.log("MONSTER WON");
+      getNinjas().then((ninjas) => {
+        let live = false;
+        ninjas.forEach((ninja) => {
+          if (ninja.health !== 0) {
+            live = true;
+          }
+        });
+        if (!live) {
+          setMode("monster won");
+        }
+      });
+      document.getElementById("move1").style.visibility = "hidden";
+      document.getElementById("move2").style.visibility = "hidden";
+      document.getElementById("move3").style.visibility = "hidden";
+      document.getElementById("move4").style.visibility = "hidden";
+      setTimer(5); 
+    } else if (mode === "move") {
       setMode("action");
       document.getElementById("move1").style.visibility = "visible";
       document.getElementById("move2").style.visibility = "visible";
@@ -80,20 +106,21 @@ export function HexagonGrid(props) {
       setTimer(0);
     } else if (mode === "wait") {
       
-      getNinjas().then((ninjas) => {
-        ninjas.forEach((ninja) => {
-          if (ninja.displayName === getUsername()) {
-            if (ninja.health !== 0) {
-              setMode("move");
-              updatePOV(srcx, srcy, 3);
-        
-              console.log(mode);
-              setTimer(5);
+        getNinjas().then((ninjas) => {
+          ninjas.forEach((ninja) => {
+            if (ninja.displayName === getUsername()) {
+              if (ninja.health !== 0) {
+                setMode("move");
+                updatePOV(srcx, srcy, 3);
+          
+                console.log(mode);
+                setTimer(5);
+              }
             }
-          }
-        })
-      });
+          })
+        });
      
+        updatePOV(srcx, srcy, 3);
       //TODO: Delete after testing iss finished 
     }
   }

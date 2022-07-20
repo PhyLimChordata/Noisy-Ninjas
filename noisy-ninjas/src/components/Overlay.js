@@ -8,14 +8,16 @@ export function Overlay(props) {
 
   let finishAction = (action) => {
     console.log(action);
-    setMode(action)
-    document.getElementById("move1").style.visibility = "hidden";
-    document.getElementById("move2").style.visibility = "hidden";
-    document.getElementById("move3").style.visibility = "hidden";
-    document.getElementById("move4").style.visibility = "hidden";
-
-    console.log("FROM OVERLAY: " + mode);
-    setTimer(5);
+    if (mode !== "dead") {
+      setMode(action)
+      document.getElementById("move1").style.visibility = "hidden";
+      document.getElementById("move2").style.visibility = "hidden";
+      document.getElementById("move3").style.visibility = "hidden";
+      document.getElementById("move4").style.visibility = "hidden";
+  
+      console.log("FROM OVERLAY: " + mode);
+      setTimer(5);
+    }
   }
   
   return <div className="overlay">

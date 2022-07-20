@@ -14,7 +14,7 @@ export function GameScreen (props)  {
   const timerRef = useRef(timer)
 
   //TODO: Set hearts based on role
-  const [hearts, setHearts] = useState(10);
+  const [hearts, setHearts] = useState(5);
 
   useEffect (() => {
     timerRef.current = timer
@@ -26,7 +26,7 @@ export function GameScreen (props)  {
   
   useEffect (() => {
     setInterval(() => {
-      if (timerRef.current === 0 && modeRef.current !== "wait") {
+      if (timerRef.current === 0 && modeRef.current !== "wait" && modeRef.current !== "dead" && modeRef.current !== "monster won" && modeRef.current !== "ninjas won") {
         setTimer(5)
         if (modeRef.current === "move") {
           setMode("action");
@@ -60,24 +60,42 @@ export function GameScreen (props)  {
 
   if (!loaded) {
     getNinjas().then((ninjas) => {
+      let live = false;
+
       ninjas.forEach((ninja) => {
+        if (ninja.health !== 0) {
+          live = true;
+        };
+
         if (ninja.displayName === getUsername()) {
-          console.log("Ninjas Coordinate: " + ninja.x + ", " + ninja.y);
           newPOV(ninja.x,ninja.y,3).then((hexes) => {
             hexes.forEach((hex) => {
               grid[hex["newCor"]] = hex;
             });
             setPOV(grid)
-            console.log(hexes);
             setLoaded(true);
-
+            setHearts(ninja.health);
             setX(ninja.x);
             setY(ninja.y);
-          }); 
+          })
         }
-      })
-    });
-  }
+      });
+
+      if (!live) {
+        setMode("monster won");
+        setTimer(0);
+      } else {
+        ninjas.forEach((ninja) => {
+          if (ninja.displayName === getUsername()) {
+              if (ninja.health === 0) {
+                setMode("dead");
+                setTimer(0);
+              }
+          }
+        });  
+      }
+  }) 
+}
   
   return <div className = "gamescreen">
       <Overlay role="ninja" mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
