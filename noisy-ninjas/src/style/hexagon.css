@@ -95,6 +95,14 @@
   background-repeat: no-repeat;
 }
 
+.bomb {
+  height:  100%;
+  width: 100%;
+  background-image: url("../assets/images/actions/bomb.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 #hexA1 {
   grid-area: gA1;
 }

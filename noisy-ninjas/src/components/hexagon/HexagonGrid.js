@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { movePlayer, newPOV, shuriken } from "../../apiService";
+import { movePlayer, newPOV, shuriken, explosion, ninjaHealth, getNinjas} from "../../apiService";
 
 export function HexagonGrid(props) {
   const {mode, setMode, setTimer, POV, x, y} = props;
@@ -10,14 +10,20 @@ export function HexagonGrid(props) {
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
 
-  const update = (x, y, direction) => {
+  const update = (x, y, direction, hexInfo) => {
     if (mode === "move") {
       console.log("SOURCE X: " + srcx);
       console.log("SOURCE Y: " + srcy);
       console.log("XA: " + x);
       console.log("YA: " + y);
 
+      movePlayer(srcx, srcy, x, y);
+      if (hexInfo.type.includes("monsterScream")) {
+        ninjaHealth();
+      }
+
       updatePOV(x, y, 3);
+
       setSrcX(x);
       setSrcY(y);
     }
@@ -50,7 +56,9 @@ export function HexagonGrid(props) {
       console.log(mode);
       setTimer(0);
     } else if (mode === "wait") {
+      // if (getNinjas().then()
       setMode("move");
+      updatePOV(srcx, srcy, 3);
 
       console.log(mode);
       setTimer(5);
@@ -65,15 +73,6 @@ export function HexagonGrid(props) {
 
     let grid = {};
   
-    console.log("FRONTEND:")
-    console.log(srcx);
-    console.log(srcy);
-    console.log();
-    console.log(x);
-    console.log(y);
-  
-    movePlayer(srcx, srcy, x, y);
-
     newPOV(x,y,radius).then((hexes) => {
       hexes.forEach((hex) => {
         grid[hex["newCor"]] = hex;
@@ -100,6 +99,8 @@ export function HexagonGrid(props) {
     }
     shuriken(dir, srcx, srcy);
 
+    updatePOV(srcx, srcy, 3);
+
     return true;
   }
 
@@ -122,7 +123,9 @@ export function HexagonGrid(props) {
     } else {
       return false;
     }
-    // http://localhost:3000/match/explosion/${dir}?x=${srcx}&y={srcy}&range=3
+    
+    explosion(dir, srcx, srcy);
+
     return true;
   }
 
@@ -250,49 +253,5 @@ export function HexagonGrid(props) {
     <Hexagon id={mode === "direction-E" ? "E-D2" : "G2"} info={type["cor1,3"]} mode={mode} onClick = {update}/>
     <Hexagon id = {mode === "direction-E" ? "E-D3" : mode === "direction-S" ? "S-D1" : "G3"}  info={type["cor2,3"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
     <Hexagon id={mode === "direction-E" ? "E-DR3" : "G4"} info={type["cor3,3"]} mode={mode} onClick = {update}/>
-
-    {/* <Hexagon id="A1" info={type["cor-3,-3"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-U1" : "A2"} info={type["cor-2,-3"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/> 
-    <Hexagon id="A3" info={type["cor-1,-3"]} mode={mode} onClick = {update}/>
-    <Hexagon id="A4" info={type["cor0,-3"]} mode={mode} onClick = {update}/>
-
-    <Hexagon id="B1" info={type["cor-3,-2"]} mode={mode} onClick = {update}/>
-    <Hexagon id="B2" info={type["cor-2,-2"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-U2" : "B3"} info={type["cor-1,-2"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id="B4" info={type["cor0,-2"]} mode={mode} onClick = {update}/>
-    <Hexagon id="B5" info={type["cor1,-2"]} mode={mode} onClick = {update}/>
-
-    <Hexagon id="C1" info={type["cor-3,-1"]} mode={mode} onClick = {update}/>
-    <Hexagon id="C2" info={type["cor-2,-1"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-U3" : "C3"} info={type["cor-1,-1"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id="C4" info={type["cor0,-1"]} mode={mode} onClick = {update}/>
-    <Hexagon id="C5" info={type["cor1,-1"]} mode={mode} onClick = {update}/>
-    <Hexagon id="C6" info={type["cor2,-1"]} mode={mode} onClick = {update}/>
-
-    <Hexagon id = {mode === "direction-S" ? "S-L1" : "D1"} info={type["cor-3,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id = {mode === "direction-S" ? "S-L2" : "D2"}  info={type["cor-2,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id = {mode === "direction-S" ? "S-L3" : "D3"}  info={type["cor-1,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id="D4" info={type["cor0,0"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-R3" : "D5"}  info={type["cor1,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id = {mode === "direction-S" ? "S-R2" : "D6"}  info={type["cor2,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id = {mode === "direction-S" ? "S-R1" : "D7"}  info={type["cor3,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-
-    <Hexagon id="E1" info={type["cor-2,1"]} mode={mode} onClick = {update}/>
-    <Hexagon id="E2" info={type["cor-1,1"]} mode={mode} onClick = {update}/>
-    <Hexagon id="E3" info={type["cor0,1"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-D3" : "E4"}  info={type["cor1,1"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id="E5" info={type["cor2,1"]} mode={mode}onClick = {update}/>
-    <Hexagon id="E6" info={type["cor3,1"]} mode={mode} onClick = {update}/>
-
-    <Hexagon id="F1" info={type["cor-1,2"]} mode={mode} onClick = {update}/>
-    <Hexagon id="F2" info={type["cor0,2"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-D2" : "F3"}  info={type["cor1,2"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection} />
-    <Hexagon id="F4" info={type["cor2,2"]} mode={mode} onClick = {update}/>
-    <Hexagon id="F5" info={type["cor3,2"]} mode={mode} onClick = {update}/>
-
-    <Hexagon id="G1" info={type["cor0,3"]} mode={mode} onClick = {update}/>
-    <Hexagon id="G2" info={type["cor1,3"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-S" ? "S-D1" : "G3"}  info={type["cor2,3"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id="G4" info={type["cor3,3"]} mode={mode} onClick = {update}/> */}
   </div>
 }

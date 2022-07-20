@@ -20,9 +20,9 @@ export function Overlay(props) {
   
   return <div className="overlay">
     <div id= "move1" className="move" onClick={() => finishAction("direction-S")}><p>Shuriken</p></div>
-    <div id="move2" className="move" onClick={() => finishAction("direction-E")}><p>Decoy</p></div>
-    <div id="move3" className="move" onClick={() => finishAction("direction")}><p>Item</p></div>
-    <div id="move4" className="move" onClick={() => finishAction("direction")}><p>Etc</p></div>
+    <div id="move2" className="move" onClick={() => finishAction("direction-E")}><p>Bomb</p></div>
+    {/* <div id="move3" className="move" onClick={() => finishAction("direction")}><p>Item</p></div>
+    <div id="move4" className="move" onClick={() => finishAction("direction")}><p>Etc</p></div> */}
     <div id="timer">{timer}</div>
     <div id="action">{mode}</div>
     <Hearts id="hearts" amount={3}/>

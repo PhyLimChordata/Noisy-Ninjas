@@ -164,7 +164,7 @@ let explosionRight = function(x,y,n,map,effect){
 
     }
     else{
-        for(let i = 0; i<= n; i++){
+        for(let i = 1; i<= n; i++){
             cor = map.map[`cor${x+i},${(y-n)+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -183,7 +183,7 @@ let explosionRight = function(x,y,n,map,effect){
         }
             
         }
-        for(let i = 1; i<= n; i++){
+        for(let i = 1; i< n; i++){
             cor = map.map[`cor${x+n},${y+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -213,7 +213,7 @@ let explosionLeft = function(x,y,n,map,effect){
 
     }
     else{
-        for(let i = 0; i<= n; i++){
+        for(let i = 0; i< n; i++){
             cor = map.map[`cor${x-n},${y-i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -232,7 +232,7 @@ let explosionLeft = function(x,y,n,map,effect){
         }
             
         }
-        for(let i = 1; i<= n; i++){
+        for(let i = 1; i< n; i++){
             cor = map.map[`cor${(x-n)+i},${y+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){

@@ -82,3 +82,15 @@ export function shuriken (direction, srcx, srcy) {
         return res.data;
     });
 }
+
+export function explosion (direction, srcx, srcy) {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=3`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "bomb"}, {withCredentials:true}).then((res) => {
+        return res.data; 
+    });
+}
+
+export function ninjaHealth () {
+    return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    })
+}
