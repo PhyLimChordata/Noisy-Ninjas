@@ -19,7 +19,7 @@ export function Lobby ()  {
 
     return (
         <div className={"lobby-page"}>
-            <div className={"title"}> Welcome {username} HELLO</div>
+            <div className={"title"}> Welcome {username}</div>
             <div className={"body"}>
                 <div className={"ninja-select"}>
                     <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"}/>
