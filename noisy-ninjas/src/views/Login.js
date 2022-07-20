@@ -28,6 +28,7 @@ export function Login ()  {
         if (!errored) {
             login(username, password).then(() => {
                 navigate("/lobby")
+                navigate(0)
             }).catch((err) => {
                 const res = err.response
                 if (res.status === 401) {

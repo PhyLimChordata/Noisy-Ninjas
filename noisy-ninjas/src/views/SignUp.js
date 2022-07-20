@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Auth.css"
 import {Button} from "../components/Button";
-import {signUp} from "../apiService";
+import {googleLogin, signUp} from "../apiService";
 import {useNavigate} from "react-router";
 export function SignUp ()  {
     const [username, setUsername] = useState("")
@@ -108,7 +108,7 @@ export function SignUp ()  {
                 </form>
                 <div>
                     <div className={"oauth-container"}>
-                        <div className={"clickable oauth-btn"}>
+                        <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
