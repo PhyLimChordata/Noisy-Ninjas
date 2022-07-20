@@ -11,7 +11,7 @@ export function Hexagon(props) {
     if (players && players[0] == "ChoIsBest") {
       return "ninjas"
     } else if (players && players[0] == "Cho'sMenace") {
-      return "scream"
+      return "monster"
     }
     return type && type[0] || ""
   }
