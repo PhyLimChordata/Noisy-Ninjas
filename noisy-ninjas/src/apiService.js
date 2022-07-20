@@ -92,5 +92,5 @@ export function explosion (direction, srcx, srcy) {
 export function ninjaHealth () {
     return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
         return res.data;
-    })
+    });
 }

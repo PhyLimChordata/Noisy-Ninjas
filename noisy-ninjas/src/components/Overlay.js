@@ -4,7 +4,7 @@ import '../style/overlay.css'
 import { Hearts } from './Heart'
 
 export function Overlay(props) {
-  const {timer, mode, setMode, setTimer} = props
+  const {timer, mode, setMode, setTimer, hearts} = props
 
   let finishAction = (action) => {
     console.log(action);
@@ -25,6 +25,6 @@ export function Overlay(props) {
     <div id="move4" className="move" onClick={() => finishAction("direction")}><p>Etc</p></div> */}
     <div id="timer">{timer}</div>
     <div id="action">{mode}</div>
-    <Hearts id="hearts" amount={3}/>
+    <Hearts id="hearts" amount={hearts}/>
   </div>
 }

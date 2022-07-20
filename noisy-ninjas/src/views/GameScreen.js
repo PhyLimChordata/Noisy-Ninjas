@@ -13,6 +13,8 @@ export function GameScreen (props)  {
   const modeRef = useRef(mode)
   const timerRef = useRef(timer)
 
+  const [hearts, setHearts] = useState(3);
+
   useEffect (() => {
     timerRef.current = timer
   }, [timer]);
@@ -77,8 +79,8 @@ export function GameScreen (props)  {
   }
   
   return <div className = "gamescreen">
-      <Overlay mode={mode} timer={timer} setMode={setMode} setTimer={setTimer}/>
+      <Overlay mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role="ninja"/>
-      {loaded && <HexagonGrid POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y}/>}
+      {loaded && <HexagonGrid POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
   </div>
 }

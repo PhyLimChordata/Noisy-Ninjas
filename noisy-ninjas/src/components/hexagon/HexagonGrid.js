@@ -5,7 +5,7 @@ import { Hexagon } from './Hexagon'
 import { movePlayer, newPOV, shuriken, explosion, ninjaHealth, getNinjas} from "../../apiService";
 
 export function HexagonGrid(props) {
-  const {mode, setMode, setTimer, POV, x, y} = props;
+  const {mode, setMode, setTimer, POV, x, y, setHearts} = props;
   const [type, setType] = useState(POV);
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
@@ -18,8 +18,11 @@ export function HexagonGrid(props) {
       console.log("YA: " + y);
 
       movePlayer(srcx, srcy, x, y);
+
       if (hexInfo.type.includes("monsterScream")) {
-        ninjaHealth();
+        ninjaHealth().then((updated_health) => {
+          setHearts(updated_health);
+        });
       }
 
       updatePOV(x, y, 3);

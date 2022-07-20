@@ -562,7 +562,7 @@ Match
           Match.findByIdAndUpdate(req.body.matchID, {matchMonsters: [newmonster]}, {new: true}, function (err, newmatch) {
           if (err) return res.status(500).end(err);
          
-          return res.json(newmatch);
+          return res.json(health);
         }  );
       });
   });
@@ -590,7 +590,7 @@ Match
             Match.findByIdAndUpdate(req.body.matchID, {matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
             if (err) return res.status(500).end(err);
 
-            return res.json(newmatch);
+            return res.json(health);
           }  );
         });
     });
