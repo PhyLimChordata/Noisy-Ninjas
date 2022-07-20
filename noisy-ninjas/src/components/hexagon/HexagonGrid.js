@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas, getUsername} from "../../apiService";
+import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas, getUsername, getMonsters} from "../../apiService";
 
 export function HexagonGrid(props) {
   const {role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
@@ -107,20 +107,33 @@ export function HexagonGrid(props) {
       console.log(mode);
       setTimer(0);
     } else if (mode === "wait") {
-      
-        getNinjas().then((ninjas) => {
-          ninjas.forEach((ninja) => {
-            if (ninja.displayName === getUsername()) {
-              if (ninja.health !== 0) {
+        if (role !== "ninja") {
+          getMonsters().then((monsters) => {
+            monsters.forEach((monster) => {
+              if (monster.displayName === getUsername()) {
                 setMode("move");
                 updatePOV(srcx, srcy, 3);
-          
-                console.log(mode);
                 setTimer(5);
               }
-            }
-          })
-        });
+            })
+          });
+        } else {
+          getNinjas().then((ninjas) => {
+            ninjas.forEach((ninja) => {
+              if (ninja.displayName === getUsername()) {
+                if (ninja.health !== 0) {
+                  setMode("move");
+                  updatePOV(srcx, srcy, 3);
+            
+                  console.log(mode);
+                  setTimer(5);
+                }
+              }
+            })
+          });
+        }
+
+      
      
         updatePOV(srcx, srcy, 3);
       //TODO: Delete after testing iss finished 
