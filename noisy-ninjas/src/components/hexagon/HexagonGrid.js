@@ -289,21 +289,24 @@ export function HexagonGrid(props) {
 
   let unshowdirection = (id, range) => {
 
-    for (let i = 1; i < 5; i++) {
-      document.getElementById("hexA" + i).style.backgroundColor = '#9980fa';
-      document.getElementById("hexG" + i).style.backgroundColor = '#9980fa';
+    if (mode !== "direction-S" && mode !== "direction-E") {
+      for (let i = 1; i < 5; i++) {
+        document.getElementById("hexA" + i).style.backgroundColor = '#9980fa';
+        document.getElementById("hexG" + i).style.backgroundColor = '#9980fa';
+      }
+      for (let i = 1; i < 6; i++) {
+        document.getElementById("hexB" + i).style.backgroundColor = '#9980fa';
+        document.getElementById("hexF" + i).style.backgroundColor = '#9980fa';
+      }
+      for (let i = 1; i < 7; i++){ 
+        document.getElementById("hexC" + i).style.backgroundColor = '#9980fa';
+        document.getElementById("hexE" + i).style.backgroundColor = '#9980fa';
+      }
+      for (let i = 1; i < 8; i++) {
+        document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
+      }
     }
-    for (let i = 1; i < 6; i++) {
-      document.getElementById("hexB" + i).style.backgroundColor = '#9980fa';
-      document.getElementById("hexF" + i).style.backgroundColor = '#9980fa';
-    }
-    for (let i = 1; i < 7; i++){ 
-      document.getElementById("hexC" + i).style.backgroundColor = '#9980fa';
-      document.getElementById("hexE" + i).style.backgroundColor = '#9980fa';
-    }
-    for (let i = 1; i < 8; i++) {
-      document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
-    }
+   
 
     if (mode === "direction-S") {
       if (id.slice(0,1) != "S") {
@@ -311,7 +314,7 @@ export function HexagonGrid(props) {
       }
       id = id.slice(0, id.length - 1);
       for (let i = 1; i < range + 1; i++) {
-        document.getElementById("hex" + id + i).style.backgroundColor = 'orange';
+        document.getElementById("hex" + id + i).style.backgroundColor = '#9980fa';
       }
     } else if (mode === "direction-E") {
       id = id.slice(0, id.length - 1);
@@ -323,20 +326,20 @@ export function HexagonGrid(props) {
       }
       let i = 1;
       while (document.getElementById("hex" + prefix + dir + i)) {
-        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = 'orange';
+        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = '#9980fa';
         i++;
       }
 
       if (dir) {
         i = 1; 
         while(document.getElementById("hex" + prefix + dir + "L" + i)) {
-          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = 'orange';
+          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = '#9980fa';
           i++;
         } 
 
         i = 1;
         while(document.getElementById("hex" + prefix + dir + "R" + i)) {
-          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = 'orange';
+          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = '#9980fa';
           i++;
         } 
         i++;
