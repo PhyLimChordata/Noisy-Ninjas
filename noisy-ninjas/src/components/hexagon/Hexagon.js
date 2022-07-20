@@ -9,7 +9,7 @@ export function Hexagon(props) {
     //   console.log(players)
     // }
     if (players && players[0] == "ChoIsBest") {
-      return "ninja"
+      return "ninjas"
     } else if (players && players[0] == "Cho'sMenace") {
       return "scream"
     }
