@@ -124,15 +124,16 @@ app.get("/api/users",  function (req, res) {
     
   });
 
-  app.get("/api/users/:displayName",  function (req, res) {
-      User
-      .findOne({displayName: req.params.displayName})
-      .exec(function (err, user) {
-        if (err) return res.status(500).end(err);
-        delete user.hash;
-        return res.json(user);
-      });
-  });
+app.get("/api/users/:displayName",  hasAccess, function (req, res) {
+    User
+        .findOne({displayName: req.params.displayName})
+        .exec(function (err, user) {
+            if (err) return res.status(500).end(err);
+            if (!user) return res.status(401).end("access denied");
+            delete user.hash;
+            return res.json(user);
+        });
+});
 
 
 app.delete("/api/users/:displayName", hasAccess,  function (req, res) {

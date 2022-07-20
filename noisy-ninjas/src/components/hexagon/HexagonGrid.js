@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas} from "../../apiService";
+import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas, getUsername, getMonsters} from "../../apiService";
 
 export function HexagonGrid(props) {
   const {role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
@@ -23,6 +23,10 @@ export function HexagonGrid(props) {
         if (hexInfo.type.includes("scream")) {
           ninjaHealth().then((updated_health) => {
             setHearts(updated_health);
+            if (updated_health === 0) {
+              setMode("dead");
+              setTimer(0);
+            } 
           });
         }
       } else {
@@ -30,17 +34,23 @@ export function HexagonGrid(props) {
           monsterHealth().then((updated_health) => {
             console.log(updated_health);
             setHearts(updated_health);
+            if (updated_health === 0) {
+              setMode("ninjas won");
+              setTimer(0);
+            } 
           })
         }
       }
 
       updatePOV(x, y, 3);
 
+      setTimer(5);
       setSrcX(x);
       setSrcY(y);
     }
 
     if (mode === "direction-S") {
+      setTimer(5);
       if (role === "ninja") {
         if (!throwShuriken(3, direction)) {
           return;
@@ -53,6 +63,8 @@ export function HexagonGrid(props) {
     }
 
     if (mode === "direction-E") {
+      setTimer(5);
+
       if (role === "ninja") {
         if (!throwBomb(3, direction)) {
           return;
@@ -67,24 +79,59 @@ export function HexagonGrid(props) {
   }
 
   const updateMode = () => {
-    if (mode === "move") {
+    if (mode === "dead") {
+      console.log("MONSTER WON");
+      getNinjas().then((ninjas) => {
+        let live = false;
+        ninjas.forEach((ninja) => {
+          if (ninja.health !== 0) {
+            live = true;
+          }
+        });
+        if (!live) {
+          setMode("monster won");
+        }
+      });
+      document.getElementById("move1").style.visibility = "hidden";
+      document.getElementById("move2").style.visibility = "hidden";
+    } else if (mode === "move") {
       setMode("action");
       document.getElementById("move1").style.visibility = "visible";
       document.getElementById("move2").style.visibility = "visible";
-      document.getElementById("move3").style.visibility = "visible";
-      document.getElementById("move4").style.visibility = "visible";
-      setTimer(5); 
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
       console.log(mode);
       setTimer(0);
     } else if (mode === "wait") {
-      // if (getNinjas().then()
-      setMode("move");
-      updatePOV(srcx, srcy, 3);
+        if (role !== "ninja") {
+          getMonsters().then((monsters) => {
+            monsters.forEach((monster) => {
+              if (monster.displayName === getUsername()) {
+                setMode("move");
+                updatePOV(srcx, srcy, 3);
+                setTimer(5);
+              }
+            })
+          });
+        } else {
+          getNinjas().then((ninjas) => {
+            ninjas.forEach((ninja) => {
+              if (ninja.displayName === getUsername()) {
+                if (ninja.health !== 0) {
+                  setMode("move");
+                  updatePOV(srcx, srcy, 3);
+            
+                  console.log(mode);
+                  setTimer(5);
+                }
+              }
+            })
+          });
+        }
 
-      console.log(mode);
-      setTimer(5);
+      
+     
+        updatePOV(srcx, srcy, 3);
       //TODO: Delete after testing iss finished 
     }
   }
@@ -241,16 +288,32 @@ export function HexagonGrid(props) {
   }
 
   let unshowdirection = (id, range) => {
+
+    for (let i = 1; i < 5; i++) {
+      document.getElementById("hexA" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexG" + i).style.backgroundColor = '#9980fa';
+    }
+    for (let i = 1; i < 6; i++) {
+      document.getElementById("hexB" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexF" + i).style.backgroundColor = '#9980fa';
+    }
+    for (let i = 1; i < 7; i++){ 
+      document.getElementById("hexC" + i).style.backgroundColor = '#9980fa';
+      document.getElementById("hexE" + i).style.backgroundColor = '#9980fa';
+    }
+    for (let i = 1; i < 8; i++) {
+      document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
+    }
+
     if (mode === "direction-S") {
       if (id.slice(0,1) != "S") {
         return;
       }
       id = id.slice(0, id.length - 1);
       for (let i = 1; i < range + 1; i++) {
-        document.getElementById("hex" + id + i).style.backgroundColor = '#9980fa';
-      } 
-    }
-    else if (mode === "direction-E") {
+        document.getElementById("hex" + id + i).style.backgroundColor = 'orange';
+      }
+    } else if (mode === "direction-E") {
       id = id.slice(0, id.length - 1);
 
       let dir = id.slice(2,id.length);
@@ -260,22 +323,23 @@ export function HexagonGrid(props) {
       }
       let i = 1;
       while (document.getElementById("hex" + prefix + dir + i)) {
-        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = '#9980fa';
+        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = 'orange';
         i++;
       }
 
       if (dir) {
         i = 1; 
         while(document.getElementById("hex" + prefix + dir + "L" + i)) {
-          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = '#9980fa';
+          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = 'orange';
           i++;
         } 
 
         i = 1;
         while(document.getElementById("hex" + prefix + dir + "R" + i)) {
-          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = '#9980fa';
+          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = 'orange';
           i++;
         } 
+        i++;
       }
     }
   }  
@@ -303,9 +367,9 @@ export function HexagonGrid(props) {
     <Hexagon id = {mode === "direction-E" ? "E-L5" : mode === "direction-S" ? "S-L2" : "D2"}  info={type["cor-2,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
     <Hexagon id = {mode === "direction-E" ? "E-L6" : mode === "direction-S" ? "S-L3" : "D3"}  info={type["cor-1,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
     <Hexagon id="D4" info={type["cor0,0"]} mode={mode} onClick = {update}/>
-    <Hexagon id = {mode === "direction-E" ? "E-R4" : mode === "direction-S" ? "S-R3" : "D5"}  info={type["cor1,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
+    <Hexagon id = {mode === "direction-E" ? "E-R4" : mode === "direction-S" ? "S-R1" : "D5"}  info={type["cor1,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
     <Hexagon id = {mode === "direction-E" ? "E-R5" : mode === "direction-S" ? "S-R2" : "D6"}  info={type["cor2,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
-    <Hexagon id = {mode === "direction-E" ? "E-R6" : mode === "direction-S" ? "S-R1" : "D7"}  info={type["cor3,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
+    <Hexagon id = {mode === "direction-E" ? "E-R6" : mode === "direction-S" ? "S-R3" : "D7"}  info={type["cor3,0"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
 
     <Hexagon id={mode === "direction-E" ? "E-L7" : "E1"} info={type["cor-2,1"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
     <Hexagon id={mode === "direction-E" ? "E-L8" : "E2"} info={type["cor-1,1"]} mode={mode} onClick = {update} hover={showDirection} unhover={unshowdirection}/>
