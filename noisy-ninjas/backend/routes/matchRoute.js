@@ -515,7 +515,7 @@ router.post('/ninjas', function (req, res) {
   
 });
 
-router.get('/monsters', function (req, res) {
+router.post('/monsters', function (req, res) {
       
     Match
     .findById(req.body.matchID)
