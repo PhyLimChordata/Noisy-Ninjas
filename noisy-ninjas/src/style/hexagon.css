@@ -103,6 +103,23 @@
   background-repeat: no-repeat;
 }
 
+.scream {
+  height:  100%;
+  width: 100%;
+  background-image: url("../assets/images/actions/scream.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.echo {
+  height:  100%;
+  width: 100%;
+  background-image: url("../assets/images/actions/echo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
 #hexA1 {
   grid-area: gA1;
 }

@@ -13,7 +13,8 @@ export function GameScreen (props)  {
   const modeRef = useRef(mode)
   const timerRef = useRef(timer)
 
-  const [hearts, setHearts] = useState(3);
+  //TODO: Set hearts based on role
+  const [hearts, setHearts] = useState(10);
 
   useEffect (() => {
     timerRef.current = timer
@@ -79,8 +80,8 @@ export function GameScreen (props)  {
   }
   
   return <div className = "gamescreen">
-      <Overlay mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
+      <Overlay role="ninja" mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role="ninja"/>
-      {loaded && <HexagonGrid POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
+      {loaded && <HexagonGrid role="ninja" POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
   </div>
 }

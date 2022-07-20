@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export function login (username, password) {
     return axios.post("/signin", {
         displayName: username,
@@ -77,20 +76,38 @@ export function movePlayer (srcx, srcy, tarx, tary) {
 }
 
 
-export function shuriken (direction, srcx, srcy) {
-    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=3`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "shuriken"}, {withCredentials:true}).then((res) => {
+export function shuriken (direction, srcx, srcy, range) {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "shuriken"}, {withCredentials:true}).then((res) => {
         return res.data;
     });
 }
 
-export function explosion (direction, srcx, srcy) {
-    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=3`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "bomb"}, {withCredentials:true}).then((res) => {
+export function explosion (direction, srcx, srcy, range) {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "bomb"}, {withCredentials:true}).then((res) => {
+        return res.data; 
+    });
+}
+
+export function echo (direction, srcx, srcy, range) {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "echo"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
+
+export function scream (direction, srcx, srcy, range) {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "scream"}, {withCredentials:true}).then((res) => {
         return res.data; 
     });
 }
 
 export function ninjaHealth () {
     return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
+
+export function monsterHealth () {
+    return axios.patch(`/match/monsters/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then ((res) => {
         return res.data;
     });
 }

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { movePlayer, newPOV, shuriken, explosion, ninjaHealth, getNinjas} from "../../apiService";
+import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas} from "../../apiService";
 
 export function HexagonGrid(props) {
-  const {mode, setMode, setTimer, POV, x, y, setHearts} = props;
+  const {role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
   const [type, setType] = useState(POV);
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
@@ -19,10 +19,19 @@ export function HexagonGrid(props) {
 
       movePlayer(srcx, srcy, x, y);
 
-      if (hexInfo.type.includes("monsterScream")) {
-        ninjaHealth().then((updated_health) => {
-          setHearts(updated_health);
-        });
+      if (role === "ninja") {
+        if (hexInfo.type.includes("scream")) {
+          ninjaHealth().then((updated_health) => {
+            setHearts(updated_health);
+          });
+        }
+      } else {
+        if (hexInfo.type.includes("shuriken") || hexInfo.type.includes("bomb")) {
+          monsterHealth().then((updated_health) => {
+            console.log(updated_health);
+            setHearts(updated_health);
+          })
+        }
       }
 
       updatePOV(x, y, 3);
@@ -32,17 +41,28 @@ export function HexagonGrid(props) {
     }
 
     if (mode === "direction-S") {
-      if (!throwShuriken(3, direction)) {
-        return;
+      if (role === "ninja") {
+        if (!throwShuriken(3, direction)) {
+          return;
+        }
+      } else {
+        if (!yellEcho(6, direction)) {
+          return;
+        }
       }
     }
 
     if (mode === "direction-E") {
-      if (!throwBomb(3, direction)) {
+      if (role === "ninja") {
+        if (!throwBomb(3, direction)) {
+          return;
+        } 
+      } else {
+        if (!yellScream(6, direction)) {
         return;
       }
     }
-
+    }
     updateMode();
   }
 
@@ -100,7 +120,7 @@ export function HexagonGrid(props) {
     } else {
       return false;
     }
-    shuriken(dir, srcx, srcy);
+    shuriken(dir, srcx, srcy, range);
 
     updatePOV(srcx, srcy, 3);
 
@@ -127,7 +147,55 @@ export function HexagonGrid(props) {
       return false;
     }
     
-    explosion(dir, srcx, srcy);
+    explosion(dir, srcx, srcy, range);
+
+    return true;
+  }
+
+  const yellEcho = (range=0, direction) => {
+    let dir = "up";
+    let dirLetter= direction.slice(2, direction.length-1);
+    console.log(dirLetter);
+
+    if (dirLetter == "U") {
+      dir = "up";
+    } else if (dirLetter == "D") {
+      dir = "down";
+    } else if (dirLetter == "L") {
+      dir = "left";
+    } else if (dirLetter == "R") {
+      dir = "right";
+    } else {
+      return false;
+    }
+    echo(dir, srcx, srcy, range);
+
+    updatePOV(srcx, srcy, 3);
+
+    return true;
+  }
+
+  const yellScream = (range=0, direction) => {
+    let dirLetter= direction.slice(2, direction.length-1);
+
+    if (dirLetter.length == 2) {
+      dirLetter = dirLetter.slice(0, dirLetter.length-1);
+    }
+
+    let dir = "up";
+    if (dirLetter == "U") {
+      dir = "up";
+    } else if (dirLetter == "D") {
+      dir = "down";
+    } else if (dirLetter == "L") {
+      dir = "left";
+    } else if (dirLetter == "R") {
+      dir = "right";
+    } else {
+      return false;
+    }
+    
+    scream(dir, srcx, srcy, range);
 
     return true;
   }
