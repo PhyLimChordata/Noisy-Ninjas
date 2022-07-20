@@ -33,10 +33,7 @@ export function deleteAccount () {
 }
 
 export function googleLogin () {
-    console.log('bruh')
-    return axios.get(`/google`, {withCredentials:true}).then((res) => {
-        return res.data
-    })
+    return window.location = "http://localhost:5000/google"
 }
 
 export function getUsername () {

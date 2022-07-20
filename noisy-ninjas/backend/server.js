@@ -41,25 +41,9 @@ app.use(session({
         secure: false //TODO: CHANGE THIS to true
     }
 }));
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Credentials', true);
-//     res.header('Access-Control-Allow-Origin', req.headers.origin);
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-//     next();
-// });
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next){
-    let username = (req.session.user)? req.session.user.displayName : '';
-    res.setHeader('Set-Cookie',
-        cookie.serialize('displayName', username, {
-          path : '/',
-          maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
-    }));
-    next();
-});
 
 //Mongoose connects to the db based on uri
 const uri = process.env.URI;
@@ -89,7 +73,7 @@ app.use(function (req, res, next) {
 
 const isAuthenticated = function(req, res, next) {
     console.log(req)
-    if (!req.user) return res.status(401).end("access denied");
+    if (!req.displayName) return res.status(401).end("access denied");
     next();
 };
 
@@ -106,15 +90,19 @@ app.get('/google',
 
 app.get( '/google/callback',
     passport.authenticate( 'google', {
-        
-        failureRedirect: '/google/failure'
+        failureRedirect: 'http://localhost:3000/'
 }),
 function(req, res) {
     // Successful authentication, redirect home.
-    req.session.user = req.user;
+    const displayName = req.user.displayName
+    req.session.displayName = displayName;
+    res.setHeader('Set-Cookie',
+        cookie.serialize('displayName', displayName, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+        }));
     res.redirect('http://localhost:3000/lobby');
-  }
-);
+})
 
 app.get("/api/users",  function (req, res) {
     console.log("kek")
@@ -252,10 +240,6 @@ app.get('/signout/', function(req, res, next){
 
 //Primitive tests for Authentication / Authorization
 app.get('/', (req, res) => res.send('Not logged in'))
-app.get('/google/failure', (req, res) => res.send('Login fail'))
-app.get('/google/success', isAuthenticated, (req, res) => res.send(`You ${req.session.user.displayName}`))
-
-
 
 app.use('/map', require('./routes/mapRoute'));
 app.use('/match', require('./routes/matchRoute'));

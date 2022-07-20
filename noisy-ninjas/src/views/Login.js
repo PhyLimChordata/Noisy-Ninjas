@@ -99,7 +99,7 @@ export function Login ()  {
                 <div>
                     <div className={"oauth-container"}>
                         {/*TODO: CHANGE LOCALHOST:5000*/}
-                        <div className={"clickable oauth-btn"} onClick={() => window.location = "http://localhost:5000/google"}>
+                        <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
                         <div className={"clickable oauth-btn"}>
