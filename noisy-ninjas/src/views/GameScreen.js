@@ -3,7 +3,7 @@ import { HexagonGrid } from "../components/hexagon/HexagonGrid";
 import { Overlay } from "../components/Overlay";
 import { Character } from "../components/Character";
 
-import { newPOV, getNinja, getUsername } from "../apiService";
+import { newPOV, getNinjas, getUsername } from "../apiService";
 
 export function GameScreen (props)  {
   const [mode, setMode] = useState("move");
@@ -56,7 +56,7 @@ export function GameScreen (props)  {
   const [y, setY] = useState(0);
 
   if (!loaded) {
-    getNinja().then((ninjas) => {
+    getNinjas().then((ninjas) => {
       ninjas.forEach((ninja) => {
         if (ninja.displayName === getUsername()) {
           console.log("Ninjas Coordinate: " + ninja.x + ", " + ninja.y);

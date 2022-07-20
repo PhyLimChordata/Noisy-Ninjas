@@ -87,6 +87,14 @@
   z-index: 5;
 }
 
+.shuriken {
+  height:  100%;
+  width: 100%;
+  background-image: url("../assets/images/actions/shuriken.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 #hexA1 {
   grid-area: gA1;
 }

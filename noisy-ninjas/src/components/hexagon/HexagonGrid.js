@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
 
-import { movePlayer, newPOV } from "../../apiService";
+import { movePlayer, newPOV, shuriken } from "../../apiService";
 
 export function HexagonGrid(props) {
   const {mode, setMode, setTimer, POV, x, y} = props;
@@ -40,6 +40,10 @@ export function HexagonGrid(props) {
   const updateMode = () => {
     if (mode === "move") {
       setMode("action");
+      document.getElementById("move1").style.visibility = "visible";
+      document.getElementById("move2").style.visibility = "visible";
+      document.getElementById("move3").style.visibility = "visible";
+      document.getElementById("move4").style.visibility = "visible";
       setTimer(5); 
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
@@ -58,10 +62,7 @@ export function HexagonGrid(props) {
     if (x === -1) {
       return;
     }
-    document.getElementById("move1").style.visibility = "visible";
-    document.getElementById("move2").style.visibility = "visible";
-    document.getElementById("move3").style.visibility = "visible";
-    document.getElementById("move4").style.visibility = "visible";
+
     let grid = {};
   
     console.log("FRONTEND:")
@@ -97,10 +98,7 @@ export function HexagonGrid(props) {
     } else {
       return false;
     }
-
-    console.log(dir);
-
-    // http://localhost:3000/match/shuriken/${dir}?x=${srcx}&y={srcy}&range=3
+    shuriken(dir, srcx, srcy);
 
     return true;
   }

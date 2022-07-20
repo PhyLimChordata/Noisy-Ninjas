@@ -54,7 +54,7 @@ export function newPOV (x, y, radius) {
     });
 }
 
-export function getNinja () {
+export function getNinjas () {
     return axios.post(`/match/ninjas`, {matchID: "62d75dfb26ea56e6e3b2c898"},  {withCredentials:true}).then((res) => {
         console.log(res);
         return res.data
@@ -76,3 +76,9 @@ export function movePlayer (srcx, srcy, tarx, tary) {
     });
 }
 
+
+export function shuriken (direction, srcx, srcy) {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=3`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "shuriken"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
