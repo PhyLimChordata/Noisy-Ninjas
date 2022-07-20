@@ -94,14 +94,10 @@ export function HexagonGrid(props) {
       });
       document.getElementById("move1").style.visibility = "hidden";
       document.getElementById("move2").style.visibility = "hidden";
-      document.getElementById("move3").style.visibility = "hidden";
-      document.getElementById("move4").style.visibility = "hidden";
     } else if (mode === "move") {
       setMode("action");
       document.getElementById("move1").style.visibility = "visible";
       document.getElementById("move2").style.visibility = "visible";
-      document.getElementById("move3").style.visibility = "visible";
-      document.getElementById("move4").style.visibility = "visible";
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
       console.log(mode);

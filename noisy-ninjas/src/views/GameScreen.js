@@ -37,8 +37,7 @@ export function GameScreen (props)  {
           setMode("action");
           document.getElementById("move1").style.visibility = "visible";
           document.getElementById("move2").style.visibility = "visible";
-          document.getElementById("move3").style.visibility = "visible";
-          document.getElementById("move4").style.visibility = "visible";
+       
         }
           else if (modeRef.current === "action" || modeRef.current === "direction-S" || modeRef.current === "direction-E" || modeRef.current === "direction") {
           setMode("wait");
@@ -46,8 +45,6 @@ export function GameScreen (props)  {
           //socket time
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
-          document.getElementById("move3").style.visibility = "hidden";
-          document.getElementById("move4").style.visibility = "hidden";
         } else if (modeRef.current === "wait") {
           setMode("move");
         }
