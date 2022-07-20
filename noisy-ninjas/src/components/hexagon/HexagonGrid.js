@@ -308,6 +308,44 @@ export function HexagonGrid(props) {
     for (let i = 1; i < 8; i++) {
       document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
     }
+
+    if (mode === "direction-S") {
+      if (id.slice(0,1) != "S") {
+        return;
+      }
+      id = id.slice(0, id.length - 1);
+      for (let i = 1; i < range + 1; i++) {
+        document.getElementById("hex" + id + i).style.backgroundColor = 'orange';
+      }
+    } else if (mode === "direction-E") {
+      id = id.slice(0, id.length - 1);
+
+      let dir = id.slice(2,id.length);
+      let prefix = id.slice(0,2);
+      if (id.length == 4) {
+        dir = id.slice(id.length-2, id.length-1);
+      }
+      let i = 1;
+      while (document.getElementById("hex" + prefix + dir + i)) {
+        document.getElementById("hex" + prefix + dir + i).style.backgroundColor = 'orange';
+        i++;
+      }
+
+      if (dir) {
+        i = 1; 
+        while(document.getElementById("hex" + prefix + dir + "L" + i)) {
+          document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = 'orange';
+          i++;
+        } 
+
+        i = 1;
+        while(document.getElementById("hex" + prefix + dir + "R" + i)) {
+          document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = 'orange';
+          i++;
+        } 
+        i++;
+      }
+    }
   }  
  
   return <div className="main">
