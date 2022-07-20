@@ -5,7 +5,7 @@ const Ninja = require('../schemas/ninja');
 const Monster = require('../schemas/monster');
 const User = require('../../models/User')
 
-let shurikenDown = function(x,y,n,map,effect){
+let shurikenDown = function(x,y,n,v,map,effect){
     console.log(`cor${x},${y}`)
     cor = map.map[ `cor${x},${y}`]
     if(cor && (n >= 0)){
@@ -22,17 +22,17 @@ let shurikenDown = function(x,y,n,map,effect){
             console.log(cor);
         }
         map.map[ `cor${x},${y}`] = cor;
-        if(n % 2 === 0){
-            shurikenDown(x+1, y+1, n-1, map, effect)
+        if(v % 2 === 0){
+            shurikenDown(x+1, y+1, n-1, v+1, map, effect)
         }
         else{
-            shurikenDown(x, y+1, n-1, map, effect)
+            shurikenDown(x, y+1, n-1, v+1, map, effect)
 
         }
     }
 }
 
-let shurikenUp = function(x,y,n,map,effect){
+let shurikenUp = function(x,y,n,v, map,effect){
     cor = map.map[ `cor${x},${y}`]
     if(cor && (n >= 0)){
         if(cor.type.includes(effect)){
@@ -47,11 +47,11 @@ let shurikenUp = function(x,y,n,map,effect){
             cor.type.push(effect)
         }
         map.map[ `cor${x},${y}`] = cor;
-        if(n % 2 === 0){
-            shurikenUp(x-1, y-1, n-1, map, effect)
+        if(v % 2 === 0){
+            shurikenUp(x-1, y-1, n-1, v+1, map, effect)
         }
         else{
-            shurikenUp(x, y-1, n-1, map, effect)
+            shurikenUp(x, y-1, n-1, v+1, map, effect)
 
         }
     }
@@ -164,7 +164,7 @@ let explosionRight = function(x,y,n,map,effect){
 
     }
     else{
-        for(let i = 0; i<= n; i++){
+        for(let i = 1; i<= n; i++){
             cor = map.map[`cor${x+i},${(y-n)+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -183,7 +183,7 @@ let explosionRight = function(x,y,n,map,effect){
         }
             
         }
-        for(let i = 1; i<= n; i++){
+        for(let i = 1; i< n; i++){
             cor = map.map[`cor${x+n},${y+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -213,7 +213,7 @@ let explosionLeft = function(x,y,n,map,effect){
 
     }
     else{
-        for(let i = 0; i<= n; i++){
+        for(let i = 0; i< n; i++){
             cor = map.map[`cor${x-n},${y-i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -232,7 +232,7 @@ let explosionLeft = function(x,y,n,map,effect){
         }
             
         }
-        for(let i = 1; i<= n; i++){
+        for(let i = 1; i< n; i++){
             cor = map.map[`cor${(x-n)+i},${y+i}`];
         if(cor && (n > 0)){
             if(cor.type.includes(effect)){
@@ -271,6 +271,9 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
         
         cor2.newCor = `cor${0},${0}`
         cor2.oldCor = `cor${x},${y}`
+
+        cor2.x = x;
+        cor2.y = y;
 
         //console.log(newmap.push(cor2))
         
@@ -501,7 +504,7 @@ router.get('/', function (req, res) {
   
 });
 
-router.get('/ninjas', function (req, res) {
+router.post('/ninjas', function (req, res) {
       
     Match
     .findById(req.body.matchID)
@@ -559,7 +562,7 @@ Match
           Match.findByIdAndUpdate(req.body.matchID, {matchMonsters: [newmonster]}, {new: true}, function (err, newmatch) {
           if (err) return res.status(500).end(err);
          
-          return res.json(newmatch);
+          return res.json(health);
         }  );
       });
   });
@@ -587,7 +590,7 @@ Match
             Match.findByIdAndUpdate(req.body.matchID, {matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
             if (err) return res.status(500).end(err);
 
-            return res.json(newmatch);
+            return res.json(health);
           }  );
         });
     });
@@ -599,7 +602,7 @@ Match
 
 
 //sample call 'map/source?x=2&y=2&radius=2
-router.get('/source', function (req, res) {
+router.post('/source', function (req, res) {
     Match
     .findById(req.body.matchID)
     .exec(function (err, match) {
@@ -624,10 +627,10 @@ router.patch('/shuriken/:direction', function (req, res) {
       map = match.matchMap;
       switch(req.params.direction){
         case "up":
-            shurikenUp(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.range), map, req.body.effect);
+            shurikenUp(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.range), 0, map, req.body.effect);
             break;
         case "down":
-            shurikenDown(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.range), map, req.body.effect);
+            shurikenDown(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.range), 0, map, req.body.effect);
             break;
         case "right":
             shurikenRight(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.range), map, req.body.effect);
@@ -641,25 +644,6 @@ router.patch('/shuriken/:direction', function (req, res) {
         return res.json(newmatch);
       }  )
 
-    });
-
-});
-
-router.patch('/clear', function (req, res) {
-    Match
-    .findById(req.body.matchID)
-    .exec(function (err, match) {
-      if (err) return res.status(500).end(err);
-      map = match.matchMap;
-      for (const cor in map.map) {
-        cor.type = ["normal"]
-      }
-      
-      Match.findByIdAndUpdate(req.body.matchID, {matchMap: map},{new: true},function (err, newmatch) {
-        if (err) return res.status(500).end(err);
-        return res.json(newmatch);
-      }  )
-      
     });
 
 });
@@ -704,17 +688,36 @@ router.patch('/move/:player', function (req, res) {
       
       cor1 = map.map[`cor${req.query.srcx},${req.query.srcy}`]
       cor2 = map.map[`cor${req.query.tarx},${req.query.tary}`]
-      console.log(cor1)
-      console.log(cor2)
+
+      console.log("okoaksdoasid");
+      console.log(cor1);
+      console.log(cor2);
+
         let index = cor1.players.indexOf(req.params.player);
         cor1.players.splice(index, 1)
         cor2.players.push(req.params.player)
+
+        console.log(cor2.players);
+        
         map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
         map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
         for(i=0; i<match.matchNinjas.length; i++){
+            console.log("SDIJMO");
+
+        console.log(match.matchNinjas)
+        console.log(req.params.player)
+        console.log(req.query.tarx);
+        console.log(req.query.tary);
+
+        console.log(req.query.srcx);
+
+        console.log(req.query.srcy);
+
+
         if(match.matchNinjas[i].displayName == req.params.player){
             Ninja.findOneAndUpdate({displayName: req.params.player}, {x: req.query.tarx, y: req.query.tary}, {new: true}, function(err, newninja){
                 if (err) return res.status(500).end(err);
+                console.log(newninja)
                 Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
     
@@ -753,6 +756,28 @@ router.patch('/move/:player', function (req, res) {
         });
         */
       
+
+    });
+
+});
+
+router.patch('/clear', function (req, res) {
+    Match
+    .findById(req.body.matchID)
+    .exec(function (err, match) {
+      if (err) return res.status(500).end(err);
+
+      var map = match.matchMap;
+
+      for (cor in map.map) {
+
+        map.map[cor].type = ["normal"]
+      }
+
+      Match.findByIdAndUpdate(req.body.matchID, {matchMap: map},{new: true},function (err, newmatch) {
+        if (err) return res.status(500).end(err);
+        return res.json(newmatch);
+      }  )
 
     });
 

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export function login (username, password) {
     return axios.post("/signin", {
         displayName: username,
@@ -44,10 +43,33 @@ export function getUsername () {
 }
 
 export function newPOV (x, y, radius) {
-
-    return axios.get(`/map/source?x=${x}&y=${y}&radius=${radius}`, {}, {withCredentials:true}).then((res) => {
+    console.log(x);
+    console.log(y);
+    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
         return res.data
-    })
+    });
+}
+
+export function getNinjas () {
+    return axios.post(`/match/ninjas`, {matchID: "62d75dfb26ea56e6e3b2c898"},  {withCredentials:true}).then((res) => {
+        console.log(res);
+        return res.data
+    });
+}
+
+export function movePlayer (srcx, srcy, tarx, tary) {
+
+    console.log("MOVING");
+
+    console.log("SRCX: " + srcx);
+    console.log(srcy);
+    console.log(tarx);
+    console.log(tary);
+    
+    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
+        console.log("OK");
+        return res.data;
+    });
 }
 
 export function changePassword (password) {
@@ -68,11 +90,38 @@ export function changeUsername (newUsername) {
     })
 }
 
-// export function movePlayer (x, y, radius) {
-    // return send("PATCH", `http://localhost:5000/match/move/player`);
-// }
+export function shuriken (direction, srcx, srcy, range) {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "shuriken"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
 
-// export function movePlayer (x, y, radius) {
-//     return {};
-// }
+export function explosion (direction, srcx, srcy, range) {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "bomb"}, {withCredentials:true}).then((res) => {
+        return res.data; 
+    });
+}
 
+export function echo (direction, srcx, srcy, range) {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "echo"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
+
+export function scream (direction, srcx, srcy, range) {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d75dfb26ea56e6e3b2c898", effect: "scream"}, {withCredentials:true}).then((res) => {
+        return res.data; 
+    });
+}
+
+export function ninjaHealth () {
+    return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then((res) => {
+        return res.data;
+    });
+}
+
+export function monsterHealth () {
+    return axios.patch(`/match/monsters/${getUsername()}/health?damage=1`, {matchID: "62d75dfb26ea56e6e3b2c898"}, {withCredentials:true}).then ((res) => {
+        return res.data;
+    });
+}
