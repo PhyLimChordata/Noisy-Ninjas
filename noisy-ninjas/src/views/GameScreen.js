@@ -4,12 +4,24 @@ import { Overlay } from "../components/Overlay";
 import { Character } from "../components/Character";
 
 import { newPOV, getNinjas, getUsername, getUser, getMonsters } from "../apiService";
+import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
+import {useNavigate} from "react-router";
 
-export function GameScreen (props)  {
+export function GameScreen ()  {
   const [role, setRole] = useState("ninja");
+  const navigate = useNavigate();
+
   getUser(getUsername()).then((user) => {
     setRole(user.role);
   });
+
+  const summaryTitle = "monster won"
+  const summaryCharacter = require("../assets/static/monster-drako.png")
+  const elo = 30
+  const eloDiff = 2
+  const isWin = false
+
+
 
   const [mode, setMode] = useState("move");
   const [loaded, setLoaded] = useState(false);
@@ -132,5 +144,39 @@ export function GameScreen (props)  {
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={role}/>
       {loaded && <HexagonGrid role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
+    <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+                       title={
+                         <div className={"summary-title"}>
+                           {summaryTitle}
+                         </div>
+                       }
+                       cancelAction={() => console.log("SPECTATE")}
+                       modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
+                       backgroundStyle={{zIndex:999}}
+                       body={
+                         <div className={"summary-body"}>
+                           <img className={"summary-character"} src={summaryCharacter}
+                                alt={"summary-character"}/>
+                           <div className={"summary-elo-container"}>
+                             <div className={"summary-elo"}>
+                               elo: {elo}
+                             </div>
+                             {isWin ?
+                             <>
+                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow up"}/>
+                                 <div className={"summary-elo-diff green"}>
+                                   {eloDiff}
+                                 </div>
+                             </>:<>
+                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow down"}/>
+                                 <div className={"summary-elo-diff red"}>
+                                   {eloDiff}
+                                 </div>
+                               </>
+                             }
+                           </div>
+                         </div>
+                       }
+    />
   </div>
 }

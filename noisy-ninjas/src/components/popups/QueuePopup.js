@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Black, White} from "../../assets/colors";
 import '../../style/Popup.css'
-import {Button} from "../Button";
 import {ClosablePopup} from "./ClosablePopup";
 export function QueuePopup(props) {
     const {closeAction} = props
@@ -30,6 +28,7 @@ export function QueuePopup(props) {
         if (false) {
             console.log("dasdas")
             // START GAME
+
         }
     }
 
@@ -51,9 +50,15 @@ export function QueuePopup(props) {
         ret += "" + secs;
         return ret;
     }
-    const title = <div className={"queue-title display-linebreak"}>
-        waiting for players... {'\n'}
+    const waitingTitle = <div className={"queue-title display-linebreak"}>
+        waiting for players...{'\n'}
         {formatTime(timer)}
+    </div>
+
+    // &nbsp; to ensure even if its empty it takes space
+    const readyTitle = <div className={"queue-title display-linebreak"}>
+        match found!{'\n'}
+        &nbsp;
     </div>
     const body = <div style={{textAlign:'center'}}>
         <div>
@@ -66,7 +71,7 @@ export function QueuePopup(props) {
 
     </div>
     return (
-        <ClosablePopup closeAction={closeAction} title={title} body={body} modalStyle={{padding:"20px"}}/>
+        <ClosablePopup closeAction={closeAction} title={monster && ninja1 && ninja2 && ninja3 && ninja4 ?  readyTitle : waitingTitle} body={body} modalStyle={{padding:"20px"}}/>
     )
 }
 

@@ -5,6 +5,7 @@ import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
 import {useNavigate} from "react-router";
 import {getUsername, signOut} from "../apiService";
+import {InputPopup} from "../components/popups/InputPopup";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -16,7 +17,6 @@ export function Lobby ()  {
     function toggleLobbyPopup() {
         setLobbyPopup(!lobbyPopup)
     }
-
     return (
         <div className={"lobby-page"}>
             <div className={"title"}> Welcome {username}</div>

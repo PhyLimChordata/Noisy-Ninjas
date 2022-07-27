@@ -66,3 +66,60 @@
 .modal-component .ninja-img + .ninja-img {
     margin-left:10px
 }
+
+.modal-component .summary-title {
+    flex-direction:column;
+    display:flex;
+    justify-content:center
+}
+
+.modal-component .summary-body {
+    flex-direction:column;
+    display:flex;
+    align-items:center
+}
+
+.modal-component .summary-character {
+    height: 110px;
+    width: 110px;
+}
+
+.modal-component .summary-elo-container {
+    flex-direction:row;
+    display:flex;
+    align-items:center;
+}
+
+.modal-component .summary-elo {
+    font-size: 40px;
+}
+
+.modal-component .summary-arrow {
+    height: 10px;
+    width: 10px;
+    margin-left:10px;
+    margin-right:8px;
+}
+
+.modal-component .summary-arrow.up {
+    transform: rotate(270deg);
+    filter:saturate(500%) contrast(800%) brightness(500%) invert(80%) sepia(50%) hue-rotate(339deg);
+}
+
+.modal-component .summary-arrow.down {
+    transform: rotate(90deg);
+    filter: saturate(500%) contrast(800%) brightness(200%) invert(80%) sepia(0%) hue-rotate(181deg);}
+
+.modal-component .summary-elo-diff.green {
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    color:#78c89c
+}
+
+.modal-component .summary-elo-diff.red {
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    color:#ff8385
+}

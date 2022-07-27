@@ -1,9 +1,9 @@
 import React from 'react'
 import '../../style/Popup.css'
 export function Popup(props) {
-    const {body, title, footer, header, modalStyle} = props
+    const {body, title, footer, header, modalStyle, backgroundStyle} = props
     return (
-        <div className="modal-component">
+        <div className="modal-component" style={{...backgroundStyle}}>
             <div className="modal_content" style={{...modalStyle}}>
                 {header}
                 <div className={"title"}>{title}</div>
