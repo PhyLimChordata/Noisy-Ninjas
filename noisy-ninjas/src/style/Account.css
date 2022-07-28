@@ -38,7 +38,13 @@
     position:absolute;
     height:50px;
     top:50px;
-    left:50px
+    left:50px;
+    transition: 0.75s;
+}
+
+.account-page .back-icon:hover {
+    transition: 0.75s;
+    filter: brightness(150%);
 }
 
 .account-page .arrow-img {
