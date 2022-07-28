@@ -23,6 +23,7 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
 
 const app = express();
 const port = process.env.PORT || 3000;
+const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
@@ -285,3 +286,110 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
+// Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
+
+const webSocketServer = require('websocket').server;
+const http = require('http');
+// Spinning the http server and the websocket server.
+const server = http.createServer();
+server.listen(webSocketPort, () => {console.log(`Websocket server running on websocketPort: ${webSocketPort}`)});
+const wsServer = new webSocketServer({
+  httpServer: server
+});
+
+
+// I'm maintaining all active connections in this object
+const clients = {};
+const Matches = [];
+
+
+
+// This code generates unique userid for everyuser.
+const getUniqueID = () => {
+  const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  return s4() + s4() + '-' + s4();
+};
+
+
+
+
+wsServer.on('request', function (request) {
+    var userID = getUniqueID();
+    
+    const connection = request.accept(null, request.origin);
+    clients[userID] = connection;
+    console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
+  
+    connection.on('message', function(message) {
+      if (message.type === 'utf8') {
+        
+        data = JSON.parse(message.utf8Data);
+        
+        
+        if(data.type === "create"){
+          
+          currMatch = Matches.find(e=> e.MatchId === data.MatchId)
+          
+          if(!(currMatch === undefined)){
+            let user = {name: data.name , ready: false}
+            currMatch.user.push(user)
+            
+            
+          }
+          else{
+            let match = { MatchId: data.MatchId, user: [{name: data.name, ready: false}]}
+            Matches.push(match)
+            
+          }
+  
+  
+        }
+        
+      else if(data.type === "update"){
+  
+        currMatch = Matches.find(e=> e.MatchId === data.MatchId)
+        currPlayer = currMatch.user.find(e=> e.name === data.name)
+        currPlayer.ready = true
+        ready = true;
+        for(i = 0; i < currMatch.user.length; i++){
+          ready = (ready && currMatch.user[i].ready)
+        }
+  
+        if(ready){
+            for(key in clients) {
+                clients[key].sendUTF("Everyone Ready");
+              }
+        }
+      
+       }
+  
+       else if(data.type === "updateAll"){
+  
+        currMatch = Matches.find(e=> e.MatchId === data.MatchId)
+        
+        for(i = 0; i < currMatch.user.length; i++){
+        currMatch.user[i].ready = false
+        }
+      
+       }     
+      }
+    })
+  });
+
+
+//   client.send(JSON.stringify({
+//     type: "create",
+//     matchId: ---,
+//     user: ---
+//   }));
+
+//   client.send(JSON.stringify({
+//     type: "update",
+//     matchId: ---,
+//     user: ---
+//   }));
+
+//   client.send(JSON.stringify({
+//     type: "updateAll",
+//     matchId: ---,
+//   }));
