@@ -9,7 +9,7 @@ export function HexagonGrid(props) {
   const [type, setType] = useState(POV);
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
-
+  console.log("Hexagon grid reloading")
   const update = (x, y, direction, hexInfo) => {
     if (mode === "move") {
       console.log("SOURCE X: " + srcx);
@@ -17,36 +17,35 @@ export function HexagonGrid(props) {
       console.log("XA: " + x);
       console.log("YA: " + y);
 
-      movePlayer(srcx, srcy, x, y);
-
-      if (role === "ninja") {
-        if (hexInfo.type.includes("scream")) {
-          ninjaHealth().then((updated_health) => {
-            setHearts(updated_health);
-            if (updated_health === 0) {
-              setMode("dead");
-              setTimer(0);
-            } 
-          });
+      movePlayer(srcx, srcy, x, y).then(() => {
+        if (role === "ninja") {
+          if (hexInfo.type.includes("scream")) {
+            ninjaHealth().then((updated_health) => {
+              setHearts(updated_health);
+              if (updated_health === 0) {
+                setMode("dead");
+                setTimer(0);
+              }
+            });
+          }
+        } else {
+          if (hexInfo.type.includes("shuriken") || hexInfo.type.includes("bomb")) {
+            monsterHealth().then((updated_health) => {
+              console.log(updated_health);
+              setHearts(updated_health);
+              if (updated_health === 0) {
+                setMode("ninjas won");
+                setTimer(0);
+              }
+            })
+          }
         }
-      } else {
-        if (hexInfo.type.includes("shuriken") || hexInfo.type.includes("bomb")) {
-          monsterHealth().then((updated_health) => {
-            console.log(updated_health);
-            setHearts(updated_health);
-            if (updated_health === 0) {
-              setMode("ninjas won");
-              setTimer(0);
-            } 
-          })
-        }
-      }
 
-      updatePOV(x, y, 3);
-
-      setTimer(5);
-      setSrcX(x);
-      setSrcY(y);
+        updatePOV(x, y, 3);
+        setTimer(5);
+        setSrcX(x);
+        setSrcY(y);
+      });
     }
 
     if (mode === "direction-S") {
@@ -298,7 +297,7 @@ export function HexagonGrid(props) {
         document.getElementById("hexB" + i).style.backgroundColor = '#9980fa';
         document.getElementById("hexF" + i).style.backgroundColor = '#9980fa';
       }
-      for (let i = 1; i < 7; i++){ 
+      for (let i = 1; i < 7; i++){
         document.getElementById("hexC" + i).style.backgroundColor = '#9980fa';
         document.getElementById("hexE" + i).style.backgroundColor = '#9980fa';
       }
@@ -306,7 +305,7 @@ export function HexagonGrid(props) {
         document.getElementById("hexD" + i).style.backgroundColor = '#9980fa';
       }
     }
-   
+
 
     if (mode === "direction-S") {
       if (id.slice(0,1) != "S") {
@@ -331,17 +330,17 @@ export function HexagonGrid(props) {
       }
 
       if (dir) {
-        i = 1; 
+        i = 1;
         while(document.getElementById("hex" + prefix + dir + "L" + i)) {
           document.getElementById("hex" + prefix + dir + "L" + i).style.backgroundColor = '#9980fa';
           i++;
-        } 
+        }
 
         i = 1;
         while(document.getElementById("hex" + prefix + dir + "R" + i)) {
           document.getElementById("hex" + prefix + dir + "R" + i).style.backgroundColor = '#9980fa';
           i++;
-        } 
+        }
         i++;
       }
     }

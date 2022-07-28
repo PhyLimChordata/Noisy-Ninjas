@@ -51,20 +51,20 @@ export function getUser(name) {
 export function newPOV (x, y, radius) {
     console.log(x);
     console.log(y);
-    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62d85581354d3494ee57c839"}, {withCredentials:true}).then((res) => {
+    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then((res) => {
         return res.data
     });
 }
 
 export function getNinjas () {
-    return axios.post(`/match/ninjas`, {matchID: "62d85581354d3494ee57c839"},  {withCredentials:true}).then((res) => {
+    return axios.post(`/match/ninjas`, {matchID: "62e1d410c37b4b1ca2c89f54"},  {withCredentials:true}).then((res) => {
         console.log(res);
         return res.data
     });
 }
 
 export function getMonsters () {
-    return axios.post(`/match/monsters`, {matchID: "62d85581354d3494ee57c839"}, {withCredentials: true}).then((res) => {
+    return axios.post(`/match/monsters`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }
@@ -78,7 +78,7 @@ export function movePlayer (srcx, srcy, tarx, tary) {
     console.log(tarx);
     console.log(tary);
     
-    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: "62d85581354d3494ee57c839"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then((res) => {
         console.log("OK");
         return res.data;
     });
@@ -103,37 +103,37 @@ export function changeUsername (newUsername) {
 }
 
 export function shuriken (direction, srcx, srcy, range) {
-    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d85581354d3494ee57c839", effect: "shuriken"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62e1d410c37b4b1ca2c89f54", effect: "shuriken"}, {withCredentials:true}).then((res) => {
         return res.data;
     });
 }
 
 export function explosion (direction, srcx, srcy, range) {
-    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d85581354d3494ee57c839", effect: "bomb"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62e1d410c37b4b1ca2c89f54", effect: "bomb"}, {withCredentials:true}).then((res) => {
         return res.data; 
     });
 }
 
 export function echo (direction, srcx, srcy, range) {
-    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d85581354d3494ee57c839", effect: "echo"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62e1d410c37b4b1ca2c89f54", effect: "echo"}, {withCredentials:true}).then((res) => {
         return res.data;
     });
 }
 
 export function scream (direction, srcx, srcy, range) {
-    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62d85581354d3494ee57c839", effect: "scream"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`, {matchID: "62e1d410c37b4b1ca2c89f54", effect: "scream"}, {withCredentials:true}).then((res) => {
         return res.data; 
     });
 }
 
 export function ninjaHealth () {
-    return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62d85581354d3494ee57c839"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/ninjas/${getUsername()}/health?damage=1`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then((res) => {
         return res.data;
     });
 }
 
 export function monsterHealth () {
-    return axios.patch(`/match/monsters/${getUsername()}/health?damage=1`, {matchID: "62d85581354d3494ee57c839"}, {withCredentials:true}).then ((res) => {
+    return axios.patch(`/match/monsters/${getUsername()}/health?damage=1`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then ((res) => {
         return res.data;
     });
 }

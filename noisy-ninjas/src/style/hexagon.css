@@ -44,7 +44,7 @@
 }
 
 .hexagon-move:hover {
-  background-color: white;
+  background-color: white !important;
 }
 
 .hexagon {

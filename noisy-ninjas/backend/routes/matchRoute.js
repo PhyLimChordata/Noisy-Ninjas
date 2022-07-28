@@ -689,38 +689,39 @@ router.patch('/move/:player', function (req, res) {
       cor1 = map.map[`cor${req.query.srcx},${req.query.srcy}`]
       cor2 = map.map[`cor${req.query.tarx},${req.query.tary}`]
 
-      console.log("okoaksdoasid");
-      console.log(cor1);
-      console.log(cor2);
+      // console.log("okoaksdoasid");
+      // console.log(cor1);
+      // console.log(cor2);
 
         let index = cor1.players.indexOf(req.params.player);
+
         cor1.players.splice(index, 1)
         cor2.players.push(req.params.player)
 
-        console.log(cor2.players);
+        // console.log(cor2.players);
         
         map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
         map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
         for(i=0; i<match.matchNinjas.length; i++){
             console.log("SDIJMO");
 
-        console.log(match.matchNinjas)
-        console.log(req.params.player)
-        console.log(req.query.tarx);
-        console.log(req.query.tary);
-
-        console.log(req.query.srcx);
-
-        console.log(req.query.srcy);
+        // console.log(match.matchNinjas)
+        // console.log(req.params.player)
+        // console.log(req.query.tarx);
+        // console.log(req.query.tary);
+        //
+        // console.log(req.query.srcx);
+        //
+        // console.log(req.query.srcy);
 
 
         if(match.matchNinjas[i].displayName == req.params.player){
             Ninja.findOneAndUpdate({displayName: req.params.player}, {x: req.query.tarx, y: req.query.tary}, {new: true}, function(err, newninja){
                 if (err) return res.status(500).end(err);
-                console.log(newninja)
+                // console.log(newninja)
                 Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
-    
+                // console.log(newmatch['cor18,17'])
                 return res.json(newmatch);
               }  );
             });

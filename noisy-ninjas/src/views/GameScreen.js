@@ -9,12 +9,15 @@ import {useNavigate} from "react-router";
 
 export function GameScreen ()  {
   const [role, setRole] = useState("ninja");
+  const [summaryPopup, setSummaryPopup] = useState(false);
+
   const navigate = useNavigate();
-
-  getUser(getUsername()).then((user) => {
-    setRole(user.role);
-  });
-
+  useEffect(() => {
+    getUser(getUsername()).then((user) => {
+      console.log(user)
+      setRole(user.role);
+    });
+  }, [])
   const summaryTitle = "monster won"
   const summaryCharacter = require("../assets/static/monster-drako.png")
   const elo = 30
@@ -49,7 +52,6 @@ export function GameScreen ()  {
           setMode("action");
           document.getElementById("move1").style.visibility = "visible";
           document.getElementById("move2").style.visibility = "visible";
-       
         }
           else if (modeRef.current === "action" || modeRef.current === "direction-S" || modeRef.current === "direction-E" || modeRef.current === "direction") {
           setMode("wait");
@@ -61,7 +63,8 @@ export function GameScreen ()  {
           setMode("move");
         }
       } else if (timerRef.current > 0) {
-        setTimer(timerRef.current - 1)
+        console.log("changing timers")
+        // setTimer(timerRef.current - 1)
       }
     }, 1000);
     
@@ -144,39 +147,40 @@ export function GameScreen ()  {
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={role}/>
       {loaded && <HexagonGrid role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
-    <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
-                       title={
-                         <div className={"summary-title"}>
-                           {summaryTitle}
-                         </div>
-                       }
-                       cancelAction={() => console.log("SPECTATE")}
-                       modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
-                       backgroundStyle={{zIndex:999}}
-                       body={
-                         <div className={"summary-body"}>
-                           <img className={"summary-character"} src={summaryCharacter}
-                                alt={"summary-character"}/>
-                           <div className={"summary-elo-container"}>
-                             <div className={"summary-elo"}>
-                               elo: {elo}
-                             </div>
-                             {isWin ?
-                             <>
-                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow up"}/>
-                                 <div className={"summary-elo-diff green"}>
-                                   {eloDiff}
-                                 </div>
-                             </>:<>
-                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow down"}/>
-                                 <div className={"summary-elo-diff red"}>
-                                   {eloDiff}
-                                 </div>
-                               </>
-                             }
-                           </div>
-                         </div>
-                       }
-    />
+    {summaryPopup && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+                                              title={
+                                                <div className={"summary-title"}>
+                                                  {summaryTitle}
+                                                </div>
+                                              }
+                                              cancelAction={() => console.log("SPECTATE")}
+                                              modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
+                                              backgroundStyle={{zIndex:999}}
+                                              body={
+                                                <div className={"summary-body"}>
+                                                  <img className={"summary-character"} src={summaryCharacter}
+                                                       alt={"summary-character"}/>
+                                                  <div className={"summary-elo-container"}>
+                                                    <div className={"summary-elo"}>
+                                                      elo: {elo}
+                                                    </div>
+                                                    {isWin ?
+                                                        <>
+                                                          <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow up"}/>
+                                                          <div className={"summary-elo-diff green"}>
+                                                            {eloDiff}
+                                                          </div>
+                                                        </>:<>
+                                                          <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow down"}/>
+                                                          <div className={"summary-elo-diff red"}>
+                                                            {eloDiff}
+                                                          </div>
+                                                        </>
+                                                    }
+                                                  </div>
+                                                </div>
+                                              }
+    />}
+
   </div>
 }
