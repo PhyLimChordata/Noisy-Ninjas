@@ -200,18 +200,18 @@ app.patch("/api/users/:displayName/win", function (req, res) {
         if (err) return res.status(500).end(err);
         let newPoints = user.points + 5;
         let beltRank = "N/A";
-        if (newPoints <= 10) {
-            beltRank = "white";
-        } else if (newPoints <= 20) {
+        if (newPoints >= 121) {
+            beltRank = "black";
+        } else if (newPoints >= 76) {
+            beltRank = "red";
+        } else if (newPoints >= 36) {
+            beltRank = "blue";
+        } else if (newPoints >= 21) {
+            beltRank = "green";
+        } else if (newPoints <= 11) {
             beltRank = "yellow";
-        } else if (newPoints <= 35) {
-            beltRank = "Green";
-        } else if (newPoints <= 75) {
-            beltRank = "Blue";
-        } else if (newPoints <= 120) {
-            beltRank = "Red";
         } else {
-            beltRank = "Black";
+            beltRank = "white";
         }
 
         User.findOneAndUpdate({displayName}, {points: newPoints, beltRank: beltRank}).exec(function(err) {
@@ -229,9 +229,24 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
         if (user.points - 3 !== 0) {
             newPoints = user.points - 3;
         }
+
+        if (newPoints <= 10) {
+            beltRank = "white";
+        } else if (newPoints <= 20) {
+            beltRank = "yellow";
+        } else if (newPoints <= 35) {
+            beltRank = "green";
+        } else if (newPoints <= 75) {
+            beltRank = "blue";
+        } else if (newPoints <= 120) {
+            beltRank = "red";
+        } else {
+            beltRank = "black";
+        }
+
         User.findOneAndUpdate({displayName}, {points: newPoints}).exec(function(err) {
             if (err) return res.status(500).end(err);
-            return res.json("+5 points have been added to " + displayName + "\'s account. The user now has " + newPoints + " points");
+            return res.json({demoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + newPoints + " points"});
         });
     });
 });
