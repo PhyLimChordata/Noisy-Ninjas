@@ -456,8 +456,8 @@ router.post('/generate', function (req, res) {
             console.log
             map.map[`cor${randomx},${randomy}`].players.push(req.body.ninja);
             map.map[`cor20,19`].players.push(req.body.monster);
-      const newNinja = new Ninja({displayName: req.body.ninja, health: 10, x: randomx, y:randomy})  
-      const newMonster  = new Monster({displayName: req.body.monster, health: 10, x: 20, y:19})  
+      const newNinja = new Ninja({displayName: req.body.ninja, health: 3, x: randomx, y:randomy})  
+      const newMonster  = new Monster({displayName: req.body.monster, health: 5, x: 20, y:19})  
       
       
       newNinja.save(function(err, ninja){
