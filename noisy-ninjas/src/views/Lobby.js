@@ -9,6 +9,8 @@ import {InputPopup} from "../components/popups/InputPopup";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
+    const [skinIndex, setSkinIndex] = useState(0);
+    const skins = [require("../assets/static/black-ninja.png"), require("../assets/static/red-ninja.png"), require("../assets/static/blue-ninja.png"), require("../assets/static/green-ninja.png"), require("../assets/static/pink-ninja.png")];
     const navigate = useNavigate();
     const username = getUsername()
     function toggleSignOutPopup() {
@@ -22,9 +24,9 @@ export function Lobby ()  {
             <div className={"title"}> Welcome {username}</div>
             <div className={"body"}>
                 <div className={"ninja-select"}>
-                    <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"}/>
-                    <img className={"ninja-img"} src={require("../assets/static/ninja.png")} alt={"current-ninja"}/>
-                    <img className={"arrow-img"} src={require("../assets/static/triangle-right.png")} alt={"right-arrow"}/>
+                    <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"} onClick={() => { if (skinIndex != 0) {setSkinIndex(skinIndex - 1)} else setSkinIndex(4)}}/>
+                    <img className={"ninja-img"} src={skins[skinIndex]} alt={"current-ninja"}/>
+                    <img className={"arrow-img"} src={require("../assets/static/triangle-right.png")} alt={"right-arrow"} onClick={() => { if (skinIndex != 4) {setSkinIndex(skinIndex + 1)} else setSkinIndex(0)}}/>
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>

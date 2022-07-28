@@ -64,10 +64,10 @@ export function QueuePopup(props) {
         <div>
         <img className={"monster-img"} style={{opacity: !monster && 0.2}} src={require("../../assets/static/monster-drako.png")} alt={"monster-drako"}/>
         </div>
-        <img className={"ninja-img"} style={{opacity: !ninja1 && 0.2}} src={require("../../assets/static/ninja.png")} alt={"current-ninja"}/>
-        <img className={"ninja-img"} style={{opacity: !ninja2 && 0.2}} src={require("../../assets/static/ninja.png")} alt={"current-ninja"}/>
-        <img className={"ninja-img"} style={{opacity: !ninja3 && 0.2}} src={require("../../assets/static/ninja.png")} alt={"current-ninja"}/>
-        <img className={"ninja-img"} style={{opacity: !ninja4 && 0.2}} src={require("../../assets/static/ninja.png")} alt={"current-ninja"}/>
+        <img className={"ninja-img"} style={{opacity: !ninja1 && 0.2}} src={require("../../assets/static/black-ninja.png")} alt={"current-ninja"}/>
+        <img className={"ninja-img"} style={{opacity: !ninja2 && 0.2}} src={require("../../assets/static/black-ninja.png")} alt={"current-ninja"}/>
+        <img className={"ninja-img"} style={{opacity: !ninja3 && 0.2}} src={require("../../assets/static/black-ninja.png")} alt={"current-ninja"}/>
+        <img className={"ninja-img"} style={{opacity: !ninja4 && 0.2}} src={require("../../assets/static/black-ninja.png")} alt={"current-ninja"}/>
 
     </div>
     return (
