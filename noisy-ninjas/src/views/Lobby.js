@@ -9,8 +9,12 @@ import {InputPopup} from "../components/popups/InputPopup";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
+    const [role, setRole] = useState("monster");
     const [skinIndex, setSkinIndex] = useState(0);
+    const [monsterIndex, setMonsterIndex] = useState(0);
+
     const skins = [require("../assets/static/black-ninja.png"), require("../assets/static/red-ninja.png"), require("../assets/static/blue-ninja.png"), require("../assets/static/green-ninja.png"), require("../assets/static/pink-ninja.png")];
+    const monster = [require("../assets/images/characters/draco.png"), require("../assets/images/characters/screamer.png"), require("../assets/images/characters/tiny.png")];
     const navigate = useNavigate();
     const username = getUsername()
     function toggleSignOutPopup() {
@@ -19,14 +23,41 @@ export function Lobby ()  {
     function toggleLobbyPopup() {
         setLobbyPopup(!lobbyPopup)
     }
+    function selectPrev() {
+        if (role === "ninja") {
+            if (skinIndex != 0) {
+                setSkinIndex(skinIndex - 1);
+            } else setSkinIndex(skins.length-1);
+        } else {
+            if (monsterIndex != 0) {
+                setMonsterIndex(monsterIndex - 1);
+            } else setMonsterIndex(monster.length-1);
+        }
+    }
+    function selectNext() {
+        if (role === "ninja") {
+            if (skinIndex != skins.length-1) {
+                setSkinIndex(skinIndex + 1);
+            } else setSkinIndex(0);
+         } else {
+                if (monsterIndex != monster.length-1) {
+                    setMonsterIndex(monsterIndex + 1);
+                } else setMonsterIndex(0);
+            }
+    }
     return (
         <div className={"lobby-page"}>
             <div className={"title"}> Welcome {username}</div>
             <div className={"body"}>
-                <div className={"ninja-select"}>
-                    <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"} onClick={() => { if (skinIndex != 0) {setSkinIndex(skinIndex - 1)} else setSkinIndex(4)}}/>
-                    <img className={"ninja-img"} src={skins[skinIndex]} alt={"current-ninja"}/>
-                    <img className={"arrow-img"} src={require("../assets/static/triangle-right.png")} alt={"right-arrow"} onClick={() => { if (skinIndex != 4) {setSkinIndex(skinIndex + 1)} else setSkinIndex(0)}}/>
+
+                <div className={"select"}>
+                    {role === "ninja" ? <img className={"role-select"} src={require("../assets/static/monster-role.png")} onClick={() => setRole("monster")}/> : <img className={"role-select"} src={require("../assets/static/ninja-role.png")} onClick={() => setRole("ninja")}/> }
+                    <div className={"options"}>
+                        <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"} onClick={() => selectPrev()}/>
+                        {role === "ninja" ? <img className={"ninja-img"} src={skins[skinIndex]} alt={"current-ninja"}/> : <img className={"ninja-img"} src={monster[monsterIndex]} alt={"current-monster"}/>}
+                        
+                        <img className={"arrow-img"} src={require("../assets/static/triangle-right.png")} alt={"right-arrow"} onClick={() => selectNext()}/>
+                    </div>
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
