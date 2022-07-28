@@ -29,8 +29,27 @@
 .input-component.error-input {
   background-color: #222222;
   color: #ffffff;
-  width:100%;
   font-size: 18px;
-  padding: 8px;
+  width:100%;
   border-color: red;
+  padding: 8px
+}
+.input-component:not(:last-child) {
+  padding: 8px 40px 8px 8px;
+
+}
+.input-component-wrapper {
+  padding: 8px;
+  width:100%;
+}
+
+.input-icon {
+  font-size: initial;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  box-sizing:border-box;
+  top:50%;
+  right:20px;
+  transform: translateY(-50%);
 }

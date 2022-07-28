@@ -17,30 +17,23 @@ export function Account ()  {
     const [newPassword2, setNewPassword2] = useState("")
     const [errorMessage, setErrorMessage] = useState(null)
 
-    function submitUsernameChange() {
-        if (newPassword == newPassword2) {
-            changePassword(newPassword).then(() => {
-                toggleChangePasswordPopup()
-                setErrorMessage(null)
-                alert("Password was changed")
-            }).catch((err) => {
-                const res = err.response
-                setErrorMessage(res.data)
-            })
-        } else {
-            setErrorMessage("Passwords do not match")
-        }
-    }
+    const tooltipBody = <div className={"tooltip-list-container"}>
+        Password must have
+        <li>At least 8 characters</li>
+        <li>Both uppercase and lowercase</li>
+        <li>Both a number and letter</li>
+    </div>
+    const ownsProfile = true
 
     const changePasswordBody = (
-        <div id={"change-password-popup-body"}>
+        <div>
             <Input className={"form-element black-input"} placeholder={"new password"} value={newPassword} type={"password"}
                    onChange={(e) => {
                        setNewPassword(e.target.value)
                        if (errorMessage) {
                            setErrorMessage(null)
                        }
-                   }} />
+                   }} icon={require("../assets/static/question-icon.png")} tooltipBody={tooltipBody} tooltipId={"password"} />
             <Input className={"form-element black-input"} placeholder={"renter new password"} value={newPassword2} type={"password"}
                    onChange={(e) => {
                        setNewPassword2(e.target.value)
@@ -53,7 +46,15 @@ export function Account ()  {
         )
 
     function submitPasswordChange() {
-        if (newPassword == newPassword2) {
+        if(!isValidPassword(newPassword)) {
+            setErrorMessage("Password does not meet requirements")
+        } else if (newPassword !== newPassword2) {
+            console.log(newPassword)
+            console.log(newPassword2)
+
+            setErrorMessage("Passwords do not match")
+        }
+        else {
             changePassword(newPassword).then(() => {
                 toggleChangePasswordPopup()
                 alert("Password was changed")
@@ -62,9 +63,11 @@ export function Account ()  {
                 const res = err.response
                 setErrorMessage(res.data)
             })
-        } else {
-            setErrorMessage("Passwords do not match")
         }
+    }
+    // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
+    function isValidPassword(password) {
+        return password.length > 7 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password);
     }
 
     function submitUsernameChange() {
@@ -98,10 +101,10 @@ export function Account ()  {
 
     const navigate = useNavigate();
     function getUserStats() {
-        return  {wins: 64, gamesPlayed: 119}
+        return  {wins: 64, gamesPlayed: 119, elo:100}
     }
     const username = getUsername()
-    const {wins, gamesPlayed} = getUserStats()
+    const {wins, gamesPlayed, elo} = getUserStats()
     function toggleDeleteAccountPopup() {
         setDeleteAccountPopup(!deleteAccountPopup)
     }
@@ -121,19 +124,20 @@ export function Account ()  {
             <div className={"body"}>
                 <div className={"ninja-select"}>
                     <img className={"ninja-img"} src={require("../assets/static/profile-pic.png")} alt={"current-ninja"}/>
+                    <div className={"ninja-elo"}> elo: {elo}</div>
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
                         <div className={"end"}>
                             <div className={"username"}> {username}</div>
-                            <img style={{height:"30px"}} className={"clickable"} onClick={() =>  toggleChangeUsernamePopup()}src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>
+                            {ownsProfile && <img style={{height:"30px"}} className={"clickable"} onClick={() =>  toggleChangeUsernamePopup()}src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>}
                         </div>
                         <div className={"stats-container"}>
                             <div className={"stats"}>wins: {wins}</div>
                             <div className={"stats"}>games played: {gamesPlayed}</div>
                         </div>
-                        <Button content={"change password"} className={"hollow-btn skinny"} onPress={()=>  toggleChangePasswordPopup()}></Button>
-                        <Button content={"delete account"} className={"hollow-btn skinny"} onPress={()=>  toggleDeleteAccountPopup()}></Button>
+                        {ownsProfile && <Button content={"change password"} className={"hollow-btn skinny"} onPress={()=>  toggleChangePasswordPopup()}></Button>}
+                        {ownsProfile && <Button content={"delete account"} className={"hollow-btn skinny"} onPress={()=>  toggleDeleteAccountPopup()}></Button>}
                     </div>
                 </div>
             </div>
@@ -141,6 +145,7 @@ export function Account ()  {
                                                       title={"delete account"} body={"are you sure you want to delete your account?"} confirmAction={() => {
                 deleteAccount().then(() => {
                     navigate("/")
+                    navigate(0)
                 })
             }}/>}
 

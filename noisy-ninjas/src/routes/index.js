@@ -15,14 +15,21 @@ const ProtectedRoute = ({children}) => {
     return children;
 };
 
+const ReverseProtectedRoute = ({children}) => {
+    if (username) {
+        return <Navigate to="/lobby" replace />;
+    }
+    return children;
+};
+
 const mainRoutes = [
     {
         path: "/",
-        element: <Login />,
+        element: <ReverseProtectedRoute> <Login/> </ReverseProtectedRoute>
     },
     {
         path: "/sign-up",
-        element: <SignUp/>
+        element: <ReverseProtectedRoute> <SignUp/> </ReverseProtectedRoute>
     },
     {
         path: "/lobby",

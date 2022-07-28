@@ -67,3 +67,7 @@
 .auth-page .error-text {
     color: red
 }
+
+.auth-page .tooltip-list-container {
+    text-align: left;
+}

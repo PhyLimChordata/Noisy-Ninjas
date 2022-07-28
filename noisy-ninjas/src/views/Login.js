@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Input} from "../components/Input";
 import "../style/Auth.css"
 import {Button} from "../components/Button";
-import {Checkbox} from "../components/Checkbox";
 import {googleLogin, login} from "../apiService";
 import {useNavigate} from "react-router";
 export function Login ()  {
@@ -36,7 +35,7 @@ export function Login ()  {
                     setUsernameError(true)
                     setPasswordError(true)
                 } else {
-                    setErrorMessage(res.data)
+                    setErrorMessage("An error occurred, try again")
                 }
             })
         }
@@ -69,7 +68,6 @@ export function Login ()  {
                                        }
                                    }} />
                         }
-
                         {passwordError ?
                             <Input className={"form-element error-input"} placeholder={"password"} value={password}
                                    onChange={(e) => {
@@ -89,13 +87,12 @@ export function Login ()  {
                                    }} type={"password"}/>
                         }
 
-                        <div className={"form-element start"}>
-                            <Checkbox backgroundColor={"#222222"}/>
-                            <label> stay signed in </label>
-                        </div>
                     </div>
-
-                    <Button type="submit" content={"log in"} className={"grey-btn"}></Button>
+                    {username && password ?
+                        <Button type="submit" content={"log in"} className={"orange-btn"}></Button>
+                        :
+                        <Button type="submit" content={"log in"} className={"grey-btn"}></Button>
+                    }
                 </form>
                 <div>
                     <div className={"oauth-container"}>
@@ -106,9 +103,6 @@ export function Login ()  {
                         <div className={"clickable oauth-btn"}>
                             <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div>
-                    </div>
-                    <div className={"clickable disabled-text"} onClick={() => console.log('forgot pass?')}>
-                        forgot password?
                     </div>
                     <div className={"clickable"} onClick={() => navigate("/sign-up")}>
                         create account

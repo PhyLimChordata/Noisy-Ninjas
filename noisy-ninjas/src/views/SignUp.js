@@ -26,7 +26,11 @@ export function SignUp ()  {
             setErrorMessage("Missing Fields")
             errored = true
         }
-        if (!errorMessage && password !== password2) {
+        if (!errorMessage && !isValidPassword(password)) {
+            setPasswordError(true)
+            setErrorMessage("Password does not meet requirements")
+            errored = true
+        } else if (!errorMessage && password !== password2) {
             setPasswordError(true)
             setPasswordError2(true)
             setErrorMessage("Passwords dont match")
@@ -38,13 +42,25 @@ export function SignUp ()  {
             }).catch((err) => {
                 const res = err.response
                 if (res.status === 409) {
+                    setErrorMessage("User already exists")
                     setUsernameError(true)
+                } else {
+                    setErrorMessage("An error occurred, try again")
                 }
-                setErrorMessage(res.data)
             })
         }
     }
+    // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
+    function isValidPassword(password) {
+        return password.length > 7 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password);
+    }
 
+    const tooltipBody = <div className={"tooltip-list-container"}>
+        Password must have
+        <li>At least 8 characters</li>
+        <li>Both uppercase and lowercase</li>
+        <li>Both a number and letter</li>
+    </div>
     return (
         <div className={"auth-page"}>
             <div id={"form-col"}>
@@ -76,7 +92,7 @@ export function SignUp ()  {
                                        setPasswordError2(false)
                                        setPassword(e.target.value)
                                        setErrorMessage(null)
-                                   }} type={"password"}/>
+                                   }} type={"password"} icon={require("../assets/static/question-icon.png")} tooltipBody={tooltipBody} tooltipId={"password"}/>
                             :
                             <Input className={"form-element black-input"} placeholder={"password"} value={password}
                                    onChange={(e) => {
@@ -84,7 +100,7 @@ export function SignUp ()  {
                                        if (errorMessage) {
                                            setErrorMessage(null)
                                        }
-                                   }} type={"password"}/>
+                                   }} type={"password"} icon={require("../assets/static/question-icon.png")} tooltipBody={tooltipBody} tooltipId={"password"}/>
                         }
                         {passwordError2 ?
                             <Input className={"form-element error-input"} placeholder={"reenter password"} value={password2}
@@ -93,7 +109,8 @@ export function SignUp ()  {
                                        setPasswordError2(false)
                                        setPassword2(e.target.value)
                                        setErrorMessage(null)
-                                   }} type={"password"}/>
+                                   }} type={"password"}
+                            />
                             :
                             <Input className={"form-element black-input"} placeholder={"reenter password"} value={password2}
                                    onChange={(e) => {
@@ -104,10 +121,14 @@ export function SignUp ()  {
                                    }} type={"password"}/>
                         }
                     </div>
-                    <Button type="submit" content={"sign up"} className={"grey-btn"}></Button>
+                    {username && password && password2 ?
+                        <Button type="submit" content={"sign up"} className={"orange-btn"}></Button>
+                        :
+                        <Button type="submit" content={"sign up"} className={"grey-btn"}></Button>
+                    }
                 </form>
                 <div>
-                    <div className={"oauth-container"}>
+                    <div className={"oauth-container"} title={"dude"}>
                         <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>

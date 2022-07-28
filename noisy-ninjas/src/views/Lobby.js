@@ -49,10 +49,9 @@ export function Lobby ()  {
     return (
         <div className={"lobby-page"}>
             <div className={"title"}> Welcome {username}</div>
+            {role === "ninja" ? <img className={"role-select"} src={require("../assets/static/monster-role.png")} onClick={() => setRole("monster")}/> : <img className={"role-select"} src={require("../assets/static/ninja-role.png")} onClick={() => setRole("ninja")}/> }
             <div className={"body"}>
-
                 <div className={"select"}>
-                    {role === "ninja" ? <img className={"role-select"} src={require("../assets/static/monster-role.png")} onClick={() => setRole("monster")}/> : <img className={"role-select"} src={require("../assets/static/ninja-role.png")} onClick={() => setRole("ninja")}/> }
                     <div className={"options"}>
                         <img className={"arrow-img left"} src={require("../assets/static/triangle-right.png")} alt={"left-arrow"} onClick={() => selectPrev()}/>
                         {role === "ninja" ? <img className={"ninja-img"} src={skins[skinIndex]} alt={"current-ninja"}/> : <img className={"ninja-img"} src={monster[monsterKeys[monsterIndex]]} alt={"current-monster"}/>}
@@ -73,6 +72,7 @@ export function Lobby ()  {
                                                 title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => {
                                                     signOut().then(() => {
                                                         navigate("/")
+                                                        navigate(0)
                                                     })
             }}/>}
 

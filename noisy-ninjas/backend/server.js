@@ -154,7 +154,10 @@ app.patch("/api/users/:displayName/password",  function (req, res) {
     const displayName = req.params.displayName
     if (!('password' in req.body)) return res.status(400).end('password is missing');
     const password = req.body.password;
-
+    // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
+    if (password.length <= 7 || !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)){
+        return res.status(422).end("password does not meet requirements");
+    }
     bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
             if (err) return res.status(500).end(err);
@@ -246,8 +249,14 @@ app.get('/signout/', function(req, res, next){
           return res.status(422).end("displayName is missing");
       if (!("password" in req.body))
           return res.status(422).end("password is missing");
+
       const displayName = req.body.displayName;
       const password = req.body.password;
+
+      // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
+      if (password.length <= 7 || !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)){
+          return res.status(422).end("password does not meet requirements");
+      }
       User.findOne({ displayName }, function (err, user) {
           if (err) return res.status(500).end(err);
           if (user)

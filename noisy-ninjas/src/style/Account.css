@@ -27,11 +27,16 @@
     display:flex;
     justify-content:flex-end;
     align-items:center;
+    flex-direction: column;
     margin-right:25px
 }
 
 .account-page .ninja-img {
     height:400px
+}
+
+.account-page .ninja-elo {
+    font-size: 40px;
 }
 
 .account-page .back-icon {
@@ -89,10 +94,6 @@
 
 .account-page .stats-container {
     margin-bottom: 20px;
-}
-
-.account-page #change-password-popup-body Input {
-    margin-bottom: 10px;
 }
 
 .account-page .error-text {
