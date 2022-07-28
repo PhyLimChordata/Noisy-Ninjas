@@ -30,7 +30,7 @@ export function Lobby ()  {
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
-                        <Button content={"play"} className={"orange-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
+                        <Button content={"play"} className={"hollow-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
                         <Button content={"profile"} className={"hollow-btn skinny"} onPress={() => navigate("/account")}></Button>
                         <Button content={"leaderboard"} className={"hollow-btn skinny"} onPress={() => navigate("/leaderboard")}></Button>
                         <Button content={"sign out"} className={"hollow-btn skinny"} onPress={() => toggleSignOutPopup()}></Button>
