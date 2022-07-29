@@ -62,7 +62,7 @@ export function Account() {
             setErrorMessage(null)
           }
         }}
-        icon={require('../assets/static/question-icon.png')}
+        icon={require('../assets/static/icons/question-icon.png')}
         tooltipBody={tooltipBody}
         tooltipId={'password'}
       />
@@ -161,7 +161,7 @@ export function Account() {
         <img
           className={'back-icon clickable'}
           onClick={() => navigate(-1)}
-          src={require('../assets/static/back-icon.png')}
+          src={require('../assets/static/icons/back-icon.png')}
           alt={'back-icon'}
         />
       </div>
@@ -174,7 +174,7 @@ export function Account() {
               info={{ color: '#ffffff', skin: skin }}
             ></Hexagon>
           </div>
-          {/* <img className={"ninja-img"} src={require("../assets/static/profile-pic.png")} alt={"current-ninja"}/> */}
+          {/* <img className={"ninja-img"} src={require("../assets/static/icons/profile-pic-icon.png")} alt={"current-ninja"}/> */}
         </div>
         <div className={'button-container'}>
           <div className={'button-inner-container'}>
@@ -185,13 +185,13 @@ export function Account() {
                   style={{ height: '30px' }}
                   className={'clickable'}
                   onClick={() => toggleChangeUsernamePopup()}
-                  src={require('../assets/static/edit-icon.png')}
-                  alt={'monster-drako'}
+                  src={require('../assets/static/icons/edit-icon.png')}
+                  alt={'monster-draco'}
                 />
               )}
             </div>
             <div className={'stats-container'}>
-              <div className={'stats'}> elo: {points}</div>
+              <div className={'stats'}>elo: {points}</div>
               <div className={'stats'}>wins: {gamesWon}</div>
               <div className={'stats'}>games played: {gamesPlayed}</div>
             </div>

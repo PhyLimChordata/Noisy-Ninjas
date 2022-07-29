@@ -24,7 +24,7 @@ export function Leaderboard() {
         <img
           className={'back-icon clickable'}
           onClick={() => navigate(-1)}
-          src={require('../assets/static/back-icon.png')}
+          src={require('../assets/static/icons/back-icon.png')}
           alt={'back-icon'}
         />
       </div>

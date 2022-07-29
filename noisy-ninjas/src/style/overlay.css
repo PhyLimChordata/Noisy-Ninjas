@@ -79,7 +79,7 @@
 }
 
 .live-heart {
-  background-image: url('../assets/images/heart.png');
+  background-image: url('../assets/static/icons/heart-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
   height: 100%;

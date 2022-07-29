@@ -47,7 +47,7 @@ export function Login() {
       <div id={'img-col'}>
         <img
           className={'background-img'}
-          src={require('../assets/static/log-in-background.png')}
+          src={require('../assets/static/background/log-in-background.png')}
           alt={'log-in-background'}
         />
       </div>
@@ -134,12 +134,12 @@ export function Login() {
             >
               <img
                 className={'oauth-icon'}
-                src={require('../assets/static/google-icon.png')}
+                src={require('../assets/static/icons/google-icon.png')}
                 alt={'google-icon'}
               />
             </div>
             {/* <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/icons/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div> */}
           </div>
           <div className={'clickable'} onClick={() => navigate('/sign-up')}>

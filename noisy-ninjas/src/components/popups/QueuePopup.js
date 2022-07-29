@@ -78,8 +78,8 @@ export function QueuePopup(props) {
         <img
           className={'monster-img'}
           style={{ opacity: !monster && 0.2 }}
-          src={require('../../assets/static/monster-drako.png')}
-          alt={'monster-drako'}
+          src={require('../../assets/static/queue/draco.png')}
+          alt={'monster-draco'}
         />
       </div>
       <img

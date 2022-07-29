@@ -8,7 +8,7 @@ export function Rank(props) {
       <div className={'rank-number'}> {rank} </div>
       <img
         className={'ninja-img'}
-        src={require('../assets/static/profile-pic.png')}
+        src={require('../assets/static/icons/profile-pic-icon.png')}
         alt={'profile-pic'}
       />
       <div className={'username'}> {name} </div>

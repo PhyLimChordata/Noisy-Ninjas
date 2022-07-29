@@ -111,7 +111,7 @@ export function SignUp() {
                   setErrorMessage(null)
                 }}
                 type={'password'}
-                icon={require('../assets/static/question-icon.png')}
+                icon={require('../assets/static/icons/question-icon.png')}
                 tooltipBody={tooltipBody}
                 tooltipId={'password'}
               />
@@ -127,7 +127,7 @@ export function SignUp() {
                   }
                 }}
                 type={'password'}
-                icon={require('../assets/static/question-icon.png')}
+                icon={require('../assets/static/icons/question-icon.png')}
                 tooltipBody={tooltipBody}
                 tooltipId={'password'}
               />
@@ -183,12 +183,12 @@ export function SignUp() {
             >
               <img
                 className={'oauth-icon'}
-                src={require('../assets/static/google-icon.png')}
+                src={require('../assets/static/icons/google-icon.png')}
                 alt={'google-icon'}
               />
             </div>
             {/* <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
+                            <img className={"oauth-icon"} src={require("../assets/static/icons/facebook-icon.png")} alt={"facebook-icon"}/>
                         </div> */}
           </div>
           <div className={'clickable'} onClick={() => navigate('/')}>
@@ -199,7 +199,7 @@ export function SignUp() {
       <div id={'img-col'}>
         <img
           className={'background-img'}
-          src={require('../assets/static/sign-up-background.png')}
+          src={require('../assets/static/background/sign-up-background.png')}
           alt={'sign-up-background'}
         />
       </div>

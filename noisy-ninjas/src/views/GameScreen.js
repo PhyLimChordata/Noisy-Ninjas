@@ -28,7 +28,8 @@ export function GameScreen() {
   const navigate = useNavigate()
 
   const summaryTitle = 'monster won'
-  const summaryCharacter = require('../assets/static/monster-drako.png')
+  // TODO: Make it change based on whats selected
+  const summaryCharacter = require('../assets/static/bosses/draco.png')
   const elo = 30
   const eloDiff = 2
   const isWin = false
@@ -204,7 +205,7 @@ export function GameScreen() {
                 {isWin ? (
                   <>
                     <img
-                      src={require('../assets/static/triangle-right.png')}
+                      src={require('../assets/static/icons/triangle-right-icon.png')}
                       className={'summary-arrow up'}
                     />
                     <div className={'summary-elo-diff green'}>{eloDiff}</div>
@@ -212,7 +213,7 @@ export function GameScreen() {
                 ) : (
                   <>
                     <img
-                      src={require('../assets/static/triangle-right.png')}
+                      src={require('../assets/static/icons/triangle-right-icon.png')}
                       className={'summary-arrow down'}
                     />
                     <div className={'summary-elo-diff red'}>{eloDiff}</div>

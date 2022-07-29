@@ -25,9 +25,9 @@ export function Lobby() {
   const monsterKeys = ['draco', 'screamer', 'tiny']
 
   const monster = {
-    draco: require('../assets/static/lobby/bosses/draco.png'),
-    screamer: require('../assets/static/lobby/bosses/screamer.png'),
-    tiny: require('../assets/static/lobby/bosses/tiny.png'),
+    draco: require('../assets/static/bosses/draco.png'),
+    screamer: require('../assets/static/bosses/screamer.png'),
+    tiny: require('../assets/static/bosses/tiny.png'),
   }
   const navigate = useNavigate()
   const username = getUsername()
@@ -84,13 +84,13 @@ export function Lobby() {
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}
-          src={require('../assets/static/monster-role.png')}
+          src={require('../assets/static/lobby/icons/monster-role-icon.png')}
           onClick={() => setRole('monster')}
         />
       ) : (
         <img
           className={'role-select clickable'}
-          src={require('../assets/static/ninja-role.png')}
+          src={require('../assets/static/lobby/icons/ninja-role-icon.png')}
           onClick={() => setRole('ninja')}
         />
       )}
@@ -99,7 +99,7 @@ export function Lobby() {
           <div className={'options'}>
             <img
               className={'arrow-img left'}
-              src={require('../assets/static/triangle-right.png')}
+              src={require('../assets/static/icons/triangle-right-icon.png')}
               alt={'left-arrow'}
               onClick={() => selectPrev()}
             />
@@ -119,7 +119,7 @@ export function Lobby() {
 
             <img
               className={'arrow-img'}
-              src={require('../assets/static/triangle-right.png')}
+              src={require('../assets/static/icons/triangle-right-icon.png')}
               alt={'right-arrow'}
               onClick={() => selectNext()}
             />

@@ -103,7 +103,7 @@
 .shuriken {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/actions/shuriken.png');
+  background-image: url('../assets/static/gamescreen/actions/shuriken.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -111,7 +111,7 @@
 .monster {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/actions/shuriken.png');
+  background-image: url('../assets/static/gamescreen/actions/shuriken.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -119,7 +119,7 @@
 .bomb {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/actions/bomb.png');
+  background-image: url('../assets/static/gamescreen/actions/bomb.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -127,7 +127,7 @@
 .scream {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/actions/scream.png');
+  background-image: url('../assets/static/gamescreen/actions/scream.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -135,7 +135,7 @@
 .echo {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/actions/echo.png');
+  background-image: url('../assets/static/gamescreen/actions/echo.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
