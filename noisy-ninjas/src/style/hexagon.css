@@ -151,7 +151,7 @@
 .content-hex .black-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/blac-ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/black-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -161,7 +161,7 @@
 .content-hex .red-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/r-ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/red-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -171,7 +171,7 @@
 .content-hex .green-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/g-ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/green-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -181,7 +181,7 @@
 .content-hex .pink-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/p-ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/pink-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -191,7 +191,7 @@
 .content-hex .blue-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/b-ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/green-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;

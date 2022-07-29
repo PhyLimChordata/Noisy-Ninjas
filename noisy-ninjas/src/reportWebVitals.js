@@ -11,3 +11,5 @@ const reportWebVitals = (onPerfEntry) => {
 }
 
 export default reportWebVitals
+
+// TODO: Assess if we need to get rid

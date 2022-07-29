@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+/************************************************************
+ *
+ *  Credentials *
+ *
+ ************************************************************/
+
 export function login(username, password) {
   return axios
     .post(
@@ -13,6 +19,10 @@ export function login(username, password) {
     .then((res) => {
       return res.data
     })
+}
+
+export function googleLogin() {
+  return (window.location = 'http://localhost:5000/google')
 }
 
 export function signUp(username, password) {
@@ -45,8 +55,34 @@ export function deleteAccount() {
     })
 }
 
-export function googleLogin() {
-  return (window.location = 'http://localhost:5000/google')
+export function changePassword(password) {
+  const username = getUsername()
+  return axios
+    .patch(
+      `/api/users/${username}/password`,
+      {
+        password,
+      },
+      { withCredentials: true }
+    )
+    .then((res) => {
+      return res.data
+    })
+}
+
+export function changeUsername(newUsername) {
+  const username = getUsername()
+  return axios
+    .patch(
+      `/api/users/${username}/username`,
+      {
+        username: newUsername,
+      },
+      { withCredentials: true }
+    )
+    .then((res) => {
+      return res.data
+    })
 }
 
 export function getUsername() {
@@ -63,6 +99,12 @@ export function getUser(name) {
       return res.data
     })
 }
+
+/************************************************************
+ *
+ *  Gameplay *
+ *
+ ************************************************************/
 
 export function newPOV(matchID, x, y, radius) {
   return axios
@@ -93,48 +135,10 @@ export function getMonsters(matchID) {
 }
 
 export function movePlayer(matchID, srcx, srcy, tarx, tary) {
-  console.log('MOVING')
-
-  console.log('SRCX: ' + srcx)
-  console.log(srcy)
-  console.log(tarx)
-  console.log(tary)
-
   return axios
     .patch(
       `/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`,
       { matchID: matchID },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      console.log('OK')
-      return res.data
-    })
-}
-
-export function changePassword(password) {
-  const username = getUsername()
-  return axios
-    .patch(
-      `/api/users/${username}/password`,
-      {
-        password,
-      },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      return res.data
-    })
-}
-
-export function changeUsername(newUsername) {
-  const username = getUsername()
-  return axios
-    .patch(
-      `/api/users/${username}/username`,
-      {
-        username: newUsername,
-      },
       { withCredentials: true }
     )
     .then((res) => {
@@ -213,6 +217,12 @@ export function monsterHealth() {
       return res.data
     })
 }
+
+/************************************************************
+ *
+ *  Rankings *
+ *
+ ************************************************************/
 
 export function getUserStats(username) {
   return axios

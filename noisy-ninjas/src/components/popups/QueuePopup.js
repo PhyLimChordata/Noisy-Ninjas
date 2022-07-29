@@ -70,6 +70,8 @@ export function QueuePopup(props) {
       &nbsp;
     </div>
   )
+
+  //TODO: Consider what gets shown in queue
   const body = (
     <div style={{ textAlign: 'center' }}>
       <div>
@@ -83,25 +85,25 @@ export function QueuePopup(props) {
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja1 && 0.2 }}
-        src={require('../../assets/static/black-ninja.png')}
+        src={require('../../assets/static/queue/black-ninja.png')}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja2 && 0.2 }}
-        src={require('../../assets/static/black-ninja.png')}
+        src={require('../../assets/static/queue/black-ninja.png')}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja3 && 0.2 }}
-        src={require('../../assets/static/black-ninja.png')}
+        src={require('../../assets/static/queue/black-ninja.png')}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja4 && 0.2 }}
-        src={require('../../assets/static/black-ninja.png')}
+        src={require('../../assets/static/queue/black-ninja.png')}
         alt={'current-ninja'}
       />
     </div>

@@ -4,17 +4,6 @@
   text-align: center;
 }
 
-main {
-  background-color: #2e2e2e;
-  height: 100vh;
-  color: white;
-  font-family: 'Minecraftia';
-}
-
-.title {
-  font-size: 46px;
-}
-
 .clickable {
   cursor: pointer;
 }
@@ -26,4 +15,15 @@ main {
 .disabled-text {
   text-decoration: line-through;
   cursor: default;
+}
+
+main {
+  background-color: #2e2e2e;
+  height: 100vh;
+  color: white;
+  font-family: 'Minecraftia';
+}
+
+.title {
+  font-size: 46px;
 }

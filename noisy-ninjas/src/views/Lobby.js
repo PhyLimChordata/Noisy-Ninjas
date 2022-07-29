@@ -16,18 +16,18 @@ export function Lobby() {
 
   const ninjaKeys = ['black', 'red', 'blue', 'green', 'pink']
   const ninja = {
-    black: require('../assets/static/black-ninja.png'),
-    red: require('../assets/static/red-ninja.png'),
-    blue: require('../assets/static/blue-ninja.png'),
-    green: require('../assets/static/green-ninja.png'),
-    pink: require('../assets/static/pink-ninja.png'),
+    black: require('../assets/static/lobby/ninjas/black-ninja.png'),
+    red: require('../assets/static/lobby/ninjas/red-ninja.png'),
+    blue: require('../assets/static/lobby/ninjas/blue-ninja.png'),
+    green: require('../assets/static/lobby/ninjas/green-ninja.png'),
+    pink: require('../assets/static/lobby/ninjas/pink-ninja.png'),
   }
   const monsterKeys = ['draco', 'screamer', 'tiny']
 
   const monster = {
-    draco: require('../assets/images/characters/draco.png'),
-    screamer: require('../assets/images/characters/screamer.png'),
-    tiny: require('../assets/images/characters/tiny.png'),
+    draco: require('../assets/static/lobby/bosses/draco.png'),
+    screamer: require('../assets/static/lobby/bosses/screamer.png'),
+    tiny: require('../assets/static/lobby/bosses/tiny.png'),
   }
   const navigate = useNavigate()
   const username = getUsername()
