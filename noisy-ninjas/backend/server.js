@@ -301,6 +301,7 @@ const wsServer = new webSocketServer({
 // I'm maintaining all active connections in this object
 const clients = {};
 const Matches = [];
+// const Queue = [user: []];
 
 
 
@@ -325,21 +326,42 @@ wsServer.on('request', function (request) {
         
         data = JSON.parse(message.utf8Data);
         
+        if(data.type === "leave"){
+            currMatch = Matches.find(e=> e.matchId === data.matchId)
+
+            currPlayer = currMatch.user.find(e=> e.name === data.name);
+                currMatch.user.pop(currPlayer);
+            
+          console.log(Matches);
+
+          for(key in clients) {
+            clients[key].send(currMatch.user.length);
+          }        
+        }
         
         if(data.type === "create"){
           
           currMatch = Matches.find(e=> e.matchId === data.matchId)
           
           if(!(currMatch === undefined)){
-            let user = {name: data.name , ready: false}
-            currMatch.user.push(user)            
+            currPlayer = currMatch.user.find(e=> e.name === data.name);
+            if (currPlayer === undefined) {
+                let user = {name: data.name , ready: false}
+                currMatch.user.push(user);
+            }           
           }
           else{
             let match = { matchId: data.matchId, user: [{name: data.name, ready: false}]}
             Matches.push(match)
+            //return "New match"
           }
           console.log(Matches);
-  
+
+          currMatch = Matches.find(e=> e.matchId === data.matchId);
+
+          for(key in clients) {
+            clients[key].send(currMatch.user.length);
+          }          
         }
         
       else if(data.type === "update"){

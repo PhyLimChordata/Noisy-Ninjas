@@ -6,6 +6,10 @@ import {QueuePopup} from "../components/popups/QueuePopup";
 import {useNavigate} from "react-router";
 import {getUsername, signOut} from "../apiService";
 import {InputPopup} from "../components/popups/InputPopup";
+
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const client = new W3CWebSocket('ws://localhost:8000');
+
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -15,6 +19,13 @@ export function Lobby ()  {
         setSignOutPopup(!signOutPopup)
     }
     function toggleLobbyPopup() {
+        //client.send
+        client.send(JSON.stringify({
+            type: "create",
+            matchId: "ok",
+            name: getUsername() 
+          }));
+        
         setLobbyPopup(!lobbyPopup)
     }
     return (
@@ -43,7 +54,7 @@ export function Lobby ()  {
             }}/>}
 
             {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
-                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")}/>}
+                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")} client={client}/>}
 
         </div>
     );

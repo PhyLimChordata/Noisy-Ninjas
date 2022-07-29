@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import '../../style/Popup.css'
 import {ClosablePopup} from "./ClosablePopup";
 export function QueuePopup(props) {
-    const {closeAction} = props
+    const {closeAction, client} = props
 
     const [timer, setTimer] = useState(0)
     const timerRef = useRef(timer)
@@ -28,11 +28,18 @@ export function QueuePopup(props) {
         if (false) {
             console.log("dasdas")
             // START GAME
-            //navigate
+            //navigate to /game 
 
         }
     }
 
+    //TODO: client.onMessage -> read message -> read through the thing -> 
+    client.onmessage = (message) => {
+        console.log(JSON.parse(message.data));
+        // console.log(message.data);
+        
+
+    }
 
     function formatTime(seconds)
     {
@@ -72,7 +79,7 @@ export function QueuePopup(props) {
 
     </div>
     return (
-        <ClosablePopup closeAction={closeAction} title={monster && ninja1 && ninja2 && ninja3 && ninja4 ?  readyTitle : waitingTitle} body={body} modalStyle={{padding:"20px"}}/>
+        <ClosablePopup closeAction={closeAction} title={monster && ninja1 && ninja2 && ninja3 && ninja4 ?  readyTitle : waitingTitle} body={body} modalStyle={{padding:"20px"}} client={client}/>
     )
 }
 
