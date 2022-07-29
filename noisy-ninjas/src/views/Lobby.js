@@ -5,7 +5,6 @@ import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
 import {useNavigate} from "react-router";
 import {getUsername, signOut} from "../apiService";
-import {InputPopup} from "../components/popups/InputPopup";
 export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -49,7 +48,7 @@ export function Lobby ()  {
     return (
         <div className={"lobby-page"}>
             <div className={"title"}> Welcome {username}</div>
-            {role === "ninja" ? <img className={"role-select"} src={require("../assets/static/monster-role.png")} onClick={() => setRole("monster")}/> : <img className={"role-select"} src={require("../assets/static/ninja-role.png")} onClick={() => setRole("ninja")}/> }
+            {role === "ninja" ? <img className={"role-select clickable"} src={require("../assets/static/monster-role.png")} onClick={() => setRole("monster")}/> : <img className={"role-select clickable"} src={require("../assets/static/ninja-role.png")} onClick={() => setRole("ninja")}/> }
             <div className={"body"}>
                 <div className={"select"}>
                     <div className={"options"}>
