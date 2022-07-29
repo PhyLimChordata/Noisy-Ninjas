@@ -8,7 +8,7 @@
 }
 
 .black-ninja {
-  background-image: url("../assets/static/black-ninja.png");
+  background-image: url("../assets/static/blac-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
@@ -17,7 +17,7 @@
 }
 
 .red-ninja {
-  background-image: url("../assets/static/red-ninja.png");
+  background-image: url("../assets/static/r-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
@@ -26,7 +26,7 @@
 }
 
 .blue-ninja {
-  background-image: url("../assets/static/blue-ninja.png");
+  background-image: url("../assets/static/b-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
@@ -35,7 +35,7 @@
 }
 
 .pink-ninja {
-  background-image: url("../assets/static/pink-ninja.png");
+  background-image: url("../assets/static/p-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
@@ -44,7 +44,7 @@
 }
 
 .green-ninja {
-  background-image: url("../assets/static/green-ninja.png");
+  background-image: url("../assets/static/g-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100px;
