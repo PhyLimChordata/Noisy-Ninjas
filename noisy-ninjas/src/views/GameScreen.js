@@ -9,23 +9,15 @@ import {useNavigate, useLocation} from "react-router";
 
 
 export function GameScreen ()  {
-  const [role, setRole] = useState("ninja");
-
   const routeProps = useLocation().state;
   const matchID = routeProps.matchID;
-
-//TODO: Fix CSS to associate the skins
+  const [role, setRole] = useState(routeProps.role.slice(-5, routeProps.role.length) === "ninja" ? "ninja" : "monster");
+  const [routeRole, setRouteRole] = useState(routeProps.role);
 
   const [summaryPopup, setSummaryPopup] = useState(false);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    getUser(getUsername()).then((user) => {
-      console.log("USER: ");
-      console.log(user);
-      setRole(user.role);
-    });
-  }, [])
+
   const summaryTitle = "monster won"
   const summaryCharacter = require("../assets/static/monster-drako.png")
   const elo = 30
@@ -85,7 +77,6 @@ export function GameScreen ()  {
   if (!loaded) {
     if (role === "ninja") {
       getNinjas(matchID).then((ninjas) => {
-        console.log(ninjas);
         let live = false;
 
   
@@ -94,10 +85,7 @@ export function GameScreen ()  {
             live = true;
           };
   
-          console.log(ninja.displayName);
-          console.log(getUsername());
           if (ninja.displayName === getUsername()) {
-            console.log("Ok");
             newPOV(matchID, ninja.x,ninja.y,3).then((hexes) => {
               hexes.forEach((hex) => {
                 grid[hex["newCor"]] = hex;
@@ -129,7 +117,6 @@ export function GameScreen ()  {
       getMonsters(matchID).then((monsters) => {
         monsters.forEach((monster) => {
           if (monster.displayName === getUsername()) {
-            console.log("hit");
             newPOV(matchID, monster.x,monster.y,3).then((hexes) => {
               hexes.forEach((hex) => {
                 grid[hex["newCor"]] = hex;
@@ -154,7 +141,7 @@ export function GameScreen ()  {
   
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
-      <Character role={role}/>
+      <Character role={routeRole}/>
       {loaded && <HexagonGrid matchID={matchID} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
     {summaryPopup && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                                               title={

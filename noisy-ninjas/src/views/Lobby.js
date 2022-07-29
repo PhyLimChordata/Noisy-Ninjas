@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import "../style/Lobby.css"
 import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
@@ -9,12 +9,13 @@ export function Lobby ()  {
     const [signOutPopup, setSignOutPopup] = useState(false)
     const [lobbyPopup, setLobbyPopup] = useState(false)
     const [role, setRole] = useState("monster");
-    const [skin, setSkin] = useState("NA");
+    const [skin, setSkin] = useState("black-ninja");
+
     const [ninjaIndex, setNinjaIndex] = useState(0);
     const [monsterIndex, setMonsterIndex] = useState(0);
 
-    const ninjaKeys = ["black-ninja", "red-ninja", "blue-ninja", "green-ninja", "pink-ninja"];
-    const ninja = {"black-ninja": require("../assets/static/black-ninja.png"), "red-ninja": require("../assets/static/red-ninja.png"), "blue-ninja": require("../assets/static/blue-ninja.png"), "green-ninja": require("../assets/static/green-ninja.png"), "pink-ninja": require("../assets/static/pink-ninja.png")};
+    const ninjaKeys = ["black", "red", "blue", "green", "pink"];
+    const ninja = {"black": require("../assets/static/black-ninja.png"), "red": require("../assets/static/red-ninja.png"), "blue": require("../assets/static/blue-ninja.png"), "green": require("../assets/static/green-ninja.png"), "pink": require("../assets/static/pink-ninja.png")};
     const monsterKeys = ["draco", "screamer", "tiny"];
 
     const monster = {"draco": require("../assets/images/characters/draco.png"), "screamer": require("../assets/images/characters/screamer.png"), "tiny": require("../assets/images/characters/tiny.png")}
@@ -26,30 +27,48 @@ export function Lobby ()  {
     function toggleLobbyPopup() {
         setLobbyPopup(!lobbyPopup)
     }
+
+    useEffect (() => { 
+        setSkin(ninjaKeys[ninjaIndex] + "-ninja");    
+      }, [ninjaIndex]);
+
+      useEffect (() => { 
+      }, [monsterIndex]);
+
+      useEffect (() => {
+          if (role === "ninja") {
+            setSkin(ninjaKeys[ninjaIndex] + "-ninja");    
+        } else {
+            setSkin(monsterKeys[monsterIndex]);    
+          }
+      }, [role]);
+
     function selectPrev() {
         if (role === "ninja") {
             if (ninjaIndex != 0) {
-                setNinjaIndex(ninjaIndex - 1);                
-                setSkin(ninjaKeys[ninjaIndex] + "-ninja");
-            } else setNinjaIndex(ninjaKeys.length-1);
+                setNinjaIndex(ninjaIndex - 1);    
+            } else {
+                setNinjaIndex(ninjaKeys.length-1);
+            }
         } else {
             if (monsterIndex != 0) {
                 setMonsterIndex(monsterIndex - 1);
-                setSkin(monsterKeys[monsterIndex]);
             } else setMonsterIndex(monsterKeys.length-1);
+            setSkin(monsterKeys[monsterIndex]);
         }
     }
     function selectNext() {
         if (role === "ninja") {
             if (ninjaIndex != ninjaKeys.length-1) {
                 setNinjaIndex(ninjaIndex + 1);
-                setSkin(ninjaKeys[ninjaIndex] + "-ninja");
             } else setNinjaIndex(0);
          } else {
                 if (monsterIndex != monsterKeys.length-1) {
+
                     setMonsterIndex(monsterIndex + 1);
-                    setSkin(monsterKeys[monsterIndex]);
                 } else setMonsterIndex(0);
+                setSkin(monsterKeys[monsterIndex]);
+
             }
     }
     return (

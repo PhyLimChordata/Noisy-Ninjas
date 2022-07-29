@@ -7,6 +7,52 @@
   margin-bottom: 3vw;
 }
 
+.black-ninja {
+  background-image: url("../assets/static/black-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+  margin-bottom: 3vw;
+}
+
+.red-ninja {
+  background-image: url("../assets/static/red-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+  margin-bottom: 3vw;
+}
+
+.blue-ninja {
+  background-image: url("../assets/static/blue-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+  margin-bottom: 3vw;
+}
+
+.pink-ninja {
+  background-image: url("../assets/static/pink-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+  margin-bottom: 3vw;
+}
+
+.green-ninja {
+  background-image: url("../assets/static/green-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 70px;
+  margin-bottom: 3vw;
+}
+
+
 /* Bosses */
 .draco {
   background-image: url("../assets/images/characters/draco.png");

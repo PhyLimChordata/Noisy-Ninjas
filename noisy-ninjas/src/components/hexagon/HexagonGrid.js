@@ -12,11 +12,6 @@ export function HexagonGrid(props) {
 
   const update = (x, y, direction, hexInfo) => {
     if (mode === "move") {
-      console.log("SOURCE X: " + srcx);
-      console.log("SOURCE Y: " + srcy);
-      console.log("XA: " + x);
-      console.log("YA: " + y);
-
       movePlayer(matchID, srcx, srcy, x, y).then(() => {
         if (role === "ninja") {
           if (hexInfo.type.includes("scream")) {
@@ -103,7 +98,7 @@ export function HexagonGrid(props) {
       setTimer(0);
     } else if (mode === "wait") {
         if (role !== "ninja") {
-          getMonsters().then((monsters) => {
+          getMonsters(matchID).then((monsters) => {
             monsters.forEach((monster) => {
               if (monster.displayName === getUsername()) {
                 setMode("move");
