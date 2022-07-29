@@ -2,14 +2,15 @@ import React, {useEffect, useState} from "react";
 import "../style/Account.css"
 import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
-import {QueuePopup} from "../components/popups/QueuePopup";
 import {useLocation, useNavigate} from "react-router";
-import {changePassword, changeUsername, deleteAccount, getUsername, getUserStats, login} from "../apiService";
+import {changePassword, changeUsername, deleteAccount, getUsername, getUserStats} from "../apiService";
 import {Input} from "../components/Input";
 import {InputPopup} from "../components/popups/InputPopup";
+import {Hexagon} from '../components/hexagon/Hexagon';
+
 export function Account ()  {
-    const {state} = useLocation();
-    const { username } = state; // Read values passed on state
+    const { state } = useLocation();
+    const { username, skin } = state; // Read values passed on state
     const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
     const [changePasswordPopup, setChangePasswordPopup] = useState(false)
     const [changeUsernamePopup, setChangeUsernamePopup] = useState(false)
@@ -128,9 +129,12 @@ export function Account ()  {
                 <img className={"back-icon clickable"} onClick={()=> navigate(-1)} src={require("../assets/static/back-icon.png")} alt={"back-icon"}/>
             </div>
             <div className={"body"}>
+                {/* TODO: Change div */}
                 <div className={"ninja-select"}>
-                    <img className={"ninja-img"} src={require("../assets/static/profile-pic.png")} alt={"current-ninja"}/>
-                    <div className={"ninja-elo"}> elo: {points}</div>
+                    <div style={{height: "17vw", width: "17vw"}}>
+                    <Hexagon id={"-profile"} info={{"color": "#ffffff", "skin": skin}}></Hexagon>
+                    </div>
+                    {/* <img className={"ninja-img"} src={require("../assets/static/profile-pic.png")} alt={"current-ninja"}/> */}
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
@@ -139,6 +143,7 @@ export function Account ()  {
                             {ownsProfile && <img style={{height:"30px"}} className={"clickable"} onClick={() =>  toggleChangeUsernamePopup()}src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>}
                         </div>
                         <div className={"stats-container"}>
+                            <div className={"stats"}> elo: {points}</div>
                             <div className={"stats"}>wins: {gamesWon}</div>
                             <div className={"stats"}>games played: {gamesPlayed}</div>
                         </div>

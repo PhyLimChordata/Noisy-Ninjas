@@ -54,16 +54,16 @@
 
 
 /* Bosses */
-.draco {
+/* .draco {
   background-image: url("../assets/images/characters/draco.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 6vw;
   height: 30vw;
   width: 25vw;
-}
+} */
 
-.screamer {
+/* .screamer {
   background-image: url("../assets/images/characters/screamer.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -78,7 +78,7 @@
   background-repeat: no-repeat;
   height: 28vw;
   width: 22vw;
-}
+} */
 
 .container {
   display: grid;

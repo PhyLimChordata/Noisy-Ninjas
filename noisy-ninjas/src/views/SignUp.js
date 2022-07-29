@@ -128,13 +128,14 @@ export function SignUp ()  {
                     }
                 </form>
                 <div>
-                    <div className={"oauth-container"} title={"dude"}>
+                    <div className={"oauth-container"} title={"oauth-container"}>
+                        {/* TODO: LOCALHOST AND GET RID OF FACEBOOK */}
                         <div className={"clickable oauth-btn"} onClick={() => googleLogin()}>
                             <img className={"oauth-icon"} src={require("../assets/static/google-icon.png")} alt={"google-icon"}/>
                         </div>
-                        <div className={"clickable oauth-btn"}>
+                        {/* <div className={"clickable oauth-btn"}>
                             <img className={"oauth-icon"} src={require("../assets/static/facebook-icon.png")} alt={"facebook-icon"}/>
-                        </div>
+                        </div> */}
                     </div>
                     <div className={"clickable"} onClick={() => navigate("/")}>
                         Already have an account?

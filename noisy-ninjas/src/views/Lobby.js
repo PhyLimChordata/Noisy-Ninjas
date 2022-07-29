@@ -33,6 +33,7 @@ export function Lobby ()  {
       }, [ninjaIndex]);
 
       useEffect (() => { 
+        setSkin(monsterKeys[monsterIndex]);    
       }, [monsterIndex]);
 
       useEffect (() => {
@@ -54,7 +55,6 @@ export function Lobby ()  {
             if (monsterIndex != 0) {
                 setMonsterIndex(monsterIndex - 1);
             } else setMonsterIndex(monsterKeys.length-1);
-            setSkin(monsterKeys[monsterIndex]);
         }
     }
     function selectNext() {
@@ -67,7 +67,6 @@ export function Lobby ()  {
 
                     setMonsterIndex(monsterIndex + 1);
                 } else setMonsterIndex(0);
-                setSkin(monsterKeys[monsterIndex]);
 
             }
     }
@@ -87,8 +86,9 @@ export function Lobby ()  {
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
                         <Button content={"play"} className={"hollow-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
-                        <Button content={"profile"} className={"hollow-btn skinny"} onPress={() => navigate("/account", { state: { username: username } })}></Button>
-                        <Button content={"leaderboard"} className={"hollow-btn skinny"} onPress={() => navigate("/leaderboard")}></Button>
+                        <Button content={"profile"} className={"hollow-btn skinny"} onPress={() => navigate("/account", { state: { username: username, skin: skin } })}></Button>
+                        {/* Consider what to show on leaderboard */}
+                        <Button content={"leaderboard"} className={"hollow-btn skinny"} onPress={() => navigate("/leaderboard", { state: { skin: skin }})}></Button>
                         <Button content={"sign out"} className={"hollow-btn skinny"} onPress={() => toggleSignOutPopup()}></Button>
                     </div>
                 </div>
@@ -100,7 +100,7 @@ export function Lobby ()  {
                                                         navigate(0)
                                                     })
             }}/>}
-
+            {/* TODO: Change role/skin?  */}
             {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
                                                 title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")} role={skin}/>}
 

@@ -60,6 +60,19 @@
   align-items: center;
 }
 
+#hex-profile {
+  background-color: #9980fa;
+  width: 90%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transform: scale(1.8);
+  transition: 0.5s;
+  z-index: 3;
+
+  display: grid;
+  align-items: center;
+}
+
 .clickable {
   pointer-events: all;
 }
@@ -136,12 +149,84 @@
   background-repeat: no-repeat;
 }
 
-.monster {
-  height:  100%;
+.content-hex .black-ninja {
+  height:  80%;
+  width: 80%;
+  background-image: url("../assets/static/blac-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2vw;
+  margin-left: 3.5vw;
+}
+
+.content-hex .red-ninja {
+  height:  80%;
+  width: 80%;
+  background-image: url("../assets/static/r-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2vw;
+  margin-left: 3.5vw;
+}
+
+.content-hex .green-ninja {
+  height:  80%;
+  width: 80%;
+  background-image: url("../assets/static/g-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2vw;
+  margin-left: 3.5vw;
+}
+
+.content-hex .pink-ninja {
+  height:  80%;
+  width: 80%;
+  background-image: url("../assets/static/p-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2vw;
+  margin-left: 3.5vw;
+}
+
+.content-hex .blue-ninja {
+  height:  80%;
+  width: 80%;
+  background-image: url("../assets/static/b-ninja.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2vw;
+  margin-left: 3.5vw;
+}
+
+
+
+.content-hex .draco {
+  height:  70%;
+  width: 100%;
+  background-image: url("../assets/images/characters/draco.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 2.5vw;
+}
+
+.content-hex .screamer {
+  height:  70%;
   width: 100%;
   background-image: url("../assets/images/characters/screamer.png");
   background-size: contain;
   background-repeat: no-repeat;
+  margin: 3vw;
+}
+
+.content-hex .tiny {
+  height:  80%;
+  width: 100%;
+  background-image: url("../assets/images/characters/tiny.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 1.5vw;
+  margin-left: 0.5vw;
 }
 
 #hexA1 {

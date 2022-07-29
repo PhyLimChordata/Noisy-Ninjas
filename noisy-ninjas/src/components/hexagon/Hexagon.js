@@ -1,10 +1,15 @@
 import React from 'react'
 import '../../style/hexagon.css'
+import '../../style/character.css'
+
 
 export function Hexagon(props) {
   const {info, id, onClick, mode, hover, unhover} = props
-  const {color, x, y, type, players} = info
+  const {color, x, y, type, players, skin} = info
   function getClassName() {
+    if (skin) {
+      return skin;
+    }
     if (players && players[0] == "x") {
       return "ninjas"
     } else if (players && players[0] == "y") {
