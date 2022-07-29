@@ -143,7 +143,7 @@
 .ninjas {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/images/characters/ninja.png');
+  background-image: url('../assets/static/gamescreen/ninjas/black-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -201,7 +201,7 @@
 .content-hex .draco {
   height: 70%;
   width: 100%;
-  background-image: url('../assets/images/characters/draco.png');
+  background-image: url('../assets/static/bosses/draco.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2.5vw;
@@ -210,7 +210,7 @@
 .content-hex .screamer {
   height: 70%;
   width: 100%;
-  background-image: url('../assets/images/characters/screamer.png');
+  background-image: url('../assets/static/bosses/screamer.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 3vw;
@@ -219,7 +219,7 @@
 .content-hex .tiny {
   height: 80%;
   width: 100%;
-  background-image: url('../assets/images/characters/tiny.png');
+  background-image: url('../assets/static/bosses/tiny.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 1.5vw;

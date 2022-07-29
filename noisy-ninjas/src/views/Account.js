@@ -14,6 +14,8 @@ import { Input } from '../components/Input'
 import { InputPopup } from '../components/popups/InputPopup'
 import { Hexagon } from '../components/hexagon/Hexagon'
 
+import {White} from '../assets/colors';
+
 export function Account() {
   const { state } = useLocation()
   const { username, skin } = state // Read values passed on state
@@ -171,7 +173,7 @@ export function Account() {
           <div style={{ height: '17vw', width: '17vw' }}>
             <Hexagon
               id={'-profile'}
-              info={{ color: '#ffffff', skin: skin }}
+              info={{ color: White, skin: skin }}
             ></Hexagon>
           </div>
           {/* <img className={"ninja-img"} src={require("../assets/static/icons/profile-pic-icon.png")} alt={"current-ninja"}/> */}
