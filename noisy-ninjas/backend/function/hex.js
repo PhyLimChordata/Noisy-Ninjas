@@ -6,8 +6,8 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
     
   if(n===0){
       
-      console.log('OLD:')
-      console.log(smallMap)
+    //   // console.log('OLD:')
+    //   // console.log(smallMap)
       newmap = []
       let cor2 = Object.assign({},  map.map[ `cor${x},${y}`]);
   
@@ -18,17 +18,17 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
       cor2.x = x;
       cor2.y = y;
 
-      //console.log(newmap.push(cor2))
+      //// console.log(newmap.push(cor2))
       
       smallMap.push(cor2)
-      console.log('NEW:')
-      console.log(smallMap)
+    //   // console.log('NEW:')
+    //   // console.log(smallMap)
       
   }
   else{
       
       for(let i = 0; i<= n; i++){
-          console.log('1:')
+        //   // console.log('1:')
           
           //let cor = Object.assign({}, person);
           let cor = Object.assign({}, map.map[`cor${x-i},${y-n}`]);
@@ -48,13 +48,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.newCor = `cor${0-i},${0-n}`
               cor.x = `${x-i}`
               cor.y = `${y-n}`
-              console.log(cor)
+            //   // console.log(cor)
               smallMap.push(cor)
           }
           
       }
       for(let i = 0; i<= n; i++){
-          console.log('2:')
+        //   // console.log('2:')
           
           
           let cor = Object.assign({}, map.map[ `cor${x+i},${y+n}`]);
@@ -72,13 +72,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.oldCor = `cor${x+i},${y+n}`
               cor.x = `${x+i}`
               cor.y = `${y+n}`
-              console.log(cor)
+            //   // console.log(cor)
               smallMap.push(cor)
           }
           
       }
       for(let i = 1; i<= n; i++){
-          console.log('3:')
+        //   // console.log('3:')
           
           let cor = Object.assign({}, map.map[ `cor${x+i},${(y-n)+i}`]);
           if(cor === undefined){
@@ -96,13 +96,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.x = `${x+i}`
               cor.y = `${(y-n)+i}`
               
-              console.log(cor)
+            //   // console.log(cor)
               smallMap.push(cor)
           }
           
       }
       for(let i = 1; i< n; i++){
-          console.log('4:')
+        //   // console.log('4:')
        
           
           let cor = Object.assign({}, map.map[ `cor${x+n},${y+i}`]);
@@ -119,13 +119,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.newCor = `cor${0+n},${0+i}`
               cor.x = `${x+n}`
               cor.y = `${y+i}`
-              console.log(cor)
+            //   // console.log(cor)
               smallMap.push(cor)
           }
           
       }
       for(let i = 0; i< n; i++){
-          console.log('5:')
+          // console.log('5:')
       
           
           let cor = Object.assign({}, map.map[ `cor${x-n},${y-i}`]);
@@ -141,13 +141,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.newCor = `cor${0-n},${0-i}`
               cor.x = `${x-n}`
               cor.y = `${y-i}`
-              console.log(cor)
+              // console.log(cor)
               smallMap.push(cor)
           }
           
       }
       for(let i = 1; i< n; i++){
-          console.log('6:')
+          // console.log('6:')
        
           let cor = Object.assign({}, map.map[ `cor${(x-n)+i},${y+i}`]);
           if(cor === undefined){
@@ -162,7 +162,7 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
               cor.newCor = `cor${(0-n)+i},${0+i}`
               cor.x = `${(x-n)+i}`
               cor.y = `${y+i}`
-              console.log(cor)
+              // console.log(cor)
               smallMap.push(cor)
           }
           
@@ -177,9 +177,9 @@ module.exports = async(req, res) => {
   let map = await maps.find();
   smallMap = [];
 
-  console.log(req.query.x);
-  console.log(req.query.y);
-  console.log(req.query.radius);
+  // console.log(req.query.x);
+  // console.log(req.query.y);
+  // console.log(req.query.radius);
   
   hexagonsInRadius(parseInt(req.query.x), parseInt(req.query.y), parseInt(req.query.radius), map[0], smallMap)
   return res.json(smallMap);

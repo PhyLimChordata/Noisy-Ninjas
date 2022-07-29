@@ -5,10 +5,40 @@ import { Hexagon } from './Hexagon'
 import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas, getUsername, getMonsters} from "../../apiService";
 
 export function HexagonGrid(props) {
-  const {role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
+  const {client, role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
   const [type, setType] = useState(POV);
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
+
+  // client.onmessage = (message) => {
+  //   if (role !== "ninja") {
+  //     getMonsters().then((monsters) => {
+  //       monsters.forEach((monster) => {
+  //         if (monster.displayName === getUsername()) {
+  //           setMode("move");
+  //           updatePOV(srcx, srcy, 3);
+  //           setTimer(5);
+  //         }
+  //       })
+  //     });
+  //   } else {
+  //     getNinjas().then((ninjas) => {
+  //       ninjas.forEach((ninja) => {
+  //         if (ninja.displayName === getUsername()) {
+  //           if (ninja.health !== 0) {
+  //             setMode("move");
+  //             updatePOV(srcx, srcy, 3);
+        
+  //             console.log(mode);
+  //             setTimer(5);
+  //           }
+  //         }
+  //       })
+  //     });
+  //   }
+ 
+  //   updatePOV(srcx, srcy, 3);
+  // }
 
   const update = (x, y, direction, hexInfo) => {
     if (mode === "move") {
@@ -17,7 +47,7 @@ export function HexagonGrid(props) {
       console.log("XA: " + x);
       console.log("YA: " + y);
 
-      movePlayer(srcx, srcy, x, y);
+      // movePlayer(srcx, srcy, x, y);
 
       if (role === "ninja") {
         if (hexInfo.type.includes("scream")) {
@@ -101,38 +131,12 @@ export function HexagonGrid(props) {
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
       console.log(mode);
+      client.send(JSON.stringify({
+        type: "update",
+        matchId: "ok",
+        name: getUsername()
+      }));
       setTimer(0);
-    } else if (mode === "wait") {
-        if (role !== "ninja") {
-          getMonsters().then((monsters) => {
-            monsters.forEach((monster) => {
-              if (monster.displayName === getUsername()) {
-                setMode("move");
-                updatePOV(srcx, srcy, 3);
-                setTimer(5);
-              }
-            })
-          });
-        } else {
-          getNinjas().then((ninjas) => {
-            ninjas.forEach((ninja) => {
-              if (ninja.displayName === getUsername()) {
-                if (ninja.health !== 0) {
-                  setMode("move");
-                  updatePOV(srcx, srcy, 3);
-            
-                  console.log(mode);
-                  setTimer(5);
-                }
-              }
-            })
-          });
-        }
-
-      
-     
-        updatePOV(srcx, srcy, 3);
-      //TODO: Delete after testing iss finished 
     }
   }
 

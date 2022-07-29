@@ -28,6 +28,7 @@ export function QueuePopup(props) {
         if (false) {
             console.log("dasdas")
             // START GAME
+            //navigate
 
         }
     }

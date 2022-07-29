@@ -7,13 +7,12 @@ import { newPOV, getNinjas, getUsername, getUser, getMonsters } from "../apiServ
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {useNavigate} from "react-router";
 
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const client = new W3CWebSocket('ws://localhost:8000');
+
 export function GameScreen ()  {
   const [role, setRole] = useState("ninja");
   const navigate = useNavigate();
-
-  getUser(getUsername()).then((user) => {
-    setRole(user.role);
-  });
 
   const summaryTitle = "monster won"
   const summaryCharacter = require("../assets/static/monster-drako.png")
@@ -25,6 +24,13 @@ export function GameScreen ()  {
 
   const [mode, setMode] = useState("move");
   const [loaded, setLoaded] = useState(false);
+
+  if (!loaded) {
+    getUser(getUsername()).then((user) => {
+      setRole(user.role);
+    });
+  }
+  
   const [POV, setPOV] = useState({})
   const [timer, setTimer] = useState(5)
   const modeRef = useRef(mode)
@@ -57,9 +63,13 @@ export function GameScreen ()  {
           //socket time
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
-        } else if (modeRef.current === "wait") {
-          setMode("move");
-        }
+
+          client.send(JSON.stringify({
+            type: "update",
+            matchId: "ok",
+            name: getUsername() 
+          }));
+        } 
       } else if (timerRef.current > 0) {
         setTimer(timerRef.current - 1)
       }
@@ -73,6 +83,21 @@ export function GameScreen ()  {
   const [y, setY] = useState(0);
 
   if (!loaded) {
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+      client.send(JSON.stringify({
+        type: "create",
+        matchId: "ok",
+        name: getUsername() 
+      }));
+    };
+
+    client.onmessage = (message) => {
+      setTimer(5);
+      setMode("move");
+      // everybody's mode gets updated
+    };
+    
     if (role === "ninja") {
       getNinjas().then((ninjas) => {
         let live = false;
@@ -143,8 +168,8 @@ export function GameScreen ()  {
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={role}/>
-      {loaded && <HexagonGrid role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
-    <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+      {loaded && <HexagonGrid client={client} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
+    {/* <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                        title={
                          <div className={"summary-title"}>
                            {summaryTitle}
@@ -177,6 +202,6 @@ export function GameScreen ()  {
                            </div>
                          </div>
                        }
-    />
+    /> */}
   </div>
 }

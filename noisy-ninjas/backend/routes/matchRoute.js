@@ -6,20 +6,20 @@ const Monster = require('../schemas/monster');
 const User = require('../../models/User')
 
 let shurikenDown = function(x,y,n,v,map,effect){
-    console.log(`cor${x},${y}`)
+    // console.log(`cor${x},${y}`)
     cor = map.map[ `cor${x},${y}`]
     if(cor && (n >= 0)){
         if(cor.type.includes(effect)){
             let index = cor.type.indexOf(effect);
             cor.type.splice(index, 1)
             cor.type.push("normal")
-            console.log(cor);
+            // console.log(cor);
         }
         else{
             let index = cor.type.indexOf("normal");
             cor.type.splice(index, 1)
             cor.type.push(effect)
-            console.log(cor);
+            // console.log(cor);
         }
         map.map[ `cor${x},${y}`] = cor;
         if(v % 2 === 0){
@@ -262,8 +262,8 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
     
     if(n===0){
         
-        console.log('OLD:')
-        console.log(smallMap)
+        // console.log('OLD:')
+        // console.log(smallMap)
         newmap = []
         let cor2 = Object.assign({},  map.map[ `cor${x},${y}`]);
     
@@ -275,17 +275,17 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
         cor2.x = x;
         cor2.y = y;
 
-        //console.log(newmap.push(cor2))
+        //// console.log(newmap.push(cor2))
         
         smallMap.push(cor2)
-        console.log('NEW:')
-        console.log(smallMap)
+        // console.log('NEW:')
+        // console.log(smallMap)
         
     }
     else{
         
         for(let i = 0; i<= n; i++){
-            console.log('1:')
+            // console.log('1:')
             
             //let cor = Object.assign({}, person);
             let cor = Object.assign({}, map.map[`cor${x-i},${y-n}`]);
@@ -305,13 +305,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.newCor = `cor${0-i},${0-n}`
                 cor.x = `${x-i}`
                 cor.y = `${y-n}`
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
         }
         for(let i = 0; i<= n; i++){
-            console.log('2:')
+            // console.log('2:')
             
             
             let cor = Object.assign({}, map.map[ `cor${x+i},${y+n}`]);
@@ -329,13 +329,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.oldCor = `cor${x+i},${y+n}`
                 cor.x = `${x+i}`
                 cor.y = `${y+n}`
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
         }
         for(let i = 1; i<= n; i++){
-            console.log('3:')
+            // console.log('3:')
             
             let cor = Object.assign({}, map.map[`cor${x+i},${(y-n)+i}`]);
             if(cor === undefined){
@@ -353,13 +353,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.x = `${x+i}`
                 cor.y = `${(y-n)+i}`
                 
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
         }
         for(let i = 1; i< n; i++){
-            console.log('4:')
+            // console.log('4:')
          
             
             let cor = Object.assign({}, map.map[ `cor${x+n},${y+i}`]);
@@ -376,13 +376,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.newCor = `cor${0+n},${0+i}`
                 cor.x = `${x+n}`
                 cor.y = `${y+i}`
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
         }
         for(let i = 0; i< n; i++){
-            console.log('5:')
+            // console.log('5:')
         
             
             let cor = Object.assign({}, map.map[ `cor${x-n},${y-i}`]);
@@ -398,13 +398,13 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.newCor = `cor${0-n},${0-i}`
                 cor.x = `${x-n}`
                 cor.y = `${y-i}`
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
         }
         for(let i = 1; i< n; i++){
-            console.log('6:')
+            // console.log('6:')
          
             let cor = Object.assign({}, map.map[ `cor${(x-n)+i},${y+i}`]);
             if(cor === undefined){
@@ -419,7 +419,7 @@ let hexagonsInRadius = function( x, y, n, map, smallMap) {
                 cor.newCor = `cor${(0-n)+i},${0+i}`
                 cor.x = `${(x-n)+i}`
                 cor.y = `${y+i}`
-                console.log(cor)
+                // console.log(cor)
                 smallMap.push(cor)
             }
             
@@ -451,9 +451,9 @@ router.post('/generate', function (req, res) {
             if(randomneg2 > 50){
                 randomy = (randomy * -1) +12
             }
-            console.log(randomy)
-            console.log(randomx)
-            console.log
+            // console.log(randomy)
+            // console.log(randomx)
+            // console.log
             map.map[`cor${randomx},${randomy}`].players.push(req.body.ninja);
             map.map[`cor20,19`].players.push(req.body.monster);
       const newNinja = new Ninja({displayName: req.body.ninja, health: 10, x: randomx, y:randomy})  
@@ -468,8 +468,8 @@ router.post('/generate', function (req, res) {
                 let monsters = [];
                 ninjas.push(ninja);
                 monsters.push(monster);
-                console.log(ninja);
-                console.log(monster);
+                // console.log(ninja);
+                // console.log(monster);
                 
             const newMatch = new Match({matchMap: map,  matchNinjas: ninjas, matchMonsters: monsters});
             newMatch.save(function(err, match){
@@ -689,35 +689,35 @@ router.patch('/move/:player', function (req, res) {
       cor1 = map.map[`cor${req.query.srcx},${req.query.srcy}`]
       cor2 = map.map[`cor${req.query.tarx},${req.query.tary}`]
 
-      console.log("okoaksdoasid");
-      console.log(cor1);
-      console.log(cor2);
+      // console.log("okoaksdoasid");
+      // console.log(cor1);
+      // console.log(cor2);
 
         let index = cor1.players.indexOf(req.params.player);
         cor1.players.splice(index, 1)
         cor2.players.push(req.params.player)
 
-        console.log(cor2.players);
+        // console.log(cor2.players);
         
         map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
         map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
         for(i=0; i<match.matchNinjas.length; i++){
-            console.log("SDIJMO");
+            // console.log("SDIJMO");
 
-        console.log(match.matchNinjas)
-        console.log(req.params.player)
-        console.log(req.query.tarx);
-        console.log(req.query.tary);
+        // console.log(match.matchNinjas)
+        // console.log(req.params.player)
+        // console.log(req.query.tarx);
+        // console.log(req.query.tary);
 
-        console.log(req.query.srcx);
+        // console.log(req.query.srcx);
 
-        console.log(req.query.srcy);
+        // console.log(req.query.srcy);
 
 
         if(match.matchNinjas[i].displayName == req.params.player){
             Ninja.findOneAndUpdate({displayName: req.params.player}, {x: req.query.tarx, y: req.query.tary}, {new: true}, function(err, newninja){
                 if (err) return res.status(500).end(err);
-                console.log(newninja)
+                // console.log(newninja)
                 Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
     

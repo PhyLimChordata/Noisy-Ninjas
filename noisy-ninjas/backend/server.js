@@ -328,68 +328,47 @@ wsServer.on('request', function (request) {
         
         if(data.type === "create"){
           
-          currMatch = Matches.find(e=> e.MatchId === data.MatchId)
+          currMatch = Matches.find(e=> e.matchId === data.matchId)
           
           if(!(currMatch === undefined)){
             let user = {name: data.name , ready: false}
-            currMatch.user.push(user)
-            
-            
+            currMatch.user.push(user)            
           }
           else{
-            let match = { MatchId: data.MatchId, user: [{name: data.name, ready: false}]}
+            let match = { matchId: data.matchId, user: [{name: data.name, ready: false}]}
             Matches.push(match)
-            
           }
-  
+          console.log(Matches);
   
         }
         
       else if(data.type === "update"){
   
-        currMatch = Matches.find(e=> e.MatchId === data.MatchId)
+        currMatch = Matches.find(e=> e.matchId === data.matchId)
         currPlayer = currMatch.user.find(e=> e.name === data.name)
         currPlayer.ready = true
         ready = true;
         for(i = 0; i < currMatch.user.length; i++){
           ready = (ready && currMatch.user[i].ready)
         }
+
+        for(i = 0; i < Matches[0].user.length; i++){
+            console.log(Matches[0].user[i].ready);
+        }
   
         if(ready){
+            console.log("Everyone's ready");
             for(key in clients) {
                 clients[key].sendUTF("Everyone Ready");
               }
-        }
-      
-       }
-  
-       else if(data.type === "updateAll"){
-  
-        currMatch = Matches.find(e=> e.MatchId === data.MatchId)
-        
+
         for(i = 0; i < currMatch.user.length; i++){
-        currMatch.user[i].ready = false
+            currMatch.user[i].ready = false
+            }
+            console.log(currMatch);
         }
-      
-       }     
+    
+       }    
       }
     })
   });
-
-
-//   client.send(JSON.stringify({
-//     type: "create",
-//     matchId: ---,
-//     user: ---
-//   }));
-
-//   client.send(JSON.stringify({
-//     type: "update",
-//     matchId: ---,
-//     user: ---
-//   }));
-
-//   client.send(JSON.stringify({
-//     type: "updateAll",
-//     matchId: ---,
-//   }));
