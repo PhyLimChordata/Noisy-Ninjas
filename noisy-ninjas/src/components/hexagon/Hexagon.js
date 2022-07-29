@@ -17,10 +17,8 @@ export function Hexagon(props) {
   }
   return <div id={"hex" + id} className={mode === "move" ? "hexagon-move" : "hexagon"} onClick={() => onClick(x, y, id, info)} onMouseEnter={hover ? () => {
     hover(id, 3)
-    console.log("HOVERING POG")
   } : ()=>{}} onMouseLeave={() => {
     unhover(id, 3)
-    console.log("UNHOVERING POG")
 
   }}>
     <div className="background-hex">

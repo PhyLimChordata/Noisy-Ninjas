@@ -5,11 +5,11 @@ import { Hexagon } from './Hexagon'
 import { movePlayer, newPOV, shuriken, explosion, echo, scream, ninjaHealth, monsterHealth, getNinjas, getUsername, getMonsters} from "../../apiService";
 
 export function HexagonGrid(props) {
-  const {role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
+  const {matchID, role, mode, setMode, setTimer, POV, x, y, setHearts} = props;
   const [type, setType] = useState(POV);
   const [srcx, setSrcX] = useState(x);
   const [srcy, setSrcY] = useState(y);
-  console.log("Hexagon grid reloading")
+
   const update = (x, y, direction, hexInfo) => {
     if (mode === "move") {
       console.log("SOURCE X: " + srcx);
@@ -17,7 +17,7 @@ export function HexagonGrid(props) {
       console.log("XA: " + x);
       console.log("YA: " + y);
 
-      movePlayer(srcx, srcy, x, y).then(() => {
+      movePlayer(matchID, srcx, srcy, x, y).then(() => {
         if (role === "ninja") {
           if (hexInfo.type.includes("scream")) {
             ninjaHealth().then((updated_health) => {
@@ -80,7 +80,7 @@ export function HexagonGrid(props) {
   const updateMode = () => {
     if (mode === "dead") {
       console.log("MONSTER WON");
-      getNinjas().then((ninjas) => {
+      getNinjas(matchID).then((ninjas) => {
         let live = false;
         ninjas.forEach((ninja) => {
           if (ninja.health !== 0) {
@@ -113,7 +113,7 @@ export function HexagonGrid(props) {
             })
           });
         } else {
-          getNinjas().then((ninjas) => {
+          getNinjas(matchID).then((ninjas) => {
             ninjas.forEach((ninja) => {
               if (ninja.displayName === getUsername()) {
                 if (ninja.health !== 0) {
@@ -142,7 +142,7 @@ export function HexagonGrid(props) {
 
     let grid = {};
   
-    newPOV(x,y,radius).then((hexes) => {
+    newPOV(matchID, x,y,radius).then((hexes) => {
       hexes.forEach((hex) => {
         grid[hex["newCor"]] = hex;
       });

@@ -5,16 +5,24 @@ import { Character } from "../components/Character";
 
 import { newPOV, getNinjas, getUsername, getUser, getMonsters } from "../apiService";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
-import {useNavigate} from "react-router";
+import {useNavigate, useLocation} from "react-router";
+
 
 export function GameScreen ()  {
   const [role, setRole] = useState("ninja");
+
+  const routeProps = useLocation().state;
+  const matchID = routeProps.matchID;
+
+//TODO: Fix CSS to associate the skins
+
   const [summaryPopup, setSummaryPopup] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
     getUser(getUsername()).then((user) => {
-      console.log(user)
+      console.log("USER: ");
+      console.log(user);
       setRole(user.role);
     });
   }, [])
@@ -63,7 +71,6 @@ export function GameScreen ()  {
           setMode("move");
         }
       } else if (timerRef.current > 0) {
-        console.log("changing timers")
         setTimer(timerRef.current - 1)
       }
     }, 1000);
@@ -77,16 +84,21 @@ export function GameScreen ()  {
 
   if (!loaded) {
     if (role === "ninja") {
-      getNinjas().then((ninjas) => {
+      getNinjas(matchID).then((ninjas) => {
+        console.log(ninjas);
         let live = false;
+
   
         ninjas.forEach((ninja) => {
           if (ninja.health !== 0) {
             live = true;
           };
   
+          console.log(ninja.displayName);
+          console.log(getUsername());
           if (ninja.displayName === getUsername()) {
-            newPOV(ninja.x,ninja.y,3).then((hexes) => {
+            console.log("Ok");
+            newPOV(matchID, ninja.x,ninja.y,3).then((hexes) => {
               hexes.forEach((hex) => {
                 grid[hex["newCor"]] = hex;
               });
@@ -114,14 +126,11 @@ export function GameScreen ()  {
         }
     }) 
     } else {
-      getMonsters().then((monsters) => {
+      getMonsters(matchID).then((monsters) => {
         monsters.forEach((monster) => {
-          console.log(monster.displayName);
-          console.log(getUsername());
           if (monster.displayName === getUsername()) {
             console.log("hit");
-            newPOV(monster.x,monster.y,3).then((hexes) => {
-              console.log(hexes);
+            newPOV(matchID, monster.x,monster.y,3).then((hexes) => {
               hexes.forEach((hex) => {
                 grid[hex["newCor"]] = hex;
               });
@@ -146,7 +155,7 @@ export function GameScreen ()  {
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={role}/>
-      {loaded && <HexagonGrid role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
+      {loaded && <HexagonGrid matchID={matchID} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
     {summaryPopup && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                                               title={
                                                 <div className={"summary-title"}>

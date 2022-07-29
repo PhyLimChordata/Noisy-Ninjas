@@ -1,8 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react'
 import '../../style/Popup.css'
 import {ClosablePopup} from "./ClosablePopup";
+
+import { useNavigate } from 'react-router';
+
 export function QueuePopup(props) {
-    const {closeAction} = props
+    const {closeAction, role} = props
 
     const [timer, setTimer] = useState(0)
     const timerRef = useRef(timer)
@@ -31,6 +34,10 @@ export function QueuePopup(props) {
 
         }
     }
+
+    const navigate = useNavigate();
+
+    navigate("/game", {state: {role: role, matchID: "62e1d410c37b4b1ca2c89f54"}});
 
 
     function formatTime(seconds)

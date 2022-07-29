@@ -48,28 +48,25 @@ export function getUser(name) {
     });
 }
 
-export function newPOV (x, y, radius) {
-    console.log(x);
-    console.log(y);
-    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then((res) => {
+export function newPOV (matchID, x, y, radius) {
+    return axios.post(`/match/source?x=${x}&y=${y}&radius=${radius}`, {matchID: matchID}, {withCredentials:true}).then((res) => {
         return res.data
     });
 }
 
-export function getNinjas () {
-    return axios.post(`/match/ninjas`, {matchID: "62e1d410c37b4b1ca2c89f54"},  {withCredentials:true}).then((res) => {
-        console.log(res);
+export function getNinjas (matchID) {
+    return axios.post(`/match/ninjas`, {matchID: matchID},  {withCredentials:true}).then((res) => {
         return res.data
     });
 }
 
-export function getMonsters () {
-    return axios.post(`/match/monsters`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials: true}).then((res) => {
+export function getMonsters (matchID) {
+    return axios.post(`/match/monsters`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }
 
-export function movePlayer (srcx, srcy, tarx, tary) {
+export function movePlayer (matchID, srcx, srcy, tarx, tary) {
 
     console.log("MOVING");
 
@@ -78,7 +75,7 @@ export function movePlayer (srcx, srcy, tarx, tary) {
     console.log(tarx);
     console.log(tary);
     
-    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: "62e1d410c37b4b1ca2c89f54"}, {withCredentials:true}).then((res) => {
+    return axios.patch(`/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`, {matchID: matchID}, {withCredentials:true}).then((res) => {
         console.log("OK");
         return res.data;
     });
