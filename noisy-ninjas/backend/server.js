@@ -327,6 +327,7 @@ wsServer.on('request', function (request) {
         data = JSON.parse(message.utf8Data);
         
         if(data.type === "leave"){
+            console.log("LEAVING")
             currMatch = Matches.find(e=> e.matchId === data.matchId)
 
             currPlayer = currMatch.user.find(e=> e.name === data.name);
@@ -340,8 +341,10 @@ wsServer.on('request', function (request) {
         }
         
         if(data.type === "create"){
-          
-          currMatch = Matches.find(e=> e.matchId === data.matchId)
+            console.log("CREATING")
+
+
+            currMatch = Matches.find(e=> e.matchId === data.matchId)
           
           if(!(currMatch === undefined)){
             currPlayer = currMatch.user.find(e=> e.name === data.name);
@@ -356,7 +359,6 @@ wsServer.on('request', function (request) {
             //return "New match"
           }
           console.log(Matches);
-
           currMatch = Matches.find(e=> e.matchId === data.matchId);
 
           for(key in clients) {

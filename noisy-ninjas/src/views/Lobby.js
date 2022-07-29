@@ -19,13 +19,6 @@ export function Lobby ()  {
         setSignOutPopup(!signOutPopup)
     }
     function toggleLobbyPopup() {
-        //client.send
-        client.send(JSON.stringify({
-            type: "create",
-            matchId: "ok",
-            name: getUsername() 
-          }));
-        
         setLobbyPopup(!lobbyPopup)
     }
     return (
@@ -39,7 +32,14 @@ export function Lobby ()  {
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
-                        <Button content={"play"} className={"orange-btn skinny"} onPress={() => toggleLobbyPopup()}></Button>
+                        <Button content={"play"} className={"orange-btn skinny"} onPress={() => {
+                            client.send(JSON.stringify({
+                                type: "create",
+                                matchId: "ok",
+                                name: getUsername()
+                            }));
+                            toggleLobbyPopup()
+                        }}></Button>
                         <Button content={"profile"} className={"hollow-btn skinny"} onPress={() => navigate("/account")}></Button>
                         <Button content={"leaderboard"} className={"hollow-btn skinny"} onPress={() => navigate("/leaderboard")}></Button>
                         <Button content={"sign out"} className={"hollow-btn skinny"} onPress={() => toggleSignOutPopup()}></Button>
@@ -53,8 +53,11 @@ export function Lobby ()  {
                                                     })
             }}/>}
 
-            {lobbyPopup && <QueuePopup closeAction={() => toggleLobbyPopup()} confirmText={"sign out"}
-                                                title={"sign out"} body={"are you sure you want to sign out?"} confirmAction={() => console.log("signed out")} client={client}/>}
+            {lobbyPopup && <QueuePopup closeAction={() => {
+                client.send(JSON.stringify({type: "leave", matchId: "ok", name: getUsername()}));
+                toggleLobbyPopup()
+            }} confirmText={"sign out"} title={"sign out"} body={"are you sure you want to sign out?"}
+                                       confirmAction={() => console.log("signed out")}/>}
 
         </div>
     );
