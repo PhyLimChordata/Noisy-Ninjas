@@ -19,6 +19,19 @@ export function Lobby ()  {
         setSignOutPopup(!signOutPopup)
     }
     function toggleLobbyPopup() {
+        if (!lobbyPopup) {
+            client.send(JSON.stringify({
+                type: "enter",
+                name: getUsername() 
+              }));
+        } else {
+            client.send(JSON.stringify({
+                type: "leave",
+                name: getUsername() 
+              }));
+        }
+      
+        
         setLobbyPopup(!lobbyPopup)
     }
     return (

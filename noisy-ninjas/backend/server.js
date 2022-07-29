@@ -301,9 +301,7 @@ const wsServer = new webSocketServer({
 // I'm maintaining all active connections in this object
 const clients = {};
 const Matches = [];
-// const Queue = [user: []];
-
-
+const Queue = [];
 
 // This code generates unique userid for everyuser.
 const getUniqueID = () => {
@@ -327,19 +325,37 @@ wsServer.on('request', function (request) {
         data = JSON.parse(message.utf8Data);
         
         if(data.type === "leave"){
-            console.log("LEAVING")
-            currMatch = Matches.find(e=> e.matchId === data.matchId)
+        //     currMatch = Matches.find(e=> e.matchId === data.matchId)
 
-            currPlayer = currMatch.user.find(e=> e.name === data.name);
-                currMatch.user.pop(currPlayer);
+        //     currPlayer = currMatch.user.find(e=> e.name === data.name);
+        //         currMatch.user.pop(currPlayer);
             
-          console.log(Matches);
+        //   console.log(Matches);
 
-          for(key in clients) {
-            clients[key].send(currMatch.user.length);
-          }        
+        //   for(key in clients) {
+        //     clients[key].send(currMatch.user.length);
+        //   }        
+            player = Queue.find(e => e.name === data.name);
+            console.log(player);
+            if (player === undefined) {
+                return;
+            }
+            Queue.pop(player);
+            console.log(Queue);
         }
         
+        if (data.type === "enter") {
+            player = Queue.find(e => e.name === data.name);
+            if (player === undefined) {
+                Queue.push(data.name);
+            }
+            console.log(Queue);
+            
+            for(key in clients) {
+                clients[key].send("ok");
+            }       
+        }
+
         if(data.type === "create"){
             console.log("CREATING")
 
