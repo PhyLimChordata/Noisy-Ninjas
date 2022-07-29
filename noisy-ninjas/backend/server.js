@@ -72,7 +72,7 @@ app.use(function (req, res, next) {
 
 
 const isAuthenticated = function(req, res, next) {
-    console.log(req)
+    console.log(req.displayName)
     if (!req.displayName) return res.status(401).end("access denied");
     next();
 };
@@ -104,26 +104,6 @@ function(req, res) {
     res.redirect('http://localhost:3000/lobby');
 })
 
-app.get("/api/users",  function (req, res) {
-    console.log("kek")
-    leaderBoardIndex= req.query.page;
-	limit = req.query.limit
-    
-      
-      User
-      .find()
-      .sort({ points: -1 })
-      .skip(limit*req.query.page)
-      .limit(limit)
-      .exec(function (err, users) {
-        if (err) return res.status(500).end(err);
-        
-        return res.json(users);
-      });
-    
-    
-  });
-
 app.get("/api/users/:displayName",  hasAccess, function (req, res) {
     User
         .findOne({displayName: req.params.displayName})
@@ -134,6 +114,39 @@ app.get("/api/users/:displayName",  hasAccess, function (req, res) {
             return res.json(user);
         });
 });
+
+
+app.get("/api/rankings",  isAuthenticated, function (req, res) {
+    const page = req.query.page || 0;
+    const limit = req.query.limit || 10;
+    User
+        .find({}, {displayName: 1, _id: 0})
+        .sort({points: -1, gamesPlayed: -1})
+        .skip(limit * page)
+        .limit(limit).exec(function (err, users) {
+        if (err) return res.status(500).end(err);
+        const rankings = users.map((user, index) => {
+            return {displayName: user.displayName, rank: index + page * limit}
+        })
+        return res.json({rankings: rankings})
+    });
+})
+
+app.get("/api/rankings/:displayName", isAuthenticated, function (req, res) {
+
+    const displayName = req.params.displayName
+    User.findOne({ displayName: displayName }, {gamesPlayed: 1, gamesWon: 1, points: 1, _id: 0}, function (err, user) {
+        if (err) return res.status(500).end(err);
+        if (!user) return res.status(404).end(`User ${displayName} not found`);
+        User.find({"$or": [{"points": {"$gt": user.points}}, {
+                "points": user.points,
+                "gamesPlayed": {"$gt": user.gamesPlayed}
+            }]}).count(function (err, rank) {
+            if (err) return res.status(500).end(err);
+            return res.json({rank: rank})
+        });
+    });
+})
 
 
 app.delete("/api/users/:displayName", hasAccess,  function (req, res) {
@@ -150,7 +163,7 @@ app.delete("/api/users/:displayName", hasAccess,  function (req, res) {
     })
 });
 
-app.patch("/api/users/:displayName/password",  function (req, res) {
+app.patch("/api/users/:displayName/password", hasAccess, function (req, res) {
     const displayName = req.params.displayName
     if (!('password' in req.body)) return res.status(400).end('password is missing');
     const password = req.body.password;
@@ -171,7 +184,16 @@ app.patch("/api/users/:displayName/password",  function (req, res) {
     });
 });
 
-app.patch("/api/users/:displayName/username",  function (req, res) {
+app.get("/api/users/:displayName/stats", isAuthenticated, function (req, res) {
+    const displayName = req.params.displayName
+    User.findOne({ displayName: displayName }, {gamesPlayed: 1, gamesWon: 1, points: 1, _id: 0}, function (err, user) {
+        if (err) return res.status(500).end(err);
+        if (!user) return res.status(404).end(`User ${displayName} not found`);
+        return res.json(user)
+    });
+});
+
+app.patch("/api/users/:displayName/username", hasAccess, function (req, res) {
     const displayName = req.params.displayName
     const newName = req.body.username;
     if (!('username' in req.body)) return res.status(400).end('username is missing');

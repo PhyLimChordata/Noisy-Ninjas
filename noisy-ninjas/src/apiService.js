@@ -137,3 +137,21 @@ export function monsterHealth () {
         return res.data;
     });
 }
+
+export function getUserStats(username) {
+    return axios.get(`/api/users/${username}/stats`, {withCredentials:true}).then ((res) => {
+        return res.data;
+    })
+}
+
+export function getUserRanking(username) {
+    return axios.get(`/api/rankings/${username}`, {withCredentials:true}).then ((res) => {
+        return res.data;
+    })
+}
+
+export function getLeaderboard(page = 0, limit = 10) {
+    return axios.get(`/api/rankings/?page=${page}&limit=${limit}`, {withCredentials:true}).then ((res) => {
+        return res.data;
+    })
+}

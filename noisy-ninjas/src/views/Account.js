@@ -1,16 +1,19 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "../style/Account.css"
 import {Button} from "../components/Button";
 import {ConfirmationPopup} from "../components/popups/ConfirmationPopup";
 import {QueuePopup} from "../components/popups/QueuePopup";
-import {useNavigate} from "react-router";
-import {changePassword, changeUsername, deleteAccount, getUsername, login} from "../apiService";
+import {useLocation, useNavigate} from "react-router";
+import {changePassword, changeUsername, deleteAccount, getUsername, getUserStats, login} from "../apiService";
 import {Input} from "../components/Input";
 import {InputPopup} from "../components/popups/InputPopup";
 export function Account ()  {
+    const {state} = useLocation();
+    const { username } = state; // Read values passed on state
     const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
     const [changePasswordPopup, setChangePasswordPopup] = useState(false)
     const [changeUsernamePopup, setChangeUsernamePopup] = useState(false)
+    const [userStats, setUserStats] = useState({points:"?", gamesPlayed:"?", gamesWon:"?"})
 
     const [newUsername, setNewUsername] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -23,7 +26,17 @@ export function Account ()  {
         <li>Both uppercase and lowercase</li>
         <li>Both a number and letter</li>
     </div>
-    const ownsProfile = true
+    const ownsProfile = username === getUsername()
+
+
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        getUserStats(username).then((res) => {
+            setUserStats(res)
+        })
+    }, [])
+    const {gamesWon, gamesPlayed, points} = userStats
 
     const changePasswordBody = (
         <div>
@@ -98,13 +111,6 @@ export function Account ()  {
         </div>
     )
 
-
-    const navigate = useNavigate();
-    function getUserStats() {
-        return  {wins: 64, gamesPlayed: 119, elo:100}
-    }
-    const username = getUsername()
-    const {wins, gamesPlayed, elo} = getUserStats()
     function toggleDeleteAccountPopup() {
         setDeleteAccountPopup(!deleteAccountPopup)
     }
@@ -124,7 +130,7 @@ export function Account ()  {
             <div className={"body"}>
                 <div className={"ninja-select"}>
                     <img className={"ninja-img"} src={require("../assets/static/profile-pic.png")} alt={"current-ninja"}/>
-                    <div className={"ninja-elo"}> elo: {elo}</div>
+                    <div className={"ninja-elo"}> elo: {points}</div>
                 </div>
                 <div className={"button-container"}>
                     <div className={"button-inner-container"}>
@@ -133,7 +139,7 @@ export function Account ()  {
                             {ownsProfile && <img style={{height:"30px"}} className={"clickable"} onClick={() =>  toggleChangeUsernamePopup()}src={require("../assets/static/edit-icon.png")} alt={"monster-drako"}/>}
                         </div>
                         <div className={"stats-container"}>
-                            <div className={"stats"}>wins: {wins}</div>
+                            <div className={"stats"}>wins: {gamesWon}</div>
                             <div className={"stats"}>games played: {gamesPlayed}</div>
                         </div>
                         {ownsProfile && <Button content={"change password"} className={"hollow-btn skinny"} onPress={()=>  toggleChangePasswordPopup()}></Button>}

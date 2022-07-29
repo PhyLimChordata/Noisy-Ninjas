@@ -64,7 +64,7 @@ export function GameScreen ()  {
         }
       } else if (timerRef.current > 0) {
         console.log("changing timers")
-        // setTimer(timerRef.current - 1)
+        setTimer(timerRef.current - 1)
       }
     }, 1000);
     
