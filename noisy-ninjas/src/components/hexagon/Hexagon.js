@@ -4,7 +4,7 @@ import '../../style/character.css'
 
 export function Hexagon(props) {
   const { info, id, onClick, mode, hover, unhover } = props
-  const { color, x, y, type, players, skin } = info
+  const { backgroundColor, color, x, y, type, players, skin } = info
   function getClassName() {
     if (skin) {
       return skin
@@ -34,6 +34,7 @@ export function Hexagon(props) {
       onMouseLeave={() => {
         unhover(id, 3)
       }}
+      style={backgroundColor ? {backgroundColor: backgroundColor} : {}}
     >
       <div className="background-hex">
         <div className="content-hex" style={{ backgroundColor: color }}>

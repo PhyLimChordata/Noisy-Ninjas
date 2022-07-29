@@ -7,6 +7,7 @@ import {
   changePassword,
   changeUsername,
   deleteAccount,
+  getUser,
   getUsername,
   getUserStats,
 } from '../apiService'
@@ -22,6 +23,8 @@ export function Account() {
   const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
   const [changePasswordPopup, setChangePasswordPopup] = useState(false)
   const [changeUsernamePopup, setChangeUsernamePopup] = useState(false)
+  const [beltRank, setBeltRank] = useState(White);
+
   const [userStats, setUserStats] = useState({
     points: '?',
     gamesPlayed: '?',
@@ -48,7 +51,12 @@ export function Account() {
     getUserStats(username).then((res) => {
       setUserStats(res)
     })
-  }, [])
+  }, []);
+
+  getUser(getUsername()).then((user) => {
+    setBeltRank(user.beltRank);
+  });
+
   const { gamesWon, gamesPlayed, points } = userStats
 
   const changePasswordBody = (
@@ -88,9 +96,6 @@ export function Account() {
     if (!isValidPassword(newPassword)) {
       setErrorMessage('Password does not meet requirements')
     } else if (newPassword !== newPassword2) {
-      console.log(newPassword)
-      console.log(newPassword2)
-
       setErrorMessage('Passwords do not match')
     } else {
       changePassword(newPassword)
@@ -173,7 +178,7 @@ export function Account() {
           <div style={{ height: '17vw', width: '17vw' }}>
             <Hexagon
               id={'-profile'}
-              info={{ color: White, skin: skin }}
+              info={{backgroundColor: beltRank, color: White, skin: skin }}
             ></Hexagon>
           </div>
           {/* <img className={"ninja-img"} src={require("../assets/static/icons/profile-pic-icon.png")} alt={"current-ninja"}/> */}
