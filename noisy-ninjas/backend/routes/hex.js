@@ -1,14 +1,13 @@
-const router = require('express').Router();
-const hex = require('../function/hex');
+const router = require('express').Router()
+const hex = require('../function/hex')
 
 // const achievementsUser = require('../function/achievements/achievementsUser.js');
 
 // /source?x=2&y=2&radius=2
-router.get('/source', hex);
+router.get('/source', hex)
 
 // function (req, res) {
-//   
-
+//
 
 //   Match
 //   .findById(req.body.matchID)
@@ -23,6 +22,4 @@ router.get('/source', hex);
 
 // });
 
-
-
-module.exports = router;
+module.exports = router

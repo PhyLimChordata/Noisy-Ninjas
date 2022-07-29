@@ -1,12 +1,12 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema
 
 var Ninja = new Schema({
-displayName: String,
-health: Number,
-x: Number,
-y: Number,
-});
+  displayName: String,
+  health: Number,
+  x: Number,
+  y: Number,
+})
 
-module.exports = mongoose.model("Ninja", Ninja)
+module.exports = mongoose.model('Ninja', Ninja)

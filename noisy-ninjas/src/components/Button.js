@@ -1,7 +1,17 @@
 import React from 'react'
-import "../style/Button.css"
+import '../style/Button.css'
 
 export function Button(props) {
-    const {onPress, content, disabled = false, className= "", style} = props
-    return <button className={`btn-component ${className}`} disabled={disabled} style={{...style}} onClick={onPress}> {content} </button>
+  const { onPress, content, disabled = false, className = '', style } = props
+  return (
+    <button
+      className={`btn-component ${className}`}
+      disabled={disabled}
+      style={{ ...style }}
+      onClick={onPress}
+    >
+      {' '}
+      {content}{' '}
+    </button>
+  )
 }

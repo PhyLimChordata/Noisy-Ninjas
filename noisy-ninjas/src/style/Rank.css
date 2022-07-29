@@ -1,42 +1,40 @@
 .rank-component {
-    width:50%;
-    padding: 20px 50px;
-    flex-direction: row;
-    display: flex;
-    flex:1;
-    align-items: center;
+  width: 50%;
+  padding: 20px 50px;
+  flex-direction: row;
+  display: flex;
+  flex: 1;
+  align-items: center;
 }
 
 .rank-component .rank-number {
-    font-size: 40px;
-    width:100px
+  font-size: 40px;
+  width: 100px;
 }
 
-
 .rank-component .username {
-    font-size: 25px;
-    flex:1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 25px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rank-component:first-child {
-    border-radius:10px 10px 0px 0px
-
+  border-radius: 10px 10px 0px 0px;
 }
 
 .rank-component:last-child {
-    border-radius:0px 0px 10px 10px
+  border-radius: 0px 0px 10px 10px;
 }
 
 .rank-component.orange-rank {
-    background-color: #FF8A00;
+  background-color: #ff8a00;
 }
 
 .rank-component.alternating-dark-rank:nth-child(even) {
-    background-color: #414141;
+  background-color: #414141;
 }
 
 .rank-component.alternating-dark-rank:nth-child(odd) {
-    background-color: #222222;
+  background-color: #222222;
 }

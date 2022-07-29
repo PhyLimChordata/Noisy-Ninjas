@@ -1,101 +1,98 @@
 .account-page {
-    display:flex;
-    flex:1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin:0px 50px;
-    height:100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 50px;
+  height: 100%;
 }
-
 
 .account-page .button-container Button + Button {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
-
 .account-page .body {
-    z-index: 1;
-    display:flex;
-    flex-direction:row;
-    width:100%;
-    justify-content:center;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
 }
 
 .account-page .ninja-select {
-    flex:1;
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    flex-direction: column;
-    margin-right:25px
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 25px;
 }
 
 .account-page .ninja-img {
-    height:400px
+  height: 400px;
 }
 
 .account-page .ninja-elo {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .account-page .back-icon {
-    position:absolute;
-    height:50px;
-    top:50px;
-    left:50px;
-    transition: 0.75s;
+  position: absolute;
+  height: 50px;
+  top: 50px;
+  left: 50px;
+  transition: 0.75s;
 }
 
 .account-page .back-icon:hover {
-    transition: 0.75s;
-    filter: brightness(150%);
+  transition: 0.75s;
+  filter: brightness(150%);
 }
 
 .account-page .arrow-img {
-    height:40px
+  height: 40px;
 }
 
 .account-page .arrow-img.left {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .account-page .button-container {
-    flex:1;
-    display:flex;
-    justify-content:flex-start;
-    align-items:center;
-    margin-left: 25px;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 25px;
 }
 
 .account-page .button-inner-container {
-    width:300px
+  width: 300px;
 }
 
 .account-page .end {
-    margin-top:-25px;
-    margin-bottom:25px;
-    flex-direction: row;
-    flex:1;
-    display: flex;
-    width:100%;
+  margin-top: -25px;
+  margin-bottom: 25px;
+  flex-direction: row;
+  flex: 1;
+  display: flex;
+  width: 100%;
 }
 
-
 .account-page .username {
-    font-size: 32px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .account-page .stats {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .account-page .stats-container {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .account-page .error-text {
-    color: red
+  color: red;
 }

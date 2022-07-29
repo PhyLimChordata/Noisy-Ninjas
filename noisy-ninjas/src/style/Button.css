@@ -1,51 +1,49 @@
-@import "../assets/fonts.css";
+@import '../assets/fonts.css';
 
 .btn-component:not(:disabled) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .btn-component {
-    font-family: Minecraftia;
-    text-align: center;
+  font-family: Minecraftia;
+  text-align: center;
 }
 
-
 .btn-component.grey-btn {
-    background-color: #9A9A9A;
-    color: #ffffff;
-    font-size: 24px;
-    padding: 8px;
-    border: none;
-    border-radius: 10px;
-    width:100%;
+  background-color: #9a9a9a;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
 }
 
 .btn-component.orange-btn {
-    background-color: #FF8A00;
-    color: #ffffff;
-    font-size: 24px;
-    padding: 8px;
-    border: none;
-    border-radius: 10px;
-    width:100%;
+  background-color: #ff8a00;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
 }
 
 .btn-component.hollow-btn {
-    background-color: inherit;
-    color: #ffffff;
-    font-size: 24px;
-    padding: 8px;
-    border: #ffffff solid 1px ;
-    border-radius: 10px;
-    width:100%;
+  background-color: inherit;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 8px;
+  border: #ffffff solid 1px;
+  border-radius: 10px;
+  width: 100%;
 }
 
 .btn-component.skinny {
-    padding: 0px 0px 5px 0px;
+  padding: 0px 0px 5px 0px;
 }
 
 .btn-component.skinny:hover {
-    background-color: #FF8A00;
-    border: #2a2a2a solid 1px;
+  background-color: #ff8a00;
+  border: #2a2a2a solid 1px;
 }
-

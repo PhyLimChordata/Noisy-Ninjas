@@ -9,25 +9,25 @@
 
   justify-content: space-evenly;
 
-  grid-template-areas: 
-  ". . . . . . ."
-  ". timer . . . hearts ." 
-  ". action . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". . . . . . ."
-  ". move1 . . . move2 ."
-  ". . . . . . ."
-  ". move3 . . . move4 ." 
-  ". . . . . . .";
+  grid-template-areas:
+    '. . . . . . .'
+    '. timer . . . hearts .'
+    '. action . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. . . . . . .'
+    '. move1 . . . move2 .'
+    '. . . . . . .'
+    '. move3 . . . move4 .'
+    '. . . . . . .';
 }
 
 .move {
-  background-color: #FF8A00;
+  background-color: #ff8a00;
   color: white;
   border-radius: 8px;
   height: 100%;
@@ -43,19 +43,19 @@
   justify-content: center;
 }
 
-#move1 { 
+#move1 {
   grid-area: move1;
 }
 
-#move2 { 
+#move2 {
   grid-area: move2;
 }
 
-#move3 { 
+#move3 {
   grid-area: move3;
 }
 
-#move4 { 
+#move4 {
   grid-area: move4;
 }
 
@@ -65,7 +65,7 @@
   font-size: 8vw;
 }
 
-#action{
+#action {
   grid-area: action;
   color: white;
   font-size: 3vw;
@@ -79,7 +79,7 @@
 }
 
 .live-heart {
-  background-image: url("../assets/images/heart.png");
+  background-image: url('../assets/images/heart.png');
   background-size: contain;
   background-repeat: no-repeat;
   height: 100%;

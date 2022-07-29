@@ -1,125 +1,130 @@
 .modal-component {
-    position: fixed;
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
 }
 
 .modal-component .modal_content {
-    background-color: #464646;
-    width: 600px;
-    height: 300px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -300px;
-    margin-top: -150px;
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px;
+  background-color: #464646;
+  width: 600px;
+  height: 300px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -300px;
+  margin-top: -150px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
 }
 
 .modal-component .title {
-    font-size: 40px;
+  font-size: 40px;
 }
 
-.modal-component .confirmation-title,.modal-component .input-title {
-    padding-bottom: 20px;
-    border-bottom: #6B6B6B 2px solid;
+.modal-component .confirmation-title,
+.modal-component .input-title {
+  padding-bottom: 20px;
+  border-bottom: #6b6b6b 2px solid;
 }
 
 .modal-component .queue-title {
-    text-align:center;
-    font-size:28px;
-    margin-top:-20px
+  text-align: center;
+  font-size: 28px;
+  margin-top: -20px;
 }
 
-.modal-component .confirmation-body,.modal-component .input-body {
-    padding-top: 20px;
+.modal-component .confirmation-body,
+.modal-component .input-body {
+  padding-top: 20px;
 }
 
 .modal-component .confirmation-footer Button + Button {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .modal-component .close-modal {
-    margin-left: auto;
-    z-index: 1
+  margin-left: auto;
+  z-index: 1;
 }
 
 .modal-component .body-content {
-    flex:1;
-    font-size: 20px;
+  flex: 1;
+  font-size: 20px;
 }
 
 .modal-component .monster-img {
-    height:120px;
-    margin-top:10px
+  height: 120px;
+  margin-top: 10px;
 }
 
 .modal-component .ninja-img {
-    height:70px;
+  height: 70px;
 }
 
 .modal-component .ninja-img + .ninja-img {
-    margin-left:10px
+  margin-left: 10px;
 }
 
 .modal-component .summary-title {
-    flex-direction:column;
-    display:flex;
-    justify-content:center
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
 }
 
 .modal-component .summary-body {
-    flex-direction:column;
-    display:flex;
-    align-items:center
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
 
 .modal-component .summary-character {
-    height: 110px;
-    width: 110px;
+  height: 110px;
+  width: 110px;
 }
 
 .modal-component .summary-elo-container {
-    flex-direction:row;
-    display:flex;
-    align-items:center;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
 }
 
 .modal-component .summary-elo {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .modal-component .summary-arrow {
-    height: 10px;
-    width: 10px;
-    margin-left:10px;
-    margin-right:8px;
+  height: 10px;
+  width: 10px;
+  margin-left: 10px;
+  margin-right: 8px;
 }
 
 .modal-component .summary-arrow.up {
-    transform: rotate(270deg);
-    filter:saturate(500%) contrast(800%) brightness(500%) invert(80%) sepia(50%) hue-rotate(339deg);
+  transform: rotate(270deg);
+  filter: saturate(500%) contrast(800%) brightness(500%) invert(80%) sepia(50%)
+    hue-rotate(339deg);
 }
 
 .modal-component .summary-arrow.down {
-    transform: rotate(90deg);
-    filter: saturate(500%) contrast(800%) brightness(200%) invert(80%) sepia(0%) hue-rotate(181deg);}
+  transform: rotate(90deg);
+  filter: saturate(500%) contrast(800%) brightness(200%) invert(80%) sepia(0%)
+    hue-rotate(181deg);
+}
 
 .modal-component .summary-elo-diff.green {
-    font-size:20px;
-    display:flex;
-    align-items:center;
-    color:#78c89c
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  color: #78c89c;
 }
 
 .modal-component .summary-elo-diff.red {
-    font-size:20px;
-    display:flex;
-    align-items:center;
-    color:#ff8385
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  color: #ff8385;
 }

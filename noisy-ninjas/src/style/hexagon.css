@@ -5,7 +5,7 @@
 }
 
 .gamescreen {
-  display:grid;
+  display: grid;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -18,14 +18,14 @@
   grid-row-gap: 2.5vw;
   grid-template-columns: repeat(13, 4.3vw);
   grid-auto-rows: 4.3vw;
-  grid-template-areas: ". . . gA1 . gA2 . gA3 . gA4 . . ." 
-  ". . gB1 . gB2 . gB3 . gB4 . gB5 . ." 
-  ". gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 ."
-  "gD1 . gD2 . gD3 . gD4 . gD5 . gD6 . gD7"
-  ". gE1 . gE2 . gE3 . gE4 .  gE5 . gE6 ."
-  ". . gF1 . gF2 . gF3 . gF4 . gF5 . ." 
-  ". . . gG1 . gG2 . gG3 . gG4 . . ." 
-  ;
+  grid-template-areas:
+    '. . . gA1 . gA2 . gA3 . gA4 . . .'
+    '. . gB1 . gB2 . gB3 . gB4 . gB5 . .'
+    '. gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 .'
+    'gD1 . gD2 . gD3 . gD4 . gD5 . gD6 . gD7'
+    '. gE1 . gE2 . gE3 . gE4 .  gE5 . gE6 .'
+    '. . gF1 . gF2 . gF3 . gF4 . gF5 . .'
+    '. . . gG1 . gG2 . gG3 . gG4 . . .';
 
   justify-content: space-evenly;
 }
@@ -101,58 +101,57 @@
 }
 
 .shuriken {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/actions/shuriken.png");
+  background-image: url('../assets/images/actions/shuriken.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .monster {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/actions/shuriken.png");
+  background-image: url('../assets/images/actions/shuriken.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-
 .bomb {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/actions/bomb.png");
+  background-image: url('../assets/images/actions/bomb.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .scream {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/actions/scream.png");
+  background-image: url('../assets/images/actions/scream.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .echo {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/actions/echo.png");
+  background-image: url('../assets/images/actions/echo.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .ninjas {
-  height:  100%;
+  height: 100%;
   width: 100%;
-  background-image: url("../assets/images/characters/ninja.png");
+  background-image: url('../assets/images/characters/ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .content-hex .black-ninja {
-  height:  80%;
+  height: 80%;
   width: 80%;
-  background-image: url("../assets/static/blac-ninja.png");
+  background-image: url('../assets/static/blac-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -160,9 +159,9 @@
 }
 
 .content-hex .red-ninja {
-  height:  80%;
+  height: 80%;
   width: 80%;
-  background-image: url("../assets/static/r-ninja.png");
+  background-image: url('../assets/static/r-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -170,9 +169,9 @@
 }
 
 .content-hex .green-ninja {
-  height:  80%;
+  height: 80%;
   width: 80%;
-  background-image: url("../assets/static/g-ninja.png");
+  background-image: url('../assets/static/g-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -180,9 +179,9 @@
 }
 
 .content-hex .pink-ninja {
-  height:  80%;
+  height: 80%;
   width: 80%;
-  background-image: url("../assets/static/p-ninja.png");
+  background-image: url('../assets/static/p-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -190,39 +189,37 @@
 }
 
 .content-hex .blue-ninja {
-  height:  80%;
+  height: 80%;
   width: 80%;
-  background-image: url("../assets/static/b-ninja.png");
+  background-image: url('../assets/static/b-ninja.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
   margin-left: 3.5vw;
 }
 
-
-
 .content-hex .draco {
-  height:  70%;
+  height: 70%;
   width: 100%;
-  background-image: url("../assets/images/characters/draco.png");
+  background-image: url('../assets/images/characters/draco.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2.5vw;
 }
 
 .content-hex .screamer {
-  height:  70%;
+  height: 70%;
   width: 100%;
-  background-image: url("../assets/images/characters/screamer.png");
+  background-image: url('../assets/images/characters/screamer.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin: 3vw;
 }
 
 .content-hex .tiny {
-  height:  80%;
+  height: 80%;
   width: 100%;
-  background-image: url("../assets/images/characters/tiny.png");
+  background-image: url('../assets/images/characters/tiny.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 1.5vw;
@@ -377,7 +374,6 @@
   grid-area: gG4;
 }
 
-
 #hexS-L1 {
   grid-area: gD1;
 }
@@ -389,7 +385,6 @@
 #hexS-L3 {
   grid-area: gD3;
 }
-
 
 #hexS-R1 {
   grid-area: gD5;
@@ -403,8 +398,6 @@
   grid-area: gD7;
 }
 
-
-
 #hexS-U1 {
   grid-area: gA2;
 }
@@ -417,8 +410,6 @@
   grid-area: gC3;
 }
 
-
-
 #hexS-D1 {
   grid-area: gG3;
 }
@@ -430,7 +421,6 @@
 #hexS-D3 {
   grid-area: gE4;
 }
-
 
 #hexE-UL1 {
   grid-area: gA1;
@@ -479,7 +469,6 @@
 #hexE-DL3 {
   grid-area: gG1;
 }
-
 
 #hexE-D1 {
   grid-area: gF3;
