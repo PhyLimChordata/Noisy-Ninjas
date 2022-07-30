@@ -532,21 +532,30 @@ wsServer.on('request', function (request) {
         //   for(key in clients) {
         //     clients[key].send(currMatch.user.length);
         //   }      
-            player = Queue.find(e => e === data.name);
+            player = Queue.find(e => e.name === data.name);
             console.log(player);
             if (player === undefined) {
                 return;
             }
-            Queue.pop(player);
+
+            const index = Queue.indexOf(player);
+            
+
+            Queue.splice(index, 1);
+            console.log("New queue");
             console.log(Queue);
+
+            for(key in clients) {
+                clients[key].send(JSON.stringify({queue: Queue}));
+            }   
             
 
         }
         
         if (data.type === "enter") {
-            player = Queue.find(e => e === data.name);
+            player = Queue.find(e => e.name === data.name);
             if (player === undefined) {
-                Queue.push(data.name);
+                Queue.push({name: data.name, skin: data.skin});
             }
             console.log(Queue);
 

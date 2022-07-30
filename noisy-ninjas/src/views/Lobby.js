@@ -5,10 +5,8 @@ import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { QueuePopup } from '../components/popups/QueuePopup'
 import { useNavigate } from 'react-router'
 import { getUsername, signOut, generateMatch } from '../apiService'
-import { w3cwebsocket as W3CWebSocket } from "websocket";
   
-export const client = new W3CWebSocket('ws://localhost:8000');
-
+import { client } from '../components/popups/QueuePopup'
 
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
@@ -21,29 +19,7 @@ export function Lobby() {
 
   const navigate = useNavigate();
 
-    client.onmessage = (message) => {
-        let parsedData = JSON.parse(message.data);
-        let queue = parsedData.queue;
-        let matchID = parsedData.matchID;
-
-        let inQueue = queue.find(e => e === getUsername());
-        let lastToJoin = queue[queue.length-1];
-
-        if (matchID && inQueue) {
-            navigate('/game', {
-                state: { role: skin, matchID: matchID },
-            });
-            //TODO: Fix queue length
-        } else if (inQueue && queue.length === 2 && lastToJoin === getUsername()) {
-            generateMatch("Andy5", "Calvin").then((matchID) => {
-                client.send(JSON.stringify({
-                    type: "matchFound",
-                    matchID: matchID
-                }));
-            });
-        } 
-    }
-
+   
 
 
     const username = getUsername()
@@ -54,10 +30,13 @@ export function Lobby() {
    
 
     function toggleLobbyPopup() {
+        setLobbyPopup(!lobbyPopup)
+
         if (!lobbyPopup) {
             client.send(JSON.stringify({
                 type: "enter",
-                name: getUsername() 
+                name: getUsername(),
+                skin: skin
               }));
         } else {
             client.send(JSON.stringify({
@@ -67,7 +46,6 @@ export function Lobby() {
         }
       
         
-        setLobbyPopup(!lobbyPopup)
     }
 
   const ninjaKeys = ['black', 'red', 'blue', 'green', 'pink']
@@ -219,7 +197,6 @@ export function Lobby() {
           }}
         />
       )}
-      {/* TODO: Change role/skin?  */}
       {lobbyPopup && (
         <QueuePopup
           client={client}

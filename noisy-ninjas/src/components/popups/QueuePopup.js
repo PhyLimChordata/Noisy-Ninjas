@@ -1,20 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../../style/Popup.css'
-import { generateMatch } from '../../apiService'
+import { generateMatch, getUsername } from '../../apiService'
 import {ClosablePopup} from "./ClosablePopup";
 import {useNavigate} from "react-router";
 
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { set } from 'mongoose';
+
+export const client = new W3CWebSocket('ws://localhost:8000');
+
+
 export function QueuePopup(props) {
-  const {client, closeAction, role } = props
+  const {closeAction, role } = props
 
   const [timer, setTimer] = useState(0)
   const timerRef = useRef(timer)
 
   const [ninja1, setNinja1] = useState(false)
   const [ninja2, setNinja2] = useState(false)
-  const [ninja3, setNinja3] = useState(true)
+  const [ninja3, setNinja3] = useState(false)
   const [ninja4, setNinja4] = useState(false)
-  const [monster, setMonster] = useState(false)
+  const [monster1, setMonster1] = useState(false);
+
+  const [matchFound, setMatchFound] = useState("");
+
+  const [ninja1Image, setNinja1Image] = useState(require('../../assets/static/queue/black-ninja.png'));
+  const [ninja2Image, setNinja2Image] = useState(require('../../assets/static/queue/black-ninja.png'));
+  const [ninja3Image, setNinja3Image] = useState(require('../../assets/static/queue/black-ninja.png'));
+  const [ninja4Image, setNinja4Image] = useState(require('../../assets/static/queue/black-ninja.png'));
+
+  const [monsterImage, setMonsterImage] = useState(require('../../assets/static/bosses/draco.png'));
+
+  const ninja = {
+    "black-ninja": require('../../assets/static/lobby/ninjas/black-ninja.png'),
+    "red-ninja": require('../../assets/static/lobby/ninjas/red-ninja.png'),
+    "blue-ninja": require('../../assets/static/lobby/ninjas/blue-ninja.png'),
+    "green-ninja": require('../../assets/static/lobby/ninjas/green-ninja.png'),
+    "pink-ninja": require('../../assets/static/lobby/ninjas/pink-ninja.png'),
+  }
+
+  const monster = {
+    draco: require('../../assets/static/bosses/draco.png'),
+    screamer: require('../../assets/static/bosses/screamer.png'),
+    tiny: require('../../assets/static/bosses/tiny.png'),
+  }
+
   useEffect(() => {
     const interval = setInterval(increment, 1000)
     return () => {
@@ -23,47 +53,64 @@ export function QueuePopup(props) {
   }, [])
   useEffect(() => {
     timerRef.current = timer
+    
   }, [timer])
 
-  //MOVE
   const navigate = useNavigate();
 
-//   client.onmessage = (message) => {
-//     //TODO: Array of ninjas
-//     generateMatch("Andy5", "Calvin").then((matchID) => {
-//         console.log(matchID);
-//     navigate('/game', {
-//         //   TODO: Fix this so that the group of ninjas and monster are given
-//         state: { role: role, matchID: matchID },
-//         })
-//     });
-// }
+client.onmessage = (message) => {
+    let parsedData = JSON.parse(message.data);
+    let queue = parsedData.queue;
+    let matchID = parsedData.matchID;
 
+    let inQueue = queue.find(e => e.name === getUsername());
+    let lastToJoin = queue[queue.length-1].name;
 
-//   useEffect(() => {
-//       console.log("MADE IT");
+    if (matchID && inQueue) {
+        setMatchFound(matchID);
+        
+        navigate('/game', {
+            state: { role: role, matchID: matchID },
+        });
+    } else if (inQueue && queue.length === 3 && lastToJoin === getUsername()) {
+        generateMatch("Andy5", "Calvin").then((matchID) => {
+            client.send(JSON.stringify({
+                type: "matchFound",
+                matchID: matchID
+            }));
+        });
+    } 
+
+    let monsterInQueue = queue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
+    if (monsterInQueue === undefined) {
+        setMonster1(false);
+    } else {
+        setMonster1(true);
+        setMonsterImage(monster[monsterInQueue.skin]);
+        queue.splice(queue.indexOf(monsterInQueue));
+    }
+
+    let ninjasInQueue = 0;
+    let ninjaArr = [[setNinja1, setNinja1Image], [setNinja2, setNinja2Image], [setNinja3, setNinja3Image], [setNinja4, setNinja4Image]];
     
-    
-   
-//   }, []);
+    while (queue.length > 0) {
+        let nextNinjaInQueue = queue.pop();
+
+        ninjaArr[ninjasInQueue][0](true);
+        ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
+        console.log(queue);
+        ninjasInQueue++;
+    }
+
+    while (ninjasInQueue < ninjaArr.length) {
+        ninjaArr[ninjasInQueue][0](false);
+        ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
+        ninjasInQueue++;
+    }
+}
   
   const increment = () => {
     setTimer(timerRef.current + 1)
-    // Check if everyone's ready
-
-    // if (false) {
-    //     console.log("dasdas")
-    //     // START GAME
-    //     //navigate to /game 
-    // }
-}
-
-const resetQueue = () => {
-    setNinja1(false);
-    setNinja2(false);
-    setNinja3(false);
-    setNinja4(false);
-    setMonster(false);
 }
 
   function formatTime(seconds) {
@@ -103,33 +150,33 @@ const resetQueue = () => {
       <div>
         <img
           className={'monster-img'}
-          style={{ opacity: !monster && 0.2 }}
-          src={require('../../assets/static/queue/draco.png')}
+          style={{ opacity: !monster1 && 0.2 }}
+          src={monsterImage}
           alt={'monster-draco'}
         />
       </div>
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja1 && 0.2 }}
-        src={require('../../assets/static/queue/black-ninja.png')}
+        src={ninja1Image}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja2 && 0.2 }}
-        src={require('../../assets/static/queue/black-ninja.png')}
+        src={ninja2Image}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja3 && 0.2 }}
-        src={require('../../assets/static/queue/black-ninja.png')}
+        src={ninja3Image}
         alt={'current-ninja'}
       />
       <img
         className={'ninja-img'}
         style={{ opacity: !ninja4 && 0.2 }}
-        src={require('../../assets/static/queue/black-ninja.png')}
+        src={ninja4Image}
         alt={'current-ninja'}
       />
     </div>
