@@ -18,10 +18,40 @@ import {
 } from '../../apiService'
 
 export function HexagonGrid(props) {
-  const { matchID, role, mode, setMode, setTimer, POV, x, y, setHearts } = props
+  const { client, matchID, role, mode, setMode, setTimer, POV, x, y, setHearts } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
+
+  // client.onmessage = (message) => {
+  //   if (role !== "ninja") {
+  //     getMonsters().then((monsters) => {
+  //       monsters.forEach((monster) => {
+  //         if (monster.displayName === getUsername()) {
+  //           setMode("move");
+  //           updatePOV(srcx, srcy, 3);
+  //           setTimer(5);
+  //         }
+  //       })
+  //     });
+  //   } else {
+  //     getNinjas().then((ninjas) => {
+  //       ninjas.forEach((ninja) => {
+  //         if (ninja.displayName === getUsername()) {
+  //           if (ninja.health !== 0) {
+  //             setMode("move");
+  //             updatePOV(srcx, srcy, 3);
+        
+  //             console.log(mode);
+  //             setTimer(5);
+  //           }
+  //         }
+  //       })
+  //     });
+  //   }
+ 
+  //   updatePOV(srcx, srcy, 3);
+  // }
 
   const update = (x, y, direction, hexInfo) => {
     if (mode === 'move') {
@@ -90,7 +120,7 @@ export function HexagonGrid(props) {
 
   const updateMode = () => {
     if (mode === 'dead') {
-      console.log('MONSTER WON')
+      console.log('MONSTER WON');
       getNinjas(matchID).then((ninjas) => {
         let live = false
         ninjas.forEach((ninja) => {
@@ -99,52 +129,24 @@ export function HexagonGrid(props) {
           }
         })
         if (!live) {
-          setMode('monster won')
+          setMode("monster won");
         }
-      })
-      document.getElementById('move1').style.visibility = 'hidden'
-      document.getElementById('move2').style.visibility = 'hidden'
-    } else if (mode === 'move') {
-      setMode('action')
-      document.getElementById('move1').style.visibility = 'visible'
-      document.getElementById('move2').style.visibility = 'visible'
-    } else if (
-      mode === 'direction-S' ||
-      mode === 'direction-E' ||
-      mode === 'direction'
-    ) {
-      setMode('wait')
-      console.log(mode)
-      setTimer(0)
-    } else if (mode === 'wait') {
-      if (role !== 'ninja') {
-        getMonsters(matchID).then((monsters) => {
-          monsters.forEach((monster) => {
-            if (monster.displayName === getUsername()) {
-              setMode('move')
-              updatePOV(srcx, srcy, 3)
-              setTimer(5)
-            }
-          })
-        })
-      } else {
-        getNinjas(matchID).then((ninjas) => {
-          ninjas.forEach((ninja) => {
-            if (ninja.displayName === getUsername()) {
-              if (ninja.health !== 0) {
-                setMode('move')
-                updatePOV(srcx, srcy, 3)
-
-                console.log(mode)
-                setTimer(5)
-              }
-            }
-          })
-        })
-      }
-
-      updatePOV(srcx, srcy, 3)
-      //TODO: Delete after testing iss finished
+      });
+      document.getElementById("move1").style.visibility = "hidden";
+      document.getElementById("move2").style.visibility = "hidden";
+    } else if (mode === "move") {
+      setMode("action");
+      document.getElementById("move1").style.visibility = "visible";
+      document.getElementById("move2").style.visibility = "visible";
+    } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
+      setMode("wait");
+      console.log(mode);
+      client.send(JSON.stringify({
+        type: "update",
+        matchId: "ok",
+        name: getUsername()
+      }));
+      setTimer(0);
     }
   }
 

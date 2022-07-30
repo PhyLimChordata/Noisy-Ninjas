@@ -13,6 +13,9 @@ import {
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { useNavigate, useLocation } from 'react-router'
 
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const client = new W3CWebSocket('ws://localhost:8000');
+
 export function GameScreen() {
   const routeProps = useLocation().state
   const matchID = routeProps.matchID
@@ -77,11 +80,15 @@ export function GameScreen() {
           setMode('wait')
           setTimer(0)
           //socket time
-          document.getElementById('move1').style.visibility = 'hidden'
-          document.getElementById('move2').style.visibility = 'hidden'
-        } else if (modeRef.current === 'wait') {
-          setMode('move')
-        }
+          document.getElementById("move1").style.visibility = "hidden";
+          document.getElementById("move2").style.visibility = "hidden";
+
+          client.send(JSON.stringify({
+            type: "update",
+            matchId: "ok",
+            name: getUsername() 
+          }));
+        } 
       } else if (timerRef.current > 0) {
         setTimer(timerRef.current - 1)
       }
@@ -94,12 +101,25 @@ export function GameScreen() {
   const [y, setY] = useState(0)
 
   if (!loaded) {
-    if (role === 'ninja') {
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+      client.send(JSON.stringify({
+        type: "create",
+        matchId: "ok",
+        name: getUsername() 
+      }));
+    };
+
+    client.onmessage = (message) => {
+      setTimer(5);
+      setMode("move");
+      // everybody's mode gets updated
+    };
+    
+    if (role === "ninja") {
       getNinjas(matchID).then((ninjas) => {
-        let live = false
-
-        console.log(ninjas);
-
+        let live = false;
+  
         ninjas.forEach((ninja) => {
           if (ninja.health !== 0) {
             live = true
@@ -158,78 +178,45 @@ export function GameScreen() {
         })
       })
     }
-  }
-
-  return (
-    <div className="gamescreen">
-      <Overlay
-        role={role}
-        mode={mode}
-        timer={timer}
-        setMode={setMode}
-        setTimer={setTimer}
-        hearts={hearts}
-      />
-      <Character role={routeRole} />
-      {loaded && (
-        <HexagonGrid
-          matchID={matchID}
-          role={role}
-          POV={POV}
-          mode={mode}
-          setMode={setMode}
-          setTimer={setTimer}
-          x={x}
-          y={y}
-          setHearts={setHearts}
-          hearts={hearts}
-        />
-      )}
-      {summaryPopup && (
-        <ConfirmationPopup
-          confirmAction={() => navigate('/lobby')}
-          confirmText={'lobby'}
-          cancelText={'spectate'}
-          title={<div className={'summary-title'}>{summaryTitle}</div>}
-          cancelAction={() => console.log('SPECTATE')}
-          modalStyle={{
-            height: '400px',
-            width: '400px',
-            marginTop: '-200px',
-            marginLeft: '-200px',
-          }}
-          backgroundStyle={{ zIndex: 999 }}
-          body={
-            <div className={'summary-body'}>
-              <img
-                className={'summary-character'}
-                src={summaryCharacter}
-                alt={'summary-character'}
-              />
-              <div className={'summary-elo-container'}>
-                <div className={'summary-elo'}>elo: {elo}</div>
-                {isWin ? (
-                  <>
-                    <img
-                      src={require('../assets/static/icons/triangle-right-icon.png')}
-                      className={'summary-arrow up'}
-                    />
-                    <div className={'summary-elo-diff green'}>{eloDiff}</div>
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src={require('../assets/static/icons/triangle-right-icon.png')}
-                      className={'summary-arrow down'}
-                    />
-                    <div className={'summary-elo-diff red'}>{eloDiff}</div>
-                  </>
-                )}
-              </div>
-            </div>
-          }
-        />
-      )}
-    </div>
-  )
+}
+  
+  return <div className = "gamescreen">
+      <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
+      <Character role={routeRole}/>
+      {loaded && <HexagonGrid matchID={matchID} client={client} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
+    {/* <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+                       title={
+                         <div className={"summary-title"}>
+                           {summaryTitle}
+                         </div>
+                       }
+                       cancelAction={() => console.log("SPECTATE")}
+                       modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
+                       backgroundStyle={{zIndex:999}}
+                       body={
+                         <div className={"summary-body"}>
+                           <img className={"summary-character"} src={summaryCharacter}
+                                alt={"summary-character"}/>
+                           <div className={"summary-elo-container"}>
+                             <div className={"summary-elo"}>
+                               elo: {elo}
+                             </div>
+                             {isWin ?
+                             <>
+                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow up"}/>
+                                 <div className={"summary-elo-diff green"}>
+                                   {eloDiff}
+                                 </div>
+                             </>:<>
+                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow down"}/>
+                                 <div className={"summary-elo-diff red"}>
+                                   {eloDiff}
+                                 </div>
+                               </>
+                             }
+                           </div>
+                         </div>
+                       }
+    /> */}
+  </div>
 }

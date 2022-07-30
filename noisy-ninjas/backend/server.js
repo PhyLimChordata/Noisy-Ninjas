@@ -20,8 +20,10 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
        Code related to basic session has been derived from assignment and lecture code
 */
 
-const app = express()
-const port = process.env.PORT || 3000
+
+const app = express();
+const port = process.env.PORT || 3000;
+const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true,
@@ -466,5 +468,132 @@ app.use('/map', hexRouter)
 
 //App is now listening for calls
 app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`)
-})
+    console.log(`Server is running on port: ${port}`);
+});
+
+// Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
+
+const webSocketServer = require('websocket').server;
+const http = require('http');
+// Spinning the http server and the websocket server.
+const server = http.createServer();
+server.listen(webSocketPort, () => {console.log(`Websocket server running on websocketPort: ${webSocketPort}`)});
+const wsServer = new webSocketServer({
+  httpServer: server
+});
+
+
+// I'm maintaining all active connections in this object
+const clients = {};
+const Matches = [];
+const Queue = [];
+
+// This code generates unique userid for everyuser.
+const getUniqueID = () => {
+  const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  return s4() + s4() + '-' + s4();
+};
+
+
+
+
+wsServer.on('request', function (request) {
+    var userID = getUniqueID();
+    
+    const connection = request.accept(null, request.origin);
+    clients[userID] = connection;
+    console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
+  
+    connection.on('message', function(message) {
+      if (message.type === 'utf8') {
+        
+        data = JSON.parse(message.utf8Data);
+        
+        if(data.type === "leave"){
+        //     currMatch = Matches.find(e=> e.matchId === data.matchId)
+
+        //     currPlayer = currMatch.user.find(e=> e.name === data.name);
+        //         currMatch.user.pop(currPlayer);
+            
+        //   console.log(Matches);
+
+        //   for(key in clients) {
+        //     clients[key].send(currMatch.user.length);
+        //   }        
+            player = Queue.find(e => e.name === data.name);
+            console.log(player);
+            if (player === undefined) {
+                return;
+            }
+            Queue.pop(player);
+            console.log(Queue);
+        }
+        
+        if (data.type === "enter") {
+            player = Queue.find(e => e.name === data.name);
+            if (player === undefined) {
+                Queue.push(data.name);
+            }
+            console.log(Queue);
+            
+            for(key in clients) {
+                clients[key].send("ok");
+            }       
+        }
+
+        if(data.type === "create"){
+            console.log("CREATING")
+
+
+            currMatch = Matches.find(e=> e.matchId === data.matchId)
+          
+          if(!(currMatch === undefined)){
+            currPlayer = currMatch.user.find(e=> e.name === data.name);
+            if (currPlayer === undefined) {
+                let user = {name: data.name , ready: false}
+                currMatch.user.push(user);
+            }           
+          }
+          else{
+            let match = { matchId: data.matchId, user: [{name: data.name, ready: false}]}
+            Matches.push(match)
+            //return "New match"
+          }
+          console.log(Matches);
+          currMatch = Matches.find(e=> e.matchId === data.matchId);
+
+          for(key in clients) {
+            clients[key].send(currMatch.user.length);
+          }          
+        }
+        
+      else if(data.type === "update"){
+  
+        currMatch = Matches.find(e=> e.matchId === data.matchId)
+        currPlayer = currMatch.user.find(e=> e.name === data.name)
+        currPlayer.ready = true
+        ready = true;
+        for(i = 0; i < currMatch.user.length; i++){
+          ready = (ready && currMatch.user[i].ready)
+        }
+
+        for(i = 0; i < Matches[0].user.length; i++){
+            console.log(Matches[0].user[i].ready);
+        }
+  
+        if(ready){
+            console.log("Everyone's ready");
+            for(key in clients) {
+                clients[key].sendUTF("Everyone Ready");
+              }
+
+        for(i = 0; i < currMatch.user.length; i++){
+            currMatch.user[i].ready = false
+            }
+            console.log(currMatch);
+        }
+    
+       }    
+      }
+    })
+  });

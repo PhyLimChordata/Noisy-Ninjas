@@ -1,4 +1,5 @@
 import React from 'react'
+import { getUsername } from '../../apiService';
 import '../../style/Popup.css'
 import { Popup } from './Popup'
 export function ClosablePopup(props) {

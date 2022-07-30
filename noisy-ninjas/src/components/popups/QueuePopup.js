@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../../style/Popup.css'
-import { ClosablePopup } from './ClosablePopup'
-
-import { useNavigate } from 'react-router'
-
 import { generateMatch } from '../../apiService'
+import {ClosablePopup} from "./ClosablePopup";
+import {useNavigate} from "react-router";
 
 export function QueuePopup(props) {
-  const { closeAction, role } = props
+  const {client, closeAction, role } = props
 
   const [timer, setTimer] = useState(0)
   const timerRef = useRef(timer)
@@ -27,18 +25,11 @@ export function QueuePopup(props) {
     timerRef.current = timer
   }, [timer])
 
-  const increment = () => {
-    setTimer(timerRef.current + 1)
-    // Check if everyone's ready
-    if (false) {
-      console.log('dasdas')
-      // START GAME
-    }
-  }
-
-  const navigate = useNavigate()
+  //MOVE
+  const navigate = useNavigate();
 
   useEffect(() => {
+      console.log("MADE IT");
     //TODO: Array of ninjas
     generateMatch("Andy", "Calvin").then((matchID) => {
             console.log(matchID);
@@ -49,6 +40,30 @@ export function QueuePopup(props) {
         });
   }, []);
   
+  const increment = () => {
+    setTimer(timerRef.current + 1)
+    // Check if everyone's ready
+
+    // if (false) {
+    //     console.log("dasdas")
+    //     // START GAME
+    //     //navigate to /game 
+    // }
+}
+
+const resetQueue = () => {
+    setNinja1(false);
+    setNinja2(false);
+    setNinja3(false);
+    setNinja4(false);
+    setMonster(false);
+}
+
+
+
+//TODO: client.onMessage -> read message -> read through the thing -> 
+client.onmessage = (message) => {
+}
 
   function formatTime(seconds) {
     // Hours, minutes and seconds

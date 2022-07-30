@@ -5,6 +5,8 @@ import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { QueuePopup } from '../components/popups/QueuePopup'
 import { useNavigate } from 'react-router'
 import { getUsername, signOut } from '../apiService'
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
   const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -13,6 +15,30 @@ export function Lobby() {
 
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
+
+const client = new W3CWebSocket('ws://localhost:8000');
+
+    const navigate = useNavigate();
+    const username = getUsername()
+    function toggleSignOutPopup() {
+        setSignOutPopup(!signOutPopup)
+    }
+    function toggleLobbyPopup() {
+        if (!lobbyPopup) {
+            client.send(JSON.stringify({
+                type: "enter",
+                name: getUsername() 
+              }));
+        } else {
+            client.send(JSON.stringify({
+                type: "leave",
+                name: getUsername() 
+              }));
+        }
+      
+        
+        setLobbyPopup(!lobbyPopup)
+    }
 
   const ninjaKeys = ['black', 'red', 'blue', 'green', 'pink']
   const ninja = {
@@ -28,14 +54,6 @@ export function Lobby() {
     draco: require('../assets/static/bosses/draco.png'),
     screamer: require('../assets/static/bosses/screamer.png'),
     tiny: require('../assets/static/bosses/tiny.png'),
-  }
-  const navigate = useNavigate()
-  const username = getUsername()
-  function toggleSignOutPopup() {
-    setSignOutPopup(!signOutPopup)
-  }
-  function toggleLobbyPopup() {
-    setLobbyPopup(!lobbyPopup)
   }
 
   useEffect(() => {
@@ -174,6 +192,7 @@ export function Lobby() {
       {/* TODO: Change role/skin?  */}
       {lobbyPopup && (
         <QueuePopup
+          client={client}
           closeAction={() => toggleLobbyPopup()}
           confirmText={'sign out'}
           title={'sign out'}
