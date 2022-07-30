@@ -512,6 +512,9 @@ wsServer.on('request', function (request) {
     const connection = request.accept(null, request.origin);
     clients[userID] = connection;
     console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
+
+    //Needs to make a random MatchID
+    //Send out the random matchID when everyones ready
   
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
@@ -528,26 +531,37 @@ wsServer.on('request', function (request) {
 
         //   for(key in clients) {
         //     clients[key].send(currMatch.user.length);
-        //   }        
-            player = Queue.find(e => e.name === data.name);
+        //   }      
+            player = Queue.find(e => e === data.name);
             console.log(player);
             if (player === undefined) {
                 return;
             }
             Queue.pop(player);
             console.log(Queue);
+            
+
         }
         
         if (data.type === "enter") {
-            player = Queue.find(e => e.name === data.name);
+            player = Queue.find(e => e === data.name);
             if (player === undefined) {
                 Queue.push(data.name);
             }
             console.log(Queue);
-            
+
+            console.log(userID);
             for(key in clients) {
-                clients[key].send("ok");
+                clients[key].send(JSON.stringify({queue: Queue}));
             }       
+        }
+
+        if(data.type === "matchFound"){ 
+            console.log(data.matchID);
+            for (key in clients) {
+                clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue}));
+            }
+            //remove them from the queue
         }
 
         if(data.type === "create"){

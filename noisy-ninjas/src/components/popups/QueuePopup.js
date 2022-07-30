@@ -28,17 +28,24 @@ export function QueuePopup(props) {
   //MOVE
   const navigate = useNavigate();
 
-  useEffect(() => {
-      console.log("MADE IT");
-    //TODO: Array of ninjas
-    generateMatch("Andy", "Calvin").then((matchID) => {
-            console.log(matchID);
-        navigate('/game', {
-            //   TODO: Fix this so that the group of ninjas and monster are given
-            state: { role: role, matchID: matchID },
-            })
-        });
-  }, []);
+//   client.onmessage = (message) => {
+//     //TODO: Array of ninjas
+//     generateMatch("Andy5", "Calvin").then((matchID) => {
+//         console.log(matchID);
+//     navigate('/game', {
+//         //   TODO: Fix this so that the group of ninjas and monster are given
+//         state: { role: role, matchID: matchID },
+//         })
+//     });
+// }
+
+
+//   useEffect(() => {
+//       console.log("MADE IT");
+    
+    
+   
+//   }, []);
   
   const increment = () => {
     setTimer(timerRef.current + 1)
@@ -57,12 +64,6 @@ const resetQueue = () => {
     setNinja3(false);
     setNinja4(false);
     setMonster(false);
-}
-
-
-
-//TODO: client.onMessage -> read message -> read through the thing -> 
-client.onmessage = (message) => {
 }
 
   function formatTime(seconds) {

@@ -219,8 +219,8 @@ let explosionLeft = function (x, y, n, map, effect) {
 
 let hexagonsInRadius = function (x, y, n, map, smallMap) {
     if (n === 0) {
-      console.log('OLD:')
-      console.log(smallMap)
+    //   console.log('OLD:')
+    //   console.log(smallMap)
       newmap = []
       let cor2 = Object.assign({}, map.map[`cor${x},${y}`])
   
@@ -233,11 +233,11 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
       //console.log(newmap.push(cor2))
   
       smallMap.push(cor2)
-      console.log('NEW:')
-      console.log(smallMap)
+    //   console.log('NEW:')
+    //   console.log(smallMap)
     } else {
       for (let i = 0; i <= n; i++) {
-        console.log('1:')
+        // console.log('1:')
   
         //let cor = Object.assign({}, person);
         let cor = Object.assign({}, map.map[`cor${x - i},${y - n}`])
@@ -253,12 +253,12 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.newCor = `cor${0 - i},${0 - n}`
           cor.x = `${x - i}`
           cor.y = `${y - n}`
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
       for (let i = 0; i <= n; i++) {
-        console.log('2:')
+        // console.log('2:')
   
         let cor = Object.assign({}, map.map[`cor${x + i},${y + n}`])
         if (cor === undefined) {
@@ -271,12 +271,12 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.oldCor = `cor${x + i},${y + n}`
           cor.x = `${x + i}`
           cor.y = `${y + n}`
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
       for (let i = 1; i <= n; i++) {
-        console.log('3:')
+        // console.log('3:')
   
         let cor = Object.assign({}, map.map[`cor${x + i},${y - n + i}`])
         if (cor === undefined) {
@@ -290,12 +290,12 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.x = `${x + i}`
           cor.y = `${y - n + i}`
   
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
       for (let i = 1; i < n; i++) {
-        console.log('4:')
+        // console.log('4:')
   
         let cor = Object.assign({}, map.map[`cor${x + n},${y + i}`])
         if (cor === undefined) {
@@ -309,12 +309,12 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.newCor = `cor${0 + n},${0 + i}`
           cor.x = `${x + n}`
           cor.y = `${y + i}`
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
       for (let i = 0; i < n; i++) {
-        console.log('5:')
+        // console.log('5:')
   
         let cor = Object.assign({}, map.map[`cor${x - n},${y - i}`])
         if (cor === undefined) {
@@ -327,12 +327,12 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.newCor = `cor${0 - n},${0 - i}`
           cor.x = `${x - n}`
           cor.y = `${y - i}`
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
       for (let i = 1; i < n; i++) {
-        console.log('6:')
+        // console.log('6:')
   
         let cor = Object.assign({}, map.map[`cor${x - n + i},${y + i}`])
         if (cor === undefined) {
@@ -345,7 +345,7 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
           cor.newCor = `cor${0 - n + i},${0 + i}`
           cor.x = `${x - n + i}`
           cor.y = `${y + i}`
-          console.log(cor)
+        //   console.log(cor)
           smallMap.push(cor)
         }
       }
@@ -355,7 +355,6 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
 
 
 router.post('/generate', function (req, res) {
-    console.log("OK");
     Map.findById(req.body.mapID).exec(function (err, map) {
         if (err) return res.status(500).end(err);
         User.findOne({ displayName: req.body.ninja }, function (err, ninja) {
@@ -394,8 +393,6 @@ router.post('/generate', function (req, res) {
             let monsters = []
             ninjas.push(ninja)
             monsters.push(monster)
-            console.log(ninja)
-            console.log(monster)
 
             
             randomneg1 =  (Math.random() * 100)
@@ -411,8 +408,8 @@ router.post('/generate', function (req, res) {
 
             map.map[`cor${randomx},${randomy}`].players.push(req.body.ninja);
             map.map[`cor20,19`].players.push(req.body.monster);
-            const newNinja = new Ninja({displayName: req.body.ninja, health: 10, x: randomx, y:randomy})  
-            const newMonster  = new Monster({displayName: req.body.monster, health: 10, x: 20, y:19})  
+            const newNinja = new Ninja({displayName: req.body.ninja, health: 3, x: randomx, y:randomy})  
+            const newMonster  = new Monster({displayName: req.body.monster, health: 5, x: 20, y:19})  
             newNinja.save(function(err, ninja){
                 if (err) return res.status(500).end(err);
                 newMonster.save(function(err, monster){
@@ -421,8 +418,7 @@ router.post('/generate', function (req, res) {
                         let monsters = [];
                         ninjas.push(ninja);
                         monsters.push(monster);
-                        // console.log(ninja);
-                        // console.log(monster);
+
                     const newMatch = new Match({matchMap: map,  matchNinjas: ninjas, matchMonsters: monsters});
                     newMatch.save(function(err, match){
                         if (err) return res.status(500).end(err);
@@ -447,7 +443,6 @@ router.get('/', function (req, res) {
 router.post('/ninjas', function (req, res) {
   Match.findById(req.body.matchID).exec(function (err, match) {
     if (err) return res.status(500).end(err)
-    console.log(match);
     return res.json(match.matchNinjas)
   })
 })
@@ -471,6 +466,22 @@ router.delete('/', function (req, res) {
     })
   })
 })
+
+router.delete('/all', function (req, res) {
+    Ninja.deleteMany({}, function (err) {
+        if (err) return res.status(500).end(err)
+    });
+
+    Monster.deleteMany({}, function (err) {
+        if (err) return res.status(500).end(err)
+    });
+
+    Match.deleteMany({}, function (err) {
+        if (err) return res.status(500).end(err)
+    });
+
+    return res.json("All Matches have been deleted")
+  })
 
 router.patch('/monsters/:player/health', function (req, res) {
   Match.findById(req.body.matchID).exec(function (err, match) {
@@ -671,7 +682,7 @@ router.patch('/move/:player', function (req, res) {
   Match.findById(req.body.matchID).exec(function (err, match) {
     if (err) return res.status(500).end(err)
 
-    console.log(match);
+    // console.log(match);
     map = match.matchMap
 
     cor1 = map.map[`cor${req.query.srcx},${req.query.srcy}`]

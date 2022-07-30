@@ -18,7 +18,7 @@ import {
 } from '../../apiService'
 
 export function HexagonGrid(props) {
-  const { client, matchID, role, mode, setMode, setTimer, POV, x, y, setHearts } = props
+  const { client, matchID, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
@@ -62,7 +62,10 @@ export function HexagonGrid(props) {
               setHearts(updated_health)
               if (updated_health === 0) {
                 setMode('dead')
+                setLive(false);
+                //TODO: Lose endpoint
                 setTimer(0)
+              
               }
             })
           }
@@ -75,8 +78,10 @@ export function HexagonGrid(props) {
               console.log(updated_health)
               setHearts(updated_health)
               if (updated_health === 0) {
-                setMode('ninjas won')
+                setMode('ninjas won');
+                setLive(false);
                 setTimer(0)
+                //Send to client to win all living ninjas
               }
             })
           }

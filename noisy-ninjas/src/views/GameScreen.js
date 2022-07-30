@@ -13,14 +13,13 @@ import {
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { useNavigate, useLocation } from 'react-router'
 
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-const client = new W3CWebSocket('ws://localhost:8000');
-
 export function GameScreen() {
-  const routeProps = useLocation().state
-  const matchID = routeProps.matchID
-  console.log("MATCH");
-  console.log(matchID);
+  const routeProps = useLocation().state;
+  const matchID = routeProps.matchID;
+  const client = routeProps.client
+
+  console.log(routeProps.role);
+
   const [role, setRole] = useState(
     routeProps.role.slice(-5, routeProps.role.length) === 'ninja'
       ? 'ninja'
@@ -37,7 +36,9 @@ export function GameScreen() {
   const summaryCharacter = require('../assets/static/bosses/draco.png')
   const elo = 30
   const eloDiff = 2
-  const isWin = false
+
+  const [live, setLive] = useState(true);
+  const [won, setWon] = useState(false);
 
   const [mode, setMode] = useState('move')
   const [loaded, setLoaded] = useState(false)
@@ -45,6 +46,7 @@ export function GameScreen() {
   const [timer, setTimer] = useState(5)
   const modeRef = useRef(mode)
   const timerRef = useRef(timer)
+  const liveRef = useRef(live);
 
   //TODO: Set hearts based on role
   const [hearts, setHearts] = useState(role === 'ninja' ? 3 : 5)
@@ -56,6 +58,10 @@ export function GameScreen() {
   useEffect(() => {
     modeRef.current = mode
   }, [mode])
+
+  useEffect (() => {
+    liveRef.current = live
+  }, [live]);
 
   useEffect(() => {
     setInterval(() => {
@@ -83,11 +89,11 @@ export function GameScreen() {
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
 
-          client.send(JSON.stringify({
-            type: "update",
-            matchId: "ok",
-            name: getUsername() 
-          }));
+          // client.send(JSON.stringify({
+          //   type: "update",
+          //   matchId: "ok",
+          //   name: getUsername() 
+          // }));
         } 
       } else if (timerRef.current > 0) {
         setTimer(timerRef.current - 1)
@@ -101,33 +107,31 @@ export function GameScreen() {
   const [y, setY] = useState(0)
 
   if (!loaded) {
-    client.onopen = () => {
-      console.log('WebSocket Client Connected');
-      client.send(JSON.stringify({
-        type: "create",
-        matchId: "ok",
-        name: getUsername() 
-      }));
-    };
+    // client.onopen = () => {
+    //   console.log('WebSocket Client Connected');
+    //   client.send(JSON.stringify({
+    //     type: "create",
+    //     matchId: "ok",
+    //     name: getUsername() 
+    //   }));
+    // };
 
-    client.onmessage = (message) => {
-      setTimer(5);
-      setMode("move");
-      // everybody's mode gets updated
-    };
+    // client.onmessage = (message) => {
+    //   setTimer(5);
+    //   setMode("move");
+    //   // everybody's mode gets updated
+    // };
     
     if (role === "ninja") {
       getNinjas(matchID).then((ninjas) => {
-        let live = false;
-  
-        ninjas.forEach((ninja) => {
-          if (ninja.health !== 0) {
-            live = true
-          }
 
+        ninjas.forEach((ninja) => {
+  
           if (ninja.displayName === getUsername()) {
+            if (ninja.health === 0) {
+              setLive(false);
+            }
             newPOV(matchID, ninja.x, ninja.y, 3).then((hexes) => {
-              console.log(hexes);
 
               hexes.forEach((hex) => {
                 grid[hex['newCor']] = hex
@@ -141,7 +145,7 @@ export function GameScreen() {
           }
         })
 
-        if (!live) {
+        if (!liveRef.current) {
           setMode('monster won')
           setTimer(0)
         } else {
@@ -183,40 +187,42 @@ export function GameScreen() {
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} client={client} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts}/>}
-    {/* <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
-                       title={
-                         <div className={"summary-title"}>
-                           {summaryTitle}
-                         </div>
-                       }
-                       cancelAction={() => console.log("SPECTATE")}
-                       modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
-                       backgroundStyle={{zIndex:999}}
-                       body={
-                         <div className={"summary-body"}>
-                           <img className={"summary-character"} src={summaryCharacter}
-                                alt={"summary-character"}/>
-                           <div className={"summary-elo-container"}>
-                             <div className={"summary-elo"}>
-                               elo: {elo}
-                             </div>
-                             {isWin ?
-                             <>
-                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow up"}/>
-                                 <div className={"summary-elo-diff green"}>
-                                   {eloDiff}
-                                 </div>
-                             </>:<>
-                                 <img src={require("../assets/static/triangle-right.png")} className={"summary-arrow down"}/>
-                                 <div className={"summary-elo-diff red"}>
-                                   {eloDiff}
-                                 </div>
-                               </>
-                             }
-                           </div>
-                         </div>
-                       }
-    /> */}
+      {loaded && <HexagonGrid matchID={matchID} 
+      // client={client} 
+      role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive}/>}
+      {!liveRef.current  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+                        title={
+                          <div className={"summary-title"}>
+                            {summaryTitle}
+                          </div>
+                        }
+                        cancelAction={() => console.log("SPECTATE")}
+                        modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
+                        backgroundStyle={{zIndex:999}}
+                        body={
+                          <div className={"summary-body"}>
+                            <img className={"summary-character"} src={summaryCharacter}
+                                  alt={"summary-character"}/>
+                            <div className={"summary-elo-container"}>
+                              <div className={"summary-elo"}>
+                                elo: {elo}
+                              </div>
+                              {won ?
+                              <>
+                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow up"}/>
+                                  <div className={"summary-elo-diff green"}>
+                                    {eloDiff}
+                                  </div>
+                              </>:<>
+                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow down"}/>
+                                  <div className={"summary-elo-diff red"}>
+                                    {eloDiff}
+                                  </div>
+                                </>
+                              }
+                            </div>
+                          </div>
+                        }
+       />}
   </div>
 }

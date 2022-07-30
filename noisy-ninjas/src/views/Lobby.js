@@ -4,8 +4,11 @@ import { Button } from '../components/Button'
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { QueuePopup } from '../components/popups/QueuePopup'
 import { useNavigate } from 'react-router'
-import { getUsername, signOut } from '../apiService'
+import { getUsername, signOut, generateMatch } from '../apiService'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+  
+export const client = new W3CWebSocket('ws://localhost:8000');
+
 
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
@@ -16,13 +19,40 @@ export function Lobby() {
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
 
-const client = new W3CWebSocket('ws://localhost:8000');
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+    client.onmessage = (message) => {
+        let parsedData = JSON.parse(message.data);
+        let queue = parsedData.queue;
+        let matchID = parsedData.matchID;
+
+        let inQueue = queue.find(e => e === getUsername());
+        let lastToJoin = queue[queue.length-1];
+
+        if (matchID && inQueue) {
+            navigate('/game', {
+                state: { role: skin, matchID: matchID },
+            });
+            //TODO: Fix queue length
+        } else if (inQueue && queue.length === 2 && lastToJoin === getUsername()) {
+            generateMatch("Andy5", "Calvin").then((matchID) => {
+                client.send(JSON.stringify({
+                    type: "matchFound",
+                    matchID: matchID
+                }));
+            });
+        } 
+    }
+
+
+
     const username = getUsername()
     function toggleSignOutPopup() {
         setSignOutPopup(!signOutPopup)
     }
+
+   
+
     function toggleLobbyPopup() {
         if (!lobbyPopup) {
             client.send(JSON.stringify({
