@@ -4,6 +4,8 @@ import { ClosablePopup } from './ClosablePopup'
 
 import { useNavigate } from 'react-router'
 
+import { generateMatch } from '../../apiService'
+
 export function QueuePopup(props) {
   const { closeAction, role } = props
 
@@ -36,9 +38,17 @@ export function QueuePopup(props) {
 
   const navigate = useNavigate()
 
-  navigate('/game', {
-    state: { role: role, matchID: '62e49294b71e21544876c1e1' },
-  })
+  useEffect(() => {
+    //TODO: Array of ninjas
+    generateMatch("Andy", "Calvin").then((matchID) => {
+            console.log(matchID);
+        navigate('/game', {
+            //   TODO: Fix this so that the group of ninjas and monster are given
+            state: { role: role, matchID: matchID },
+            })
+        });
+  }, []);
+  
 
   function formatTime(seconds) {
     // Hours, minutes and seconds

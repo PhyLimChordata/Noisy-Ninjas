@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
+import { useLocation } from 'react-router'
 
 import {
   movePlayer,

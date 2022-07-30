@@ -106,6 +106,12 @@ export function getUser(name) {
  *
  ************************************************************/
 
+export function generateMatch(ninjas, monster) {
+    return axios.post(`/match/generate`, {mapID: '62e4920a3c0f976c00ccfe53', ninja: ninjas, monster: monster}, {withCredentials: true }).then((res) => {
+        return res.data;
+    })
+}
+
 export function newPOV(matchID, x, y, radius) {
   return axios
     .post(

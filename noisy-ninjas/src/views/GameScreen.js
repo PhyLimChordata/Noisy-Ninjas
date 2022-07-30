@@ -16,6 +16,8 @@ import { useNavigate, useLocation } from 'react-router'
 export function GameScreen() {
   const routeProps = useLocation().state
   const matchID = routeProps.matchID
+  console.log("MATCH");
+  console.log(matchID);
   const [role, setRole] = useState(
     routeProps.role.slice(-5, routeProps.role.length) === 'ninja'
       ? 'ninja'
@@ -96,6 +98,8 @@ export function GameScreen() {
       getNinjas(matchID).then((ninjas) => {
         let live = false
 
+        console.log(ninjas);
+
         ninjas.forEach((ninja) => {
           if (ninja.health !== 0) {
             live = true
@@ -103,6 +107,8 @@ export function GameScreen() {
 
           if (ninja.displayName === getUsername()) {
             newPOV(matchID, ninja.x, ninja.y, 3).then((hexes) => {
+              console.log(hexes);
+
               hexes.forEach((hex) => {
                 grid[hex['newCor']] = hex
               })
