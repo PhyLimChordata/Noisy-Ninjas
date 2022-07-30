@@ -3,7 +3,7 @@ const Map = require('../schemas/map')
 
 const map = require('../function/map')
 
-router.post('/generate', map)
+router.post('/generate', map);
 
 router.get('/generate', function (req, res) {
   Map.findById(req.body.mapID).exec(function (err, map) {

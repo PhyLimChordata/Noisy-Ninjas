@@ -16,8 +16,6 @@ export function Overlay(props) {
       document.getElementById('move2').style.visibility = 'hidden'
       document.getElementById('move3').style.visibility = 'hidden'
       document.getElementById('move4').style.visibility = 'hidden'
-
-      console.log('FROM OVERLAY: ' + mode)
     }
   }
 
@@ -37,6 +35,7 @@ export function Overlay(props) {
       >
         <p>{role == 'ninja' ? 'Bomb' : 'Scream'}</p>
       </div>
+      {/* TODO: Clean up if not used */}
       {/* <div id="move3" className="move" onClick={() => finishAction("direction")}><p>Item</p></div>
     <div id="move4" className="move" onClick={() => finishAction("direction")}><p>Etc</p></div> */}
       <div id="timer">{timer}</div>

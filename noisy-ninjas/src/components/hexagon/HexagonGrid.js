@@ -27,7 +27,7 @@ export function HexagonGrid(props) {
       movePlayer(matchID, srcx, srcy, x, y).then(() => {
         if (role === 'ninja') {
           if (hexInfo.type.includes('scream')) {
-            ninjaHealth().then((updated_health) => {
+            ninjaHealth(matchID).then((updated_health) => {
               setHearts(updated_health)
               if (updated_health === 0) {
                 setMode('dead')
@@ -40,7 +40,7 @@ export function HexagonGrid(props) {
             hexInfo.type.includes('shuriken') ||
             hexInfo.type.includes('bomb')
           ) {
-            monsterHealth().then((updated_health) => {
+            monsterHealth(matchID).then((updated_health) => {
               console.log(updated_health)
               setHearts(updated_health)
               if (updated_health === 0) {
@@ -178,7 +178,7 @@ export function HexagonGrid(props) {
     } else {
       return false
     }
-    shuriken(dir, srcx, srcy, range)
+    shuriken(matchID, dir, srcx, srcy, range)
 
     updatePOV(srcx, srcy, 3)
 
@@ -205,7 +205,7 @@ export function HexagonGrid(props) {
       return false
     }
 
-    explosion(dir, srcx, srcy, range)
+    explosion(matchID, dir, srcx, srcy, range)
 
     return true
   }
@@ -226,7 +226,7 @@ export function HexagonGrid(props) {
     } else {
       return false
     }
-    echo(dir, srcx, srcy, range)
+    echo(matchID, dir, srcx, srcy, range)
 
     updatePOV(srcx, srcy, 3)
 
@@ -253,7 +253,7 @@ export function HexagonGrid(props) {
       return false
     }
 
-    scream(dir, srcx, srcy, range)
+    scream(matchID, dir, srcx, srcy, range)
 
     return true
   }

@@ -146,11 +146,11 @@ export function movePlayer(matchID, srcx, srcy, tarx, tary) {
     })
 }
 
-export function shuriken(direction, srcx, srcy, range) {
+export function shuriken(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
       `/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
-      { matchID: '62e1d410c37b4b1ca2c89f54', effect: 'shuriken' },
+      { matchID: matchID, effect: 'shuriken' },
       { withCredentials: true }
     )
     .then((res) => {
@@ -158,11 +158,11 @@ export function shuriken(direction, srcx, srcy, range) {
     })
 }
 
-export function explosion(direction, srcx, srcy, range) {
+export function explosion(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
       `/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
-      { matchID: '62e1d410c37b4b1ca2c89f54', effect: 'bomb' },
+      { matchID: matchID, effect: 'bomb' },
       { withCredentials: true }
     )
     .then((res) => {
@@ -170,11 +170,11 @@ export function explosion(direction, srcx, srcy, range) {
     })
 }
 
-export function echo(direction, srcx, srcy, range) {
+export function echo(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
       `/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
-      { matchID: '62e1d410c37b4b1ca2c89f54', effect: 'echo' },
+      { matchID: matchID, effect: 'echo' },
       { withCredentials: true }
     )
     .then((res) => {
@@ -182,11 +182,11 @@ export function echo(direction, srcx, srcy, range) {
     })
 }
 
-export function scream(direction, srcx, srcy, range) {
+export function scream(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
       `/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
-      { matchID: '62e1d410c37b4b1ca2c89f54', effect: 'scream' },
+      { matchID: matchID, effect: 'scream' },
       { withCredentials: true }
     )
     .then((res) => {
@@ -194,11 +194,11 @@ export function scream(direction, srcx, srcy, range) {
     })
 }
 
-export function ninjaHealth() {
+export function ninjaHealth(matchID) {
   return axios
     .patch(
       `/match/ninjas/${getUsername()}/health?damage=1`,
-      { matchID: '62e1d410c37b4b1ca2c89f54' },
+      { matchID: matchID },
       { withCredentials: true }
     )
     .then((res) => {
@@ -206,11 +206,11 @@ export function ninjaHealth() {
     })
 }
 
-export function monsterHealth() {
+export function monsterHealth(matchID) {
   return axios
     .patch(
       `/match/monsters/${getUsername()}/health?damage=1`,
-      { matchID: '62e1d410c37b4b1ca2c89f54' },
+      { matchID: matchID },
       { withCredentials: true }
     )
     .then((res) => {

@@ -37,7 +37,7 @@ export function QueuePopup(props) {
   const navigate = useNavigate()
 
   navigate('/game', {
-    state: { role: role, matchID: '62e1d410c37b4b1ca2c89f54' },
+    state: { role: role, matchID: '62e49294b71e21544876c1e1' },
   })
 
   function formatTime(seconds) {

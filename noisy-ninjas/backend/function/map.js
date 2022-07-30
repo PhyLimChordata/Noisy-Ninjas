@@ -789,7 +789,7 @@ module.exports = async (req, res) => {
         'cor4,23': { type: ['normal'], color: blue, players: [] },
         'cor5,23': { type: ['normal'], color: blue, players: [] },
         'cor6,23': { type: ['normal'], color: lightblue, players: [] },
-        'cor7,23': { type: ['normal'], color: green, players: [] },
+        'cor7,23': { type: ['normal'], color: yellow, players: [] },
         'cor8,23': { type: ['normal'], color: yellow, players: [] },
         'cor9,23': { type: ['normal'], color: yellow, players: [] },
         'cor10,23': { type: ['normal'], color: yellow, players: [] },
@@ -861,7 +861,7 @@ module.exports = async (req, res) => {
         'cor39,24': { type: ['normal'], color: lightgrey, players: [] },
         'cor40,24': { type: ['normal'], color: lightgrey, players: [] },
 
-        'cor6,24': { type: ['normal'], color: blue, players: [] },
+        'cor6,25': { type: ['normal'], color: blue, players: [] },
         'cor7,25': { type: ['normal'], color: lightblue, players: [] },
         'cor8,25': { type: ['normal'], color: yellow, players: [] },
         'cor9,25': { type: ['normal'], color: yellow, players: [] },
