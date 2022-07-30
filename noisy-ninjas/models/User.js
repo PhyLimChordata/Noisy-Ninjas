@@ -9,6 +9,7 @@ var User = new Schema({
   points: { type: Number, default: 0 },
   gamesPlayed: { type: Number, default: 0 },
   gamesWon: { type: Number, default: 0 },
+  beltRank: { type: String, default: "#FFFFFF"},
   hash: String,
 })
 

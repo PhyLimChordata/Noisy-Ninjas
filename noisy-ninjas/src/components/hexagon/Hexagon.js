@@ -31,9 +31,9 @@ export function Hexagon(props) {
             }
           : () => {}
       }
-      onMouseLeave={() => {
-        unhover(id, 3)
-      }}
+      onMouseLeave={unhover ? () => {
+        unhover(id, 3)} : () => {}
+      }
       style={backgroundColor ? {backgroundColor: backgroundColor} : {}}
     >
       <div className="background-hex">

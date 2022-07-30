@@ -249,24 +249,26 @@ app.patch("/api/users/:displayName/win", function (req, res) {
     User.findOne({displayName}, function (err, user) {
         if (err) return res.status(500).end(err);
         let newPoints = user.points + 5;
+        let gamesPlayed = user.gamesPlayed + 1;
+        let gamesWon = user.gamesWon + 1;
         let beltRank = "N/A";
         if (newPoints >= 121) {
-            beltRank = "black";
+            beltRank = "#2E2E2E";
         } else if (newPoints >= 76) {
-            beltRank = "red";
+            beltRank = "#B66200";
         } else if (newPoints >= 36) {
-            beltRank = "blue";
+            beltRank = "#3366BD";
         } else if (newPoints >= 21) {
-            beltRank = "green";
-        } else if (newPoints <= 11) {
-            beltRank = "yellow";
+            beltRank = "#3D8B00";
+        } else if (newPoints >= 11) {
+            beltRank = "#FFB800";
         } else {
-            beltRank = "white";
+            beltRank = "#FFFFFF";
         }
 
-        User.findOneAndUpdate({displayName}, {points: newPoints, beltRank: beltRank}).exec(function(err) {
+        User.findOneAndUpdate({displayName}, {points: newPoints, beltRank: beltRank, gamesPlayed: gamesPlayed, gamesWon: gamesWon }).exec(function(err, updatedUser) {
             if (err) return res.status(500).end(err);
-            return res.json({promoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + (user.points + 5) + " points. The user is a " + beltRank + " belt."});
+            return res.json({promoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + (user.points + 5) + " points. The user is a " + beltRank + " belt.", user: updatedUser});
         });
     });
 });
@@ -276,27 +278,33 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
     User.findOne({displayName}, function (err, user) {
         if (err) return res.status(500).end(err);
         let newPoints = 0;
-        if (user.points - 3 !== 0) {
+        let gamesPlayed = user.gamesPlayed + 1;
+        let beltRank = "N/A";
+
+        if (user.points - 3 > 0) {
             newPoints = user.points - 3;
+        }
+        else {
+            newPoints = 0;
         }
 
         if (newPoints <= 10) {
-            beltRank = "white";
+            beltRank = "#FFFFFF";
         } else if (newPoints <= 20) {
-            beltRank = "yellow";
+            beltRank = "#FFB800";
         } else if (newPoints <= 35) {
-            beltRank = "green";
+            beltRank = "#3DBB00";
         } else if (newPoints <= 75) {
-            beltRank = "blue";
+            beltRank = "#3366BD";
         } else if (newPoints <= 120) {
-            beltRank = "red";
+            beltRank = "#B66200";
         } else {
-            beltRank = "black";
+            beltRank = "#2E2E2E";
         }
 
-        User.findOneAndUpdate({displayName}, {points: newPoints}).exec(function(err) {
+        User.findOneAndUpdate({displayName}, {points: newPoints, gamesPlayed: gamesPlayed, beltRank: beltRank}).exec(function(err, updatedUser) {
             if (err) return res.status(500).end(err);
-            return res.json({demoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + newPoints + " points"});
+            return res.json({demoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + newPoints + " points", user: updatedUser});
         });
     });
 });
@@ -364,7 +372,7 @@ app.get('/signout/', function (req, res, next) {
               return res.status(409).end("displayName " + displayName + " already exists");
           bcrypt.hash(password, saltRounds, function (err, hash) {
               const ninja = "https://api.time.com/wp-content/uploads/2019/04/tyler-blevins-ninja-time-100-2019-002-1.jpg?quality=85&zoom=2"
-              const new_user = new User({googleID: "N/A",  displayName: req.body.displayName, imageURL: ninja, points: 5, beltRank: "white", hash: hash})
+              const new_user = new User({googleID: "N/A",  displayName: req.body.displayName, imageURL: ninja, points: 5, beltRank: "#FFFFFFF", hash: hash})
               new_user.save(function(err){
                       if (err) return res.status(500).end(err);
                       return res.json(displayName);
@@ -441,7 +449,8 @@ app.post('/signup/', function (req, res, next) {
         googleID: 'N/A',
         displayName: req.body.displayName,
         imageURL: ninja,
-        points: 0,
+        points: 5,
+        beltRank: "#FFFFFF",
         hash: hash,
       })
       new_user.save(function (err) {

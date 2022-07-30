@@ -51,11 +51,14 @@ export function Account() {
     getUserStats(username).then((res) => {
       setUserStats(res)
     })
+
+    getUser(getUsername()).then((user) => {
+        setBeltRank(user.beltRank);
+      });
   }, []);
 
-  getUser(getUsername()).then((user) => {
-    setBeltRank(user.beltRank);
-  });
+
+
 
   const { gamesWon, gamesPlayed, points } = userStats
 
