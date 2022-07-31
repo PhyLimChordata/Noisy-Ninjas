@@ -44,9 +44,9 @@ export function Lobby() {
     peer.on('call', (call) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ video:true, audio: true }, (mediaStream) => {
-        currentUserVideoRef.current.srcObject = mediaStream;
-        currentUserVideoRef.current.play();
+      getUserMedia({ video:true }, (mediaStream) => {
+        // currentUserVideoRef.current.srcObject = mediaStream;
+        // currentUserVideoRef.current.play();
         call.answer(mediaStream)
         call.on('stream', function(remoteStream) {
           remoteVideoRef.current.srcObject = remoteStream
@@ -61,10 +61,10 @@ export function Lobby() {
   const call = (remotePeerId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ video:true,  audio: true }, (mediaStream) => {
+    getUserMedia({ video:true }, (mediaStream) => {
 
-      currentUserVideoRef.current.srcObject = mediaStream;
-      currentUserVideoRef.current.play();
+    //   currentUserVideoRef.current.srcObject = mediaStream;
+    //   currentUserVideoRef.current.play();
 
       const call = peerInstance.current.call(remotePeerId, mediaStream)
 
@@ -164,14 +164,17 @@ export function Lobby() {
     <div className={'lobby-page'}>
       
       <div className={'title'}> Welcome {username}</div>
+        <div>
         <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
       <button onClick={() => call(remotePeerIdValue)}>Call</button>
       <div>
-        <video ref={currentUserVideoRef} />
+        {/* <video ref={currentUserVideoRef} /> */}
       </div>
       <div>
         <video ref={remoteVideoRef} />
       </div>
+        </div>
+        
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}
