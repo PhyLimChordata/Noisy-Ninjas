@@ -98,6 +98,8 @@ app.get(
   function (req, res) {
     // Successful authentication, redirect home.
     const displayName = req.user.displayName
+    console.log("HELLOOOOOO")
+    console.log(displayName);
     req.session.displayName = displayName
     res.setHeader(
       'Set-Cookie',

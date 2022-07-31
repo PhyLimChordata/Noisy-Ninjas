@@ -44,7 +44,7 @@ export function Lobby() {
     peer.on('call', (call) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ video:true }, (mediaStream) => {
+      getUserMedia({ video:true, audio:true }, (mediaStream) => {
         // currentUserVideoRef.current.srcObject = mediaStream;
         // currentUserVideoRef.current.play();
         call.answer(mediaStream)
@@ -61,7 +61,7 @@ export function Lobby() {
   const call = (remotePeerId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ video:true }, (mediaStream) => {
+    getUserMedia({ video:true, audio:true }, (mediaStream) => {
 
     //   currentUserVideoRef.current.srcObject = mediaStream;
     //   currentUserVideoRef.current.play();
