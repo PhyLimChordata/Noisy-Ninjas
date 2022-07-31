@@ -10,16 +10,16 @@ const mongoose = require('mongoose')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
 passport.serializeUser(function (user, done) {
-  console.log('serailize???')
-  console.log(user)
+  //console.log('serailize???')
+  //console.log(user)
 
   done(null, user)
 })
 
 passport.deserializeUser(function (username, done) {
-  console.log('there')
+  //console.log('there')
   User.findOne({ _id: username }, function (err, user) {
-    console.log('asdasd')
+    //console.log('asdasd')
 
     done(null, user)
   })
@@ -34,16 +34,22 @@ passport.use(
       callbackURL: 'http://localhost:5000/google/callback',
     },
     function (accessToken, refreshToken, profile, cb) {
+      console.log("111111")
       console.log(profile)
-      User.findOne({ googleId: profile.id }, function (err, user) {
+      console.log("111111231231231231")
+      console.log(profile.displayName)
+      User.findOne({ googleID: profile.displayName }, function (err, user) {
         console.log('GOT HERE')
-        console.log(user)
-        console.log(err)
+       console.log(user)
+       // console.log(err)
         if (err) return res.status(500).end(err)
-        console.log(user)
-        if (user) return cb(err, user)
+       // console.log(user)
+        if (user) {
+          //console.log(user);
+          return cb(err, user)
+        }
 
-        console.log(profile)
+       // console.log(profile)
         const new_user = new User({
           googleID: profile.id,
           displayName: profile.displayName,
@@ -51,10 +57,11 @@ passport.use(
           points: 0,
           hash: 'N/A',
         })
-        console.log('User:')
-        console.log(new_user)
+      //  console.log('User:')
+      //  console.log(new_user)
         new_user.save(function (err, newuser) {
           if (err) return res.status(500).end(err)
+         // console.log(new_user)
           return cb(err, newuser)
         })
       })
