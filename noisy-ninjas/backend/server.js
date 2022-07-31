@@ -510,7 +510,7 @@ const wsServer = new webSocketServer({
 // I'm maintaining all active connections in this object
 const clients = {};
 const Matches = [];
-const Queue = [];
+const Queue = [{ninja: [], monsters: []}];
 
 // This code generates unique userid for everyuser.
 const getUniqueID = () => {
@@ -547,19 +547,37 @@ wsServer.on('request', function (request) {
         //   for(key in clients) {
         //     clients[key].send(currMatch.user.length);
         //   }      
-            player = Queue.find(e => e.name === data.name);
-            console.log(player);
-            if (player === undefined) {
+        foundNinja = 0
+        for(i = 0; i< Queue.length; i++){
+          ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
+          if(ninjaPlayer){
+            foundNinja = i;
+          }
+        }
+
+        foundMonster = 0
+        for(i = 0; i< Queue.length; i++){
+          monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
+          if(monsterPlayer){
+            foundMonster = i;
+          }
+        }
+
+           
+          
+            
+            if ((foundNinja === 0) && (foundMonster === 0)) {
                 return;
             }
-
-            const index = Queue.indexOf(player);
+            else if(!(foundNinja === 0)){
+            const index = Queue[foundNinja].ninjas.indexOf(data.name);
+            Queue[foundNinja].ninjas.splice(index, 1);
+          }
+            else{
+              const index = Queue[foundMonster].monsters.indexOf(data.name);
+            Queue[foundMonster].monsters.splice(index, 1);
+            }
             
-
-            Queue.splice(index, 1);
-            console.log("New queue");
-            console.log(Queue);
-
             for(key in clients) {
                 clients[key].send(JSON.stringify({queue: Queue}));
             }   
@@ -568,24 +586,92 @@ wsServer.on('request', function (request) {
         }
         
         if (data.type === "enter") {
-            player = Queue.find(e => e.name === data.name);
-            if (player === undefined) {
-                Queue.push({name: data.name, skin: data.skin});
+          foundNinja = 0
+          for(i = 0; i< Queue.length; i++){
+            ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
+            if(ninjaPlayer){
+              foundNinja = foundNinja + 1;
             }
-            console.log(Queue);
+          }
 
-            console.log(userID);
+          foundMonster = 0
+          for(i = 0; i< Queue.length; i++){
+            monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
+            if(monsterPlayer){
+              foundMonster = foundMonster + 1;
+            }
+          }
+
+            
+            if ((ninjaPlayer === 0) || (monsterPlayer === 0)) {
+              if(["draco", "screamer", "tiny"].includes(data.skin)){
+                for(i = 0; i< Queue.length; i++){
+                if((Queue[i].monsters.length === 0) && (foundMonster === 0)) {
+                  Queue[i].monsters.push({name: data.name, skin: data.skin});
+                  foundMonster = 1;
+                }
+                }
+                if(foundMonster === 0){
+                  Queue.add({ninjas:[], monsters: [{name: data.name, skin: data.skin}]})
+                }
+              }
+                else{
+                  for(i = 0; i< Queue.length; i++){
+                    if((Queue[i].length <= 3) && (foundNinja === 0)) {
+                      Queue[i].ninjas.push({name: data.name, skin: data.skin});
+                      foundNinja = 1;
+                    }
+                    }
+                    if(foundNinja === 0){
+                      Queue.add({ninjas:[{name: data.name, skin: data.skin}], monsters: []})
+                    }
+                }
+            }
+           
             for(key in clients) {
-                clients[key].send(JSON.stringify({queue: Queue}));
+              
+                clients[key].send(JSON.stringify(Queue));
             }       
         }
 
         if(data.type === "matchFound"){ 
-            console.log(data.matchID);
-            for (key in clients) {
-                clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue}));
+          if(["draco", "screamer", "tiny"].includes(data.skin)){
+            for(i = 0; i < Queue.length; i++){
+              if(Queue[i].monsters.includes(data.name)){
+                for (key in clients) {
+                  clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
+              }
+                Queue.splice(i,1)
+
+              }
+
             }
-            //remove them from the queue
+
+          }
+          else{
+
+            for(i = 0; i < Queue.length; i++){
+              if(Queue[i].ninjas.includes(data.name)){
+                for (key in clients) {
+                  clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
+              }
+                Queue.splice(i,1)
+
+              }
+
+            }
+
+          }
+            // console.log(data.matchID);
+            // newQueue = {ninjas: [], monsters: []}
+            // for(i =0; i < 4; i++){
+            //   newQueue.ninjas.push(Queue.ninjas.shift())
+            // }
+            // newQueue.monsters.push(Queue.monsters.shift())
+            // for (key in clients) {
+            //     clients[key].send(JSON.stringify({matchID: data.matchID, queue: newQueue}));
+            // }
+            // //remove them from the queue
         }
 
         if(data.type === "create"){
@@ -631,7 +717,7 @@ wsServer.on('request', function (request) {
         if(ready){
             console.log("Everyone's ready");
             for(key in clients) {
-                clients[key].send("Everyone Ready");
+                clients[key].sendUTF("Everyone Ready");
               }
 
         for(i = 0; i < currMatch.user.length; i++){

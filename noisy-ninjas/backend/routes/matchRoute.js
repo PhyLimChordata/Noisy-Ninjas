@@ -396,6 +396,14 @@ router.post('/ninjas', function (req, res) {
   })
 })
 
+// router.post('/ninjas/:player', function (req, res) {
+//   Match.findById(req.body.matchID).exec(function (err, match) {
+//     if (err) return res.status(500).end(err)
+//     ninja = match.matchNinjas.find(e => e.displayName === req.params);
+//     return res.json(match.matchNinjas)
+//   })
+// })
+
 router.post('/monsters', function (req, res) {
   Match.findById(req.body.matchID).exec(function (err, match) {
     if (err) return res.status(500).end(err)
