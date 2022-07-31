@@ -510,7 +510,9 @@ const wsServer = new webSocketServer({
 // I'm maintaining all active connections in this object
 const clients = {};
 const Matches = [];
-const Queue = [{ninja: [], monsters: []}];
+const Queue = [{ninjas: [], monsters: []}];
+var monsterPlayers = 0;
+var ninjaPlayers = 0;
 
 // This code generates unique userid for everyuser.
 const getUniqueID = () => {
@@ -537,6 +539,36 @@ wsServer.on('request', function (request) {
         data = JSON.parse(message.utf8Data);
         
         if(data.type === "leave"){
+            if (["draco", "screamer", "tiny"].includes(data.skin)) {
+                for (i = 0; i < Queue.length; i++) {
+                    monsterPlayer = Queue[i].monsters.find(e => e.name === data.name);
+                    if (monsterPlayer) {
+                        index = Queue[i].monsters.indexOf(monsterPlayer);
+                        Queue[i].monsters.splice(index, 1);
+                        monsterPlayers--;
+
+                        if (Queue[i].ninjas.length === 0 && Queue[i].monsters.length === 0) {
+                            Queue.splice(i, 1);
+                        }
+                    }
+                }
+            } else {
+                for (i = 0; i < Queue.length; i++) {
+                    ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
+                    if (ninjaPlayer) {
+                        index = Queue[i].ninjas.indexOf(ninjaPlayer);
+                        Queue[i].ninjas.splice(index, 1);
+                        if (i > 0 && Queue[i].ninjas.length === 0 && Queue[i].monsters.length === 0) {
+                            Queue.splice(i, 1);
+                        }
+                    }
+                }
+            }
+
+            for(key in clients) {
+                clients[key].send(JSON.stringify({queue: Queue}));
+            }   
+           
         //     currMatch = Matches.find(e=> e.matchId === data.matchId)
 
         //     currPlayer = currMatch.user.find(e=> e.name === data.name);
@@ -547,86 +579,132 @@ wsServer.on('request', function (request) {
         //   for(key in clients) {
         //     clients[key].send(currMatch.user.length);
         //   }      
-        foundNinja = 0
-        for(i = 0; i< Queue.length; i++){
-          ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
-          if(ninjaPlayer){
-            foundNinja = i;
-          }
-        }
+        // foundNinja = 0
+        // for(i = 0; i< Queue.length; i++){
+        //   ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
+        //   if(ninjaPlayer){
+        //     foundNinja = i;
+        //   }
+        // }
 
-        foundMonster = 0
-        for(i = 0; i< Queue.length; i++){
-          monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
-          if(monsterPlayer){
-            foundMonster = i;
-          }
-        }
+        // foundMonster = 0
+        // for(i = 0; i< Queue.length; i++){
+        //   monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
+        //   if(monsterPlayer){
+        //     foundMonster = i;
+        //   }
+        // }
 
            
           
             
-            if ((foundNinja === 0) && (foundMonster === 0)) {
-                return;
-            }
-            else if(!(foundNinja === 0)){
-            const index = Queue[foundNinja].ninjas.indexOf(data.name);
-            Queue[foundNinja].ninjas.splice(index, 1);
-          }
-            else{
-              const index = Queue[foundMonster].monsters.indexOf(data.name);
-            Queue[foundMonster].monsters.splice(index, 1);
-            }
+        //     if ((foundNinja === 0) && (foundMonster === 0)) {
+        //         return;
+        //     }
+        //     else if(!(foundNinja === 0)){
+        //     const index = Queue[foundNinja].ninjas.indexOf(data.name);
+        //     Queue[foundNinja].ninjas.splice(index, 1);
+        //   }
+        //     else{
+        //       const index = Queue[foundMonster].monsters.indexOf(data.name);
+        //     Queue[foundMonster].monsters.splice(index, 1);
+        //     }
             
-            for(key in clients) {
-                clients[key].send(JSON.stringify({queue: Queue}));
-            }   
+
+        //     console.log(Queue);
+        //     for(key in clients) {
+        //         clients[key].send(JSON.stringify({queue: Queue}));
+        //     }   
             
 
         }
+
+        
         
         if (data.type === "enter") {
-          foundNinja = 0
-          for(i = 0; i< Queue.length; i++){
-            ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
-            if(ninjaPlayer){
-              foundNinja = foundNinja + 1;
+          if (["draco", "screamer", "tiny"].includes(data.skin)) {
+            for(i = 0; i< Queue.length; i++) {
+                if (Queue[i].monsters.length === 0) {
+                    Queue[i].monsters.push({name: data.name, skin: data.skin});
+                    q = Queue[i];
+
+                    Queue.push({ninjas:[], monsters: []})
+                    monsterPlayers++; 
+
+                    break;
+                }
+            }
+          } else {
+              console.log(monsterPlayers);
+            if (monsterPlayers > 0) {
+                for (i = 0; i<Queue.length; i++) {
+                    if (Queue[i].monsters.length == 1) {
+                        Queue[i].ninjas.push({name: data.name, skin: data.skin});
+                        q = Queue[i];
+                        console.log(q);
+                        break;
+                    }
+                }
+            } else {
+                for (i = 0; i<Queue.length; i++) {
+                    if (Queue[i].ninjas.length !== 4) {
+                        Queue[i].ninjas.push({name: data.name, skin: data.skin});
+                        q = Queue[i];
+                        break;
+                    }
+                }
             }
           }
 
-          foundMonster = 0
-          for(i = 0; i< Queue.length; i++){
-            monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
-            if(monsterPlayer){
-              foundMonster = foundMonster + 1;
-            }
-          }
+          for(key in clients) {
+            clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters}));
+          }       
 
             
-            if ((ninjaPlayer === 0) || (monsterPlayer === 0)) {
-              if(["draco", "screamer", "tiny"].includes(data.skin)){
-                for(i = 0; i< Queue.length; i++){
-                if((Queue[i].monsters.length === 0) && (foundMonster === 0)) {
-                  Queue[i].monsters.push({name: data.name, skin: data.skin});
-                  foundMonster = 1;
-                }
-                }
-                if(foundMonster === 0){
-                  Queue.add({ninjas:[], monsters: [{name: data.name, skin: data.skin}]})
-                }
-              }
-                else{
-                  for(i = 0; i< Queue.length; i++){
-                    if((Queue[i].length <= 3) && (foundNinja === 0)) {
-                      Queue[i].ninjas.push({name: data.name, skin: data.skin});
-                      foundNinja = 1;
-                    }
-                    }
-                    if(foundNinja === 0){
-                      Queue.add({ninjas:[{name: data.name, skin: data.skin}], monsters: []})
-                    }
-                }
-            }
+        //   foundNinja = 0
+        //   for(i = 0; i< Queue.length; i++){
+        //     ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
+        //     if(ninjaPlayer){
+        //       foundNinja = foundNinja + 1;
+        //     }
+        //   }
+
+        //   foundMonster = 0
+        //   for(i = 0; i< Queue.length; i++){
+        //     monsterPlayer = Queue[i].monsters.find(e => e.name === data.name);
+        //     if(monsterPlayer){
+        //       foundMonster = foundMonster + 1;
+        //     }
+        //   }
+
+            
+        //     // if ((ninjaPlayer === undefined) || (monsterPlayer === undefined)) {
+        //       if(["draco", "screamer", "tiny"].includes(data.skin)){
+        //         for(i = 0; i< Queue.length; i++){
+        //             if((Queue[i].monsters.length === 0) && (foundMonster === 0)) {
+        //             Queue[i].monsters.push({name: data.name, skin: data.skin});
+        //             foundMonster = 1;
+        //             }
+        //         }
+        //         if(foundMonster === 0){
+        //           Queue.add({ninjas:[], monsters: [{name: data.name, skin: data.skin}]})
+        //         }
+        //       }
+        //         else{
+        //           for(i = 0; i< Queue.length; i++){
+        //             if((Queue[i].length <= 3) && (foundNinja === 0)) {
+        //               Queue[i].ninjas.push({name: data.name, skin: data.skin});
+        //               foundNinja = 1;
+        //             }
+        //             }
+        //             if(foundNinja === 0){
+        //               Queue.push({ninjas:[{name: data.name, skin: data.skin}], monsters: []})
+        //             }
+        //         }
+        //     // }
+
+        //     console.log(Queue);
+
            
             for(key in clients) {
               
@@ -635,33 +713,48 @@ wsServer.on('request', function (request) {
         }
 
         if(data.type === "matchFound"){ 
-          if(["draco", "screamer", "tiny"].includes(data.skin)){
-            for(i = 0; i < Queue.length; i++){
-              if(Queue[i].monsters.includes(data.name)){
-                for (key in clients) {
-                  clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
-              }
-                Queue.splice(i,1)
 
-              }
-
+            console.log(data.queue);
+            Queue.pop({ninjas: data.ninjaQueue, monsters: data.monsterQueue});
+            if (Queue.length === 0) {
+                Queue.push({ninjas: [], monsters: []})
             }
+            console.log(Queue);
 
-          }
-          else{
+        for (key in clients) {
+            clients[key].send(JSON.stringify({matchID: data.matchID, ninjaQueue: data.ninjaQueue, monsterQueue: data.monsterQueue}));
+        }
 
-            for(i = 0; i < Queue.length; i++){
-              if(Queue[i].ninjas.includes(data.name)){
-                for (key in clients) {
-                  clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
-              }
-                Queue.splice(i,1)
 
-              }
+        //   if(["draco", "screamer", "tiny"].includes(data.skin)){
+        //     for(i = 0; i < Queue.length; i++){
+        //       if(Queue[i].monsters.includes(data.name)){
+        //         for (key in clients) {
+        //           clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
+        //       }
+        //         Queue.splice(i,1)
 
-            }
+        //       }
 
-          }
+        //     }
+
+        //   }
+        //   else{
+
+        //     for(i = 0; i < Queue.length; i++){
+        //       if(Queue[i].ninjas.includes(data.name)){
+        //         for (key in clients) {
+        //           clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
+        //       }
+        //         Queue.splice(i,1)
+
+        //       }
+
+        //     }
+
+        //   }
+
+
             // console.log(data.matchID);
             // newQueue = {ninjas: [], monsters: []}
             // for(i =0; i < 4; i++){

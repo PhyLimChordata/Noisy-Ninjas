@@ -5,7 +5,6 @@ import {ClosablePopup} from "./ClosablePopup";
 import {useNavigate} from "react-router";
 
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { set } from 'mongoose';
 
 export const client = new W3CWebSocket('ws://localhost:8000');
 
@@ -59,63 +58,70 @@ export function QueuePopup(props) {
   const navigate = useNavigate();
 
 client.onmessage = (message) => {
-
-    if (message.data === "Everyone's ready") {
-        return;
-    }
-
     let parsedData = JSON.parse(message.data);
-    let queue = parsedData.queue;
+
+    let ninjaQueue = parsedData.ninjaQueue;
+    let monsterQueue = parsedData.monsterQueue;
+
+    
     let matchID = parsedData.matchID;
 
-    let inQueue = queue.find(e => e.name === getUsername());
-    let lastToJoin = queue[queue.length-1].name;
 
-    if (matchID && inQueue) {
+    let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
+    let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
+
+    console.log(ninjaQueue.length);
+
+    let lastToJoin = "";
+    if (inNinjaQueue) {
+        lastToJoin = inNinjaQueue.name
+    }
+
+    if (matchID && (inNinjaQueue || inMonsterQueue)) {
         setMatchFound(matchID);
         
         navigate('/game', {
             state: { role: role, matchID: matchID },
         });
-    } else if (inQueue && queue.length === 2 && lastToJoin === getUsername()) {
+    } 
+    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
         generateMatch(["Andy5"], "Calvin").then((matchID) => {
             client.send(JSON.stringify({
                 type: "matchFound",
-                matchID: matchID
+                matchID: matchID,
+                ninjaQueue: ninjaQueue,
+                monsterQueue: monsterQueue
             }));
         });
     } 
 
-    //if there are no available matches
-    // create new match
-    // 
-
-    let monsterInQueue = queue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
-    if (monsterInQueue === undefined) {
-        setMonster1(false);
-    } else {
-        setMonster1(true);
-        setMonsterImage(monster[monsterInQueue.skin]);
-        queue.splice(queue.indexOf(monsterInQueue));
-    }
-
-    let ninjasInQueue = 0;
-    let ninjaArr = [[setNinja1, setNinja1Image], [setNinja2, setNinja2Image], [setNinja3, setNinja3Image], [setNinja4, setNinja4Image]];
+    // Update the queue popup
+    if (inNinjaQueue || inMonsterQueue) {
+        let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
+        if (monsterInQueue === undefined) {
+            setMonster1(false);
+        } else {
+            setMonster1(true);
+            setMonsterImage(monster[monsterInQueue.skin]);
+        }
     
-    while (queue.length > 0) {
-        let nextNinjaInQueue = queue.pop();
-
-        ninjaArr[ninjasInQueue][0](true);
-        ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
-        console.log(queue);
-        ninjasInQueue++;
+        let ninjasInQueue = 0;
+        let ninjaArr = [[setNinja1, setNinja1Image], [setNinja2, setNinja2Image], [setNinja3, setNinja3Image], [setNinja4, setNinja4Image]];
+        while (ninjaQueue.length > ninjasInQueue) {
+            let nextNinjaInQueue = ninjaQueue[ninjasInQueue]
+    
+            ninjaArr[ninjasInQueue][0](true);
+            ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
+            ninjasInQueue++;
+        }
+    
+        while (ninjasInQueue < ninjaArr.length) {
+            ninjaArr[ninjasInQueue][0](false);
+            ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
+            ninjasInQueue++;
+        }
     }
-
-    while (ninjasInQueue < ninjaArr.length) {
-        ninjaArr[ninjasInQueue][0](false);
-        ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
-        ninjasInQueue++;
-    }
+    
 }
   
   const increment = () => {

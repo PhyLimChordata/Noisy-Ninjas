@@ -41,7 +41,8 @@ export function Lobby() {
         } else {
             client.send(JSON.stringify({
                 type: "leave",
-                name: getUsername() 
+                name: getUsername(),
+                skin: skin
               }));
         }
       
