@@ -679,8 +679,7 @@ router.patch('/move/:player', function (req, res) {
 
         // console.log(cor2.players);
         
-        map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
-        map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
+        
         for(i=0; i<match.matchNinjas.length; i++){
             // console.log("SDIJMO");
 
@@ -706,6 +705,11 @@ router.patch('/move/:player', function (req, res) {
                 let newNinjas = match.matchNinjas;
                 newNinjas[i].x = req.query.tarx;
                 newNinjas[i].y = req.query.tary;
+                let index = cor1.players.indexOf(req.params.player)
+                cor1.players.splice(index, 1)
+                cor2.players.push(req.params.player)
+                map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
+                map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
             
                 Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: newNinjas}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
@@ -720,6 +724,11 @@ router.patch('/move/:player', function (req, res) {
         let newMonsters = match.matchMonsters;
         newMonsters[i].x = req.query.tarx;
         newMonsters[i].y = req.query.tary;
+        let index = cor1.players.indexOf(req.params.player)
+                cor1.players.splice(index, 1)
+                cor2.players.push(req.params.player)
+                map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
+                map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
         
         Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err)
