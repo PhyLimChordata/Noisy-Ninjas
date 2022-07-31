@@ -118,7 +118,7 @@ export function GameScreen() {
   }, [])
 
 
-  const [peerId, setPeerID] = useState(null);
+  const [peerID, setPeerID] = useState(null);
   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
   const remoteVideoRef = useRef(null);
   const currentUserVideoRef = useRef(null);
@@ -146,6 +146,8 @@ export function GameScreen() {
     })
 
     peerInstance.current = peer;
+
+    console.log(peerID);
   }, [])
 
   const call = (remotePeerId) => {
@@ -164,8 +166,6 @@ export function GameScreen() {
       });
     });
   }
-
-  console.log(peerId);
 
 
 

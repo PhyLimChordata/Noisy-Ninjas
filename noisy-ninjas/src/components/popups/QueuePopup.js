@@ -70,9 +70,9 @@ client.onmessage = (message) => {
     let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
     let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
 
-    console.log(ninjaQueue.length);
-
     let lastToJoin = "";
+
+    let ninjas = []
     if (inNinjaQueue) {
         lastToJoin = inNinjaQueue.name
     }
@@ -84,9 +84,12 @@ client.onmessage = (message) => {
             state: { role: role, matchID: matchID },
         });
     } 
-    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
-        //TODO: Change so its dynamic to ninjaQueue
-        generateMatch(["Andy5"], "Calvin").then((matchID) => {
+    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 2 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
+        ninjaQueue.forEach((ninja) => {
+            ninjas.push(ninja.name);
+        })
+
+        generateMatch(ninjas, monsterQueue[0].name).then((matchID) => {
             client.send(JSON.stringify({
                 type: "matchFound",
                 matchID: matchID,
@@ -96,9 +99,17 @@ client.onmessage = (message) => {
         });
     } 
 
+    console.log("hit");
+    console.log(ninjaQueue);
+    console.log(monsterQueue);
+    console.log(inNinjaQueue);
+    console.log(inMonsterQueue)
+
     // Update the queue popup
     if (inNinjaQueue || inMonsterQueue) {
         let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
+        console.log("Oh gawd")
+        console.log(monsterInQueue)
         if (monsterInQueue === undefined) {
             setMonster1(false);
         } else {

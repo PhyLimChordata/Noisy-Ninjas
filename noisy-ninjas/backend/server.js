@@ -545,9 +545,12 @@ wsServer.on('request', function (request) {
                         Queue[i].monsters.splice(index, 1);
                         monsterPlayers--;
 
+                        q = Queue[i]
+
                         if (Queue[i].ninjas.length === 0 && Queue[i].monsters.length === 0) {
                             Queue.splice(i, 1);
                         }
+                        break;
                     }
                 }
             } else {
@@ -556,15 +559,19 @@ wsServer.on('request', function (request) {
                     if (ninjaPlayer) {
                         index = Queue[i].ninjas.indexOf(ninjaPlayer);
                         Queue[i].ninjas.splice(index, 1);
+                        q = Queue[i];
                         if (i > 0 && Queue[i].ninjas.length === 0 && Queue[i].monsters.length === 0) {
                             Queue.splice(i, 1);
                         }
+                        break;
                     }
                 }
             }
 
+            console.log(q);
+
             for(key in clients) {
-                clients[key].send(JSON.stringify({queue: Queue}));
+                clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters}));
             }   
            
         //     currMatch = Matches.find(e=> e.matchId === data.matchId)
