@@ -37,9 +37,14 @@ export function HexagonGrid(props) {
   const processHP = (hex) => {
     console.log(hex);
     if (role === "ninja") {
-      if (hex["type"] && hex["type"][0] === "yell" || hex["type"][0] === "echo") {
+      if (hex["type"] && hex["type"][0] === "scream" || hex["type"][0] === "echo") {
         ninjaHealth(matchID).then((updated_health) => {
-          setHearts(updated_health)
+          if (updated_health < 0) {
+            setHearts(0);
+          } else {
+            setHearts(updated_health)
+          }
+           new Audio(require('../../assets/sound-effects/heart.wav')).play()
           if (updated_health === 0) {
             setMode('dead')
             setLive(false);
@@ -53,7 +58,13 @@ export function HexagonGrid(props) {
     else {
       if (hex["type"] && hex["type"][0] === "shuriken" || hex["type"][0] === "bomb") {
         monsterHealth(matchID).then((updated_health) => {
-          setHearts(updated_health)
+          if (updated_health < 0) {
+            setHearts(0);
+          } else {
+            setHearts(updated_health)
+          }
+          new Audio(require('../../assets/sound-effects/heart.wav')).play()
+
           if (updated_health === 0) {
             setMode('dead');
             setLive(false);
@@ -74,36 +85,7 @@ export function HexagonGrid(props) {
     }
     if (mode === 'move') {
       movePlayer(matchID, srcx, srcy, x, y).then(() => {
-        if (role === 'ninja') {
-          if (hexInfo.type.includes('scream')) {
-            ninjaHealth(matchID).then((updated_health) => {
-              setHearts(updated_health)
-              if (updated_health === 0) {
-                setMode('dead')
-                setLive(false);
-                //TODO: Lose endpoint
-                setTimer(0)
-              
-              }
-            })
-          }
-        } else {
-          if (
-            hexInfo.type.includes('shuriken') ||
-            hexInfo.type.includes('bomb')
-          ) {
-            monsterHealth(matchID).then((updated_health) => {
-              console.log(updated_health)
-              setHearts(updated_health)
-              if (updated_health === 0) {
-                setMode('ninjas won');
-                setLive(false);
-                setTimer(0)
-                //Send to client to win all living ninjas
-              }
-            })
-          }
-        }
+        processHP(hexInfo);
 
         updatePOV(x, y, 3)
         setTimer(5)
