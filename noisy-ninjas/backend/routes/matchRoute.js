@@ -355,82 +355,37 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
 
 
 router.post('/generate', function (req, res) {
-    Map.findById(req.body.mapID).exec(function (err, map) {
-        if (err) return res.status(500).end(err);
-        User.findOne({ displayName: req.body.ninja }, function (err, ninja) {
-            User.findOne({ displayName: req.body.monster }, function (err, monster) {
-            randomneg1 = Math.random() * 100
-            randomneg2 = Math.random() * 100
-            randomx = Math.floor(Math.random() * 10 + 2)
-            randomy = Math.floor(Math.random() * 10 + 2)
-            if (randomneg1 > 50) {
-                randomx = randomx * -1 + 12
-            }
-            if (randomneg2 > 50) {
-                randomy = randomy * -1 + 12
-            }
-            map.map[`cor${randomx},${randomy}`].players.push(req.body.ninja)
-            map.map[`cor20,19`].players.push(req.body.monster)
-
-            const newNinja = new Ninja({
-                displayName: req.body.ninja,
-                health: 3,
-                x: randomx,
-                y: randomy,
-            });
-            const newMonster = new Monster({
-                displayName: req.body.monster,
-                health: 5,
-                x: 20,
-                y: 19,
-            });
-
-        newNinja.save(function (err, ninja) {
-          if (err) return res.status(500).end(err)
-          newMonster.save(function (err, monster) {
-            if (err) return res.status(500).end(err)
-            let ninjas = []
-            let monsters = []
-            ninjas.push(ninja)
-            monsters.push(monster)
-
-            
-            randomneg1 =  (Math.random() * 100)
-            randomneg2 =  (Math.random() * 100)
-            randomx = Math.floor(Math.random() * 10 + 2); 
-            randomy = Math.floor(Math.random() * 10 + 2); 
-            if(randomneg1 > 50){
-                randomx = (randomx * -1) +12
-            }
-            if(randomneg2 > 50){
-                randomy = (randomy * -1) +12
-            }
-
-            map.map[`cor${randomx},${randomy}`].players.push(req.body.ninja);
-            map.map[`cor20,19`].players.push(req.body.monster);
-            const newNinja = new Ninja({displayName: req.body.ninja, health: 3, x: randomx, y:randomy})  
-            const newMonster  = new Monster({displayName: req.body.monster, health: 5, x: 20, y:19})  
-            newNinja.save(function(err, ninja){
+    Map
+    .findById(req.body.mapID)
+    .exec(function (err, map) {
+        if (err) return res.status(500).end(err); 
+        newNinjas = [];
+        for(i=0; i<req.body.ninjas.length; i++){
+          let randomneg1 =  (Math.random() * 100)
+          let randomneg2 =  (Math.random() * 100)
+          let randomx = Math.floor(Math.random() * 10 + 2); 
+          let randomy = Math.floor(Math.random() * 10 + 2); 
+          if(randomneg1 > 50){
+  
+              randomx = randomx  +12
+          }
+          if(randomneg2 > 50){
+              randomy = randomy + 12
+          }
+  
+  
+          map.map[`cor${randomx},${randomy}`].players.push(req.body.ninjas[i]);
+          newNinjas.push(new Ninja({displayName: req.body.ninjas[i], health: 3, x: randomx, y:randomy})  )
+        }
+        map.map[`cor20,19`].players.push(req.body.monster);
+        const newMonster  = new Monster({displayName: req.body.monster, health: 5, x: 20, y:19})  
+        const newMatch = new Match({matchMap: map,  matchNinjas: newNinjas, matchMonsters: [newMonster]});
+            newMatch.save(function(err, match){
                 if (err) return res.status(500).end(err);
-                newMonster.save(function(err, monster){
-                    if (err) return res.status(500).end(err);
-                        let ninjas = [];
-                        let monsters = [];
-                        ninjas.push(ninja);
-                        monsters.push(monster);
-
-                    const newMatch = new Match({matchMap: map,  matchNinjas: ninjas, matchMonsters: monsters});
-                    newMatch.save(function(err, match){
-                        if (err) return res.status(500).end(err);
-                        return res.json(match._id);
-                    });
-                });
+                return res.json(match._id);
             });
-          });
         });
-      })
-    })
-})
+   
 });
 
 router.get('/', function (req, res) {
@@ -455,16 +410,13 @@ router.post('/monsters', function (req, res) {
 })
 
 router.delete('/', function (req, res) {
-  Ninja.deleteOne({ displayName: req.body.ninjaName }, function (err) {
-    if (err) return res.status(500).end(err)
-    Monster.deleteOne({ displayName: req.body.monsterName }, function (err) {
-      if (err) return res.status(500).end(err)
+
+    
       Match.deleteOne({ _id: req.body.matchID }, function (err) {
         if (err) return res.status(500).end(err)
         res.json('Match has been deleted')
       })
-    })
-  })
+    
 })
 
 router.delete('/all', function (req, res) {
@@ -484,6 +436,23 @@ router.delete('/all', function (req, res) {
   })
 
 router.patch('/monsters/:player/health', function (req, res) {
+    Match
+  .findById(req.body.matchID)
+  .exec(function (err, match) {
+      if (err) return res.status(500).end(err);
+      newMonsters = match.matchMonsters
+      let updateIndex = newMonsters.findIndex(n => n.displayName === req.params.player)
+      var health = (newMonsters[updateIndex].health - parseInt(req.query.damage));
+      newMonsters[updateIndex].health = health;
+
+          Match.findByIdAndUpdate(req.body.matchID, {matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
+          if (err) return res.status(500).end(err);
+          return res.json(health);
+        });
+
+    });
+    
+    /*
   Match.findById(req.body.matchID).exec(function (err, match) {
     if (err) return res.status(500).end(err)
 
@@ -513,9 +482,24 @@ router.patch('/monsters/:player/health', function (req, res) {
       )
     })
   })
+  */
 })
 
 router.patch('/ninjas/:player/health', function (req, res) {
+    Match.findById(req.body.matchID).exec(function (err, match) {
+        if (err) return res.status(500).end(err)
+        newNinjas = match.matchNinjas
+        let updateIndex = newNinjas.findIndex(n => n.displayName === req.params.player)
+        var health = (newNinjas[updateIndex].health - parseInt(req.query.damage));
+        newNinjas[updateIndex].health = health;
+        Match.findByIdAndUpdate(req.body.matchID, {matchNinjas: newNinjas}, {new: true}, function (err, newmatch) {
+            if (err) return res.status(500).end(err);
+            return res.json(health);
+        });
+
+    });
+
+    /*
   Match.findById(req.body.matchID).exec(function (err, match) {
     if (err) return res.status(500).end(err)
 
@@ -545,6 +529,7 @@ router.patch('/ninjas/:player/health', function (req, res) {
       )
     })
   })
+  */
 })
 
 //sample call 'map/source?x=2&y=2&radius=2
@@ -718,37 +703,31 @@ router.patch('/move/:player', function (req, res) {
       // console.log(req.query.srcy);
 
         if(match.matchNinjas[i].displayName == req.params.player){
-            Ninja.findOneAndUpdate({displayName: req.params.player}, {x: req.query.tarx, y: req.query.tary}, {new: true}, function(err, newninja){
-                if (err) return res.status(500).end(err);
-                // console.log(newninja)
-                Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: [newninja]}, {new: true}, function (err, newmatch) {
+                let newNinjas = match.matchNinjas;
+                newNinjas[i].x = req.query.tarx;
+                newNinjas[i].y = req.query.tary;
+            
+                Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: newNinjas}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
     
                 return res.json(newmatch);
               }  );
-            });
+           
         }
     }
     for (i = 0; i < match.matchMonsters.length; i++) {
       if (match.matchMonsters[i].displayName == req.params.player) {
-        Monster.findOneAndUpdate(
-          { displayName: req.params.player },
-          { x: req.query.tarx, y: req.query.tary },
-          { new: true },
-          function (err, newmonster) {
-            if (err) return res.status(500).end(err)
-            Match.findByIdAndUpdate(
-              req.body.matchID,
-              { matchMap: map, matchMonsters: [newmonster] },
-              { new: true },
-              function (err, newmatch) {
+        let newMonsters = match.matchMonsters;
+        newMonsters[i].x = req.query.tarx;
+        newMonsters[i].y = req.query.tary;
+        
+        Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err)
 
                 return res.json(newmatch)
               }
             )
-          }
-        )
+          
       }
     }
     /*

@@ -319,6 +319,21 @@ app.get('/signout/', function(req, res, next){
     return res.json({});
 });
 
+app.patch("/api/users/:displayName/matchId",  function (req, res) {
+    const displayName = req.params.displayName
+    const newMatchId = req.body.matchId;
+    if (!('matchID' in req.body)) return res.status(400).end('matchID is missing');
+
+            User
+                .findOneAndUpdate({displayName},  {matchId: newMatchId}, {new: true})
+                .exec(function (err) {
+                    if (err) return res.status(500).end(err);
+                    return res.json(newMatchId);
+                });
+
+});
+
+
 app.patch('/api/users/:displayName/username', hasAccess, function (req, res) {
   const displayName = req.params.displayName
   const newName = req.body.username
