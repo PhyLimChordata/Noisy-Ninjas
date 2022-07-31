@@ -28,55 +28,54 @@ export function Lobby() {
   const navigate = useNavigate();
 
    
-  const peer = new Peer("1");
-    // You can pick your own id or omit the id if you want to get a random one from the server.
-    const conn = peer.connect("1");
+  const [peerId, setPeerID] = useState(null);
+  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
+  const remoteVideoRef = useRef(null);
+  const currentUserVideoRef = useRef(null);
+  const peerInstance = useRef(null);
 
+  useEffect(() => {
+    const peer = new Peer();
 
-    conn.on("open", () => {
-        conn.send("hi!");
+    peer.on('open', (id) => {
+      setPeerID(id)
     });
 
-    //establishes connection with another peer
-    peer.on("connection", (conn) => {
-        conn.on("data", (data) => {
-            // Will print 'hi!'
-            console.log(data);
+    peer.on('call', (call) => {
+      var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+      getUserMedia({ video:true, audio: true }, (mediaStream) => {
+        currentUserVideoRef.current.srcObject = mediaStream;
+        currentUserVideoRef.current.play();
+        call.answer(mediaStream)
+        call.on('stream', function(remoteStream) {
+          remoteVideoRef.current.srcObject = remoteStream
+          remoteVideoRef.current.play();
         });
-        conn.on("open", () => {
-            conn.send("hello!");
-        });
+      });
+    })
+
+    peerInstance.current = peer;
+  }, [])
+
+  const call = (remotePeerId) => {
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    getUserMedia({ video:true,  audio: true }, (mediaStream) => {
+
+      currentUserVideoRef.current.srcObject = mediaStream;
+      currentUserVideoRef.current.play();
+
+      const call = peerInstance.current.call(remotePeerId, mediaStream)
+
+      call.on('stream', (remoteStream) => {
+        remoteVideoRef.current.srcObject = remoteStream
+        remoteVideoRef.current.play();
+      });
     });
+  }
 
-
-    navigator.mediaDevices.getUserMedia(
-        { audio: true },
-        (stream) => {
-            const call = peer.call("1", stream);
-            call.on("stream", (remoteStream) => {
-                // Show stream in some <video> element.
-            });
-        },
-        (err) => {
-            console.error("Failed to get local stream", err);
-        },
-    );
-
-    peer.on("call", (call) => {
-        navigator.mediaDevices.getUserMedia(
-            { audio: true },
-            (stream) => {
-                call.answer(stream); // Answer the call with an A/V stream.
-                call.on("stream", (remoteStream) => {
-                    // Show stream in some <video> element.
-                });
-            },
-            (err) => {
-                console.error("Failed to get local stream", err);
-            },
-        );
-    });
-
+  console.log(peerId);
 
     const username = getUsername()
     function toggleSignOutPopup() {
@@ -163,7 +162,16 @@ export function Lobby() {
   }
   return (
     <div className={'lobby-page'}>
+      
       <div className={'title'}> Welcome {username}</div>
+        <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
+      <button onClick={() => call(remotePeerIdValue)}>Call</button>
+      <div>
+        <video ref={currentUserVideoRef} />
+      </div>
+      <div>
+        <video ref={remoteVideoRef} />
+      </div>
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}

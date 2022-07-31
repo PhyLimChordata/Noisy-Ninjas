@@ -85,6 +85,7 @@ client.onmessage = (message) => {
         });
     } 
     else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
+        //TODO: Change so its dynamic to ninjaQueue
         generateMatch(["Andy5"], "Calvin").then((matchID) => {
             client.send(JSON.stringify({
                 type: "matchFound",
