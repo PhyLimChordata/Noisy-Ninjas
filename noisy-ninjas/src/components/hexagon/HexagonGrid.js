@@ -14,13 +14,15 @@ import {
   monsterHealth,
   getNinjas,
   getUsername,
-  getMonsters,
+  winPoints, 
+  losePoints
+
 } from '../../apiService'
 
 import { client } from '../popups/QueuePopup'
 
 export function HexagonGrid(props) {
-  const { matchID, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive } = props
+  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, setSummaryCharacter } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
@@ -35,7 +37,6 @@ export function HexagonGrid(props) {
   };
   
   const processHP = (hex) => {
-    console.log(hex);
     if (role === "ninja") {
       if (hex["type"] && hex["type"][0] === "scream" || hex["type"][0] === "echo") {
         ninjaHealth(matchID).then((updated_health) => {
@@ -46,10 +47,7 @@ export function HexagonGrid(props) {
           }
            new Audio(require('../../assets/sound-effects/heart.wav')).play()
           if (updated_health === 0) {
-            setMode('dead')
-            setLive(false);
-
-            //TODO: Lose endpoint
+            lose();
             setTimer(0)
           }
       })
@@ -66,11 +64,9 @@ export function HexagonGrid(props) {
           new Audio(require('../../assets/sound-effects/heart.wav')).play()
 
           if (updated_health === 0) {
-            setMode('dead');
-            setLive(false);
-
+            
+            lose();
             //Award ninjas the win
-            //TODO: Lose endpoint
             setTimer(0);
           }
         })
@@ -78,6 +74,31 @@ export function HexagonGrid(props) {
   }
 };
 
+const lose = () => {
+  setMode('dead')
+  setLive(false);
+  setWon(false);
+  setSummaryTitle("You died");
+  losePoints().then((res) => {
+    if (res.demoted) {
+      console.log("demoted");
+    }
+    setElo(res.user.points);
+  })
+}
+
+const win = () => {
+  setMode('win')
+  setLive(false);
+  setWon(true);
+  setSummaryTitle("You Won!");
+  winPoints().then((res) => {
+    if(res.promoted) {
+      console.log("Promoted")
+    }
+    setElo(res.user.points);
+  })
+}
 
   const update = (x, y, direction, hexInfo) => {
     if (!hexInfo.type) {
@@ -85,8 +106,8 @@ export function HexagonGrid(props) {
     }
     if (mode === 'move') {
       movePlayer(matchID, srcx, srcy, x, y).then(() => {
-        processHP(hexInfo);
 
+        //processHP(hexinfo)
         updatePOV(x, y, 3)
         setTimer(5)
         setSrcX(x)

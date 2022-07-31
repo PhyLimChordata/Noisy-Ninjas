@@ -15,6 +15,8 @@ import { useNavigate, useLocation } from 'react-router'
 
 import {client} from '../components/popups/QueuePopup';
 
+import { Hexagon } from '../components/hexagon/Hexagon'
+
 export function GameScreen() {
   const routeProps = useLocation().state;
   const matchID = routeProps.matchID;
@@ -26,18 +28,28 @@ export function GameScreen() {
   )
   const [routeRole, setRouteRole] = useState(routeProps.role)
 
-  const [summaryPopup, setSummaryPopup] = useState(false)
 
   const navigate = useNavigate()
 
-  const summaryTitle = 'monster won'
-  // TODO: Make it change based on whats selected
-  const summaryCharacter = require('../assets/static/bosses/draco.png')
-  const elo = 30
-  const eloDiff = 2
+  const ninja = {
+    "black-ninja": require('../assets/static/lobby/ninjas/black-ninja.png'),
+    "red-ninja": require('../assets/static/lobby/ninjas/red-ninja.png'),
+    "blue-ninja": require('../assets/static/lobby/ninjas/blue-ninja.png'),
+    "green-ninja": require('../assets/static/lobby/ninjas/green-ninja.png'),
+    "pink-ninja": require('../assets/static/lobby/ninjas/pink-ninja.png'),
+  }
 
+  const monster = {
+    draco: require('../assets/static/bosses/draco.png'),
+    screamer: require('../assets/static/bosses/screamer.png'),
+    tiny: require('../assets/static/bosses/tiny.png'),
+  }
+
+  const [summaryCharacter, setSummaryCharacter] = useState(role === 'ninja' ? ninja[routeRole] : monster[routeRole]);
+  const [elo, setElo] = useState(0);
   const [live, setLive] = useState(true);
   const [won, setWon] = useState(false);
+  const [summaryTitle, setSummaryTitle] = useState("monster won");
 
   const [mode, setMode] = useState('move')
   const [loaded, setLoaded] = useState(false)
@@ -47,8 +59,9 @@ export function GameScreen() {
   const timerRef = useRef(timer)
   const liveRef = useRef(live);
 
-  //TODO: Set hearts based on role
   const [hearts, setHearts] = useState(role === 'ninja' ? 3 : 5)
+
+
 
   useEffect(() => {
     timerRef.current = timer
@@ -67,6 +80,7 @@ export function GameScreen() {
       if (
         timerRef.current === 0 &&
         modeRef.current !== 'wait' &&
+        modeRef.current !== 'win' &&
         modeRef.current !== 'dead' &&
         modeRef.current !== 'monster won' &&
         modeRef.current !== 'ninjas won'
@@ -177,8 +191,8 @@ export function GameScreen() {
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive}/>}
-      {!liveRef.current  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
+      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} setSummaryCharacter={setSummaryCharacter}/>}
+      {!live  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                         title={
                           <div className={"summary-title"}>
                             {summaryTitle}
@@ -199,12 +213,12 @@ export function GameScreen() {
                               <>
                                   <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow up"}/>
                                   <div className={"summary-elo-diff green"}>
-                                    {eloDiff}
+                                    5
                                   </div>
                               </>:<>
                                   <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow down"}/>
                                   <div className={"summary-elo-diff red"}>
-                                    {eloDiff}
+                                    3
                                   </div>
                                 </>
                               }

@@ -200,6 +200,7 @@ export function scream(matchID, direction, srcx, srcy, range) {
     })
 }
 
+//TODO: rename
 export function ninjaHealth(matchID) {
   return axios
     .patch(
@@ -224,6 +225,30 @@ export function monsterHealth(matchID) {
     })
 }
 
+export function winPoints() {
+    return axios
+    .patch(
+      `/api/users/${getUsername()}/win`,
+      {},
+      { withCredentials: true }
+    )
+    .then((res) => {
+      return res.data
+    })
+
+}
+
+export function losePoints() {
+    return axios
+    .patch(
+      `/api/users/${getUsername()}/lose`,
+      {},
+      { withCredentials: true }
+    )
+    .then((res) => {
+      return res.data
+    })
+}
 /************************************************************
  *
  *  Rankings *

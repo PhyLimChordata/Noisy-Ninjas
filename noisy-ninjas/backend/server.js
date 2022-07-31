@@ -819,7 +819,20 @@ wsServer.on('request', function (request) {
             console.log(currMatch);
         }
     
-       }    
+       
+    
+    }
+    // else if (data.type === "death") {
+    //     currMatch = Matches.find(e => e.matchId === data.matchId)
+    //     currPlayer = currMatch.user.find(e=>e.name === data.name);
+        
+    //     currMatch.user.pop(currPlayer);
+    //     if (currMatch.user.length === 0) {
+    //         for (key in clients) {
+    //             clients[key].send("Monster won")
+    //         }
+    //     }
+    // }    
       }
     })
   });
