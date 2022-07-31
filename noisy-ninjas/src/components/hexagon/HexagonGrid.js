@@ -17,43 +17,61 @@ import {
   getMonsters,
 } from '../../apiService'
 
+import { client } from '../popups/QueuePopup'
+
 export function HexagonGrid(props) {
-  const { client, matchID, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive } = props
+  const { matchID, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
 
-  // client.onmessage = (message) => {
-  //   if (role !== "ninja") {
-  //     getMonsters().then((monsters) => {
-  //       monsters.forEach((monster) => {
-  //         if (monster.displayName === getUsername()) {
-  //           setMode("move");
-  //           updatePOV(srcx, srcy, 3);
-  //           setTimer(5);
-  //         }
-  //       })
-  //     });
-  //   } else {
-  //     getNinjas().then((ninjas) => {
-  //       ninjas.forEach((ninja) => {
-  //         if (ninja.displayName === getUsername()) {
-  //           if (ninja.health !== 0) {
-  //             setMode("move");
-  //             updatePOV(srcx, srcy, 3);
-        
-  //             console.log(mode);
-  //             setTimer(5);
-  //           }
-  //         }
-  //       })
-  //     });
-  //   }
- 
-  //   updatePOV(srcx, srcy, 3);
-  // }
+  client.onmessage = (message) => {
+    if (message.data === "Everyone Ready") {
+      //Consider health
+      updatePOV(srcx,srcy, 3);
+      setTimer(5);
+      setMode("move");
+    }
+  };
+  
+  const processHP = (hex) => {
+    console.log(hex);
+    if (role === "ninja") {
+      if (hex["type"] && hex["type"][0] === "yell" || hex["type"][0] === "echo") {
+        ninjaHealth(matchID).then((updated_health) => {
+          setHearts(updated_health)
+          if (updated_health === 0) {
+            setMode('dead')
+            setLive(false);
+
+            //TODO: Lose endpoint
+            setTimer(0)
+          }
+      })
+    }
+  }
+    else {
+      if (hex["type"] && hex["type"][0] === "shuriken" || hex["type"][0] === "bomb") {
+        monsterHealth(matchID).then((updated_health) => {
+          setHearts(updated_health)
+          if (updated_health === 0) {
+            setMode('dead');
+            setLive(false);
+
+            //Award ninjas the win
+            //TODO: Lose endpoint
+            setTimer(0);
+          }
+        })
+    }
+  }
+};
+
 
   const update = (x, y, direction, hexInfo) => {
+    if (!hexInfo.type) {
+      return;
+    }
     if (mode === 'move') {
       movePlayer(matchID, srcx, srcy, x, y).then(() => {
         if (role === 'ninja') {
@@ -91,19 +109,20 @@ export function HexagonGrid(props) {
         setTimer(5)
         setSrcX(x)
         setSrcY(y)
+        updateMode()
       })
     }
 
     if (mode === 'direction-S') {
       setTimer(5)
       if (role === 'ninja') {
-        if (!throwShuriken(3, direction)) {
-          return
-        }
+        throwShuriken(3, direction).then(() => {
+          updateMode()
+        })
       } else {
-        if (!yellEcho(6, direction)) {
-          return
-        }
+        yellEcho(6, direction).then(() => {
+        updateMode()
+      })
       }
     }
 
@@ -111,21 +130,19 @@ export function HexagonGrid(props) {
       setTimer(5)
 
       if (role === 'ninja') {
-        if (!throwBomb(3, direction)) {
-          return
-        }
+        throwBomb(3, direction).then(() => {
+          updateMode()
+        })
       } else {
-        if (!yellScream(6, direction)) {
-          return
-        }
+        yellScream(6, direction).then(() => {
+          updateMode()
+        })
       }
     }
-    updateMode()
   }
 
   const updateMode = () => {
     if (mode === 'dead') {
-      console.log('MONSTER WON');
       getNinjas(matchID).then((ninjas) => {
         let live = false
         ninjas.forEach((ninja) => {
@@ -145,13 +162,13 @@ export function HexagonGrid(props) {
       document.getElementById("move2").style.visibility = "visible";
     } else if (mode === "direction-S" || mode === "direction-E" || mode === "direction") {
       setMode("wait");
-      console.log(mode);
+      setTimer(0);
+
       client.send(JSON.stringify({
         type: "update",
-        matchId: "ok",
+        matchId: matchID,
         name: getUsername()
       }));
-      setTimer(0);
     }
   }
 
@@ -165,7 +182,12 @@ export function HexagonGrid(props) {
     newPOV(matchID, x, y, radius).then((hexes) => {
       hexes.forEach((hex) => {
         grid[hex['newCor']] = hex
+        if (hex['newCor'] === "cor0,0") {
+          processHP(hex);
+        }
       })
+
+      // print mydict.keys()[mydict.values().index(16)]
       setType(grid)
     })
   }
@@ -173,7 +195,6 @@ export function HexagonGrid(props) {
   const throwShuriken = (range = 0, direction) => {
     let dir = 'up'
     let dirLetter = direction.slice(2, direction.length - 1)
-    console.log(dirLetter)
 
     if (dirLetter == 'U') {
       dir = 'up'
@@ -186,11 +207,7 @@ export function HexagonGrid(props) {
     } else {
       return false
     }
-    shuriken(matchID, dir, srcx, srcy, range)
-
-    updatePOV(srcx, srcy, 3)
-
-    return true
+    return shuriken(matchID, dir, srcx, srcy, range)
   }
 
   const throwBomb = (range = 0, direction) => {
@@ -213,15 +230,12 @@ export function HexagonGrid(props) {
       return false
     }
 
-    explosion(matchID, dir, srcx, srcy, range)
-
-    return true
+    return explosion(matchID, dir, srcx, srcy, range)
   }
 
   const yellEcho = (range = 0, direction) => {
     let dir = 'up'
     let dirLetter = direction.slice(2, direction.length - 1)
-    console.log(dirLetter)
 
     if (dirLetter == 'U') {
       dir = 'up'
@@ -234,11 +248,8 @@ export function HexagonGrid(props) {
     } else {
       return false
     }
-    echo(matchID, dir, srcx, srcy, range)
 
-    updatePOV(srcx, srcy, 3)
-
-    return true
+    return echo(matchID, dir, srcx, srcy, range)
   }
 
   const yellScream = (range = 0, direction) => {
@@ -261,9 +272,7 @@ export function HexagonGrid(props) {
       return false
     }
 
-    scream(matchID, dir, srcx, srcy, range)
-
-    return true
+    return scream(matchID, dir, srcx, srcy, range)
   }
 
   let showDirection = (id, range) => {

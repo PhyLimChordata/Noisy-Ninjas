@@ -631,7 +631,7 @@ wsServer.on('request', function (request) {
         if(ready){
             console.log("Everyone's ready");
             for(key in clients) {
-                clients[key].sendUTF("Everyone Ready");
+                clients[key].send("Everyone Ready");
               }
 
         for(i = 0; i < currMatch.user.length; i++){

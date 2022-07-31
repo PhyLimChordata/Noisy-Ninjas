@@ -30,12 +30,6 @@ let shurikenDown = function(x,y,n,v,map,effect){
 
         }
     }
-    map.map[`cor${x},${y}`] = cor
-    if (v % 2 === 0) {
-      shurikenDown(x + 1, y + 1, n - 1, v + 1, map, effect)
-    } else {
-      shurikenDown(x, y + 1, n - 1, v + 1, map, effect)
-    }
 }
 
 let shurikenUp = function (x, y, n, v, map, effect) {

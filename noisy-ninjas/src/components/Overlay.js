@@ -14,8 +14,8 @@ export function Overlay(props) {
       setMode(action)
       document.getElementById('move1').style.visibility = 'hidden'
       document.getElementById('move2').style.visibility = 'hidden'
-      document.getElementById('move3').style.visibility = 'hidden'
-      document.getElementById('move4').style.visibility = 'hidden'
+      // document.getElementById('move3').style.visibility = 'hidden'
+      // document.getElementById('move4').style.visibility = 'hidden'
     }
   }
 

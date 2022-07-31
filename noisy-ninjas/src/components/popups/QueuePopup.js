@@ -59,6 +59,11 @@ export function QueuePopup(props) {
   const navigate = useNavigate();
 
 client.onmessage = (message) => {
+
+    if (message.data === "Everyone's ready") {
+        return;
+    }
+
     let parsedData = JSON.parse(message.data);
     let queue = parsedData.queue;
     let matchID = parsedData.matchID;
@@ -72,14 +77,18 @@ client.onmessage = (message) => {
         navigate('/game', {
             state: { role: role, matchID: matchID },
         });
-    } else if (inQueue && queue.length === 3 && lastToJoin === getUsername()) {
-        generateMatch("Andy5", "Calvin").then((matchID) => {
+    } else if (inQueue && queue.length === 2 && lastToJoin === getUsername()) {
+        generateMatch(["Andy5"], "Calvin").then((matchID) => {
             client.send(JSON.stringify({
                 type: "matchFound",
                 matchID: matchID
             }));
         });
     } 
+
+    //if there are no available matches
+    // create new match
+    // 
 
     let monsterInQueue = queue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
     if (monsterInQueue === undefined) {

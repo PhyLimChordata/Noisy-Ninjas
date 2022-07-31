@@ -13,12 +13,11 @@ import {
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { useNavigate, useLocation } from 'react-router'
 
+import {client} from '../components/popups/QueuePopup';
+
 export function GameScreen() {
   const routeProps = useLocation().state;
   const matchID = routeProps.matchID;
-  const client = routeProps.client
-
-  console.log(routeProps.role);
 
   const [role, setRole] = useState(
     routeProps.role.slice(-5, routeProps.role.length) === 'ninja'
@@ -89,11 +88,11 @@ export function GameScreen() {
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
 
-          // client.send(JSON.stringify({
-          //   type: "update",
-          //   matchId: "ok",
-          //   name: getUsername() 
-          // }));
+          client.send(JSON.stringify({
+            type: "update",
+            matchId: matchID,
+            name: getUsername() 
+          }));
         } 
       } else if (timerRef.current > 0) {
         setTimer(timerRef.current - 1)
@@ -107,20 +106,11 @@ export function GameScreen() {
   const [y, setY] = useState(0)
 
   if (!loaded) {
-    // client.onopen = () => {
-    //   console.log('WebSocket Client Connected');
-    //   client.send(JSON.stringify({
-    //     type: "create",
-    //     matchId: "ok",
-    //     name: getUsername() 
-    //   }));
-    // };
-
-    // client.onmessage = (message) => {
-    //   setTimer(5);
-    //   setMode("move");
-    //   // everybody's mode gets updated
-    // };
+      client.send(JSON.stringify({
+        type: "create",
+        matchId: matchID,
+        name: getUsername() 
+      }));
     
     if (role === "ninja") {
       getNinjas(matchID).then((ninjas) => {
@@ -187,9 +177,7 @@ export function GameScreen() {
   return <div className = "gamescreen">
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} 
-      // client={client} 
-      role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive}/>}
+      {loaded && <HexagonGrid matchID={matchID} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive}/>}
       {!liveRef.current  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                         title={
                           <div className={"summary-title"}>
