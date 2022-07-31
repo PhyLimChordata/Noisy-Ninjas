@@ -521,8 +521,6 @@ const getUniqueID = () => {
 };
 
 
-
-
 wsServer.on('request', function (request) {
     var userID = getUniqueID();
     

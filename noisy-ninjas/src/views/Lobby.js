@@ -8,6 +8,12 @@ import { getUsername, signOut, generateMatch } from '../apiService'
   
 import { client } from '../components/popups/QueuePopup'
 
+
+
+import { Peer } from "peerjs";
+
+
+
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
   const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -17,9 +23,59 @@ export function Lobby() {
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
 
+  
+
   const navigate = useNavigate();
 
    
+  const peer = new Peer("1");
+    // You can pick your own id or omit the id if you want to get a random one from the server.
+    const conn = peer.connect("1");
+
+
+    conn.on("open", () => {
+        conn.send("hi!");
+    });
+
+    //establishes connection with another peer
+    peer.on("connection", (conn) => {
+        conn.on("data", (data) => {
+            // Will print 'hi!'
+            console.log(data);
+        });
+        conn.on("open", () => {
+            conn.send("hello!");
+        });
+    });
+
+
+    navigator.mediaDevices.getUserMedia(
+        { audio: true },
+        (stream) => {
+            const call = peer.call("1", stream);
+            call.on("stream", (remoteStream) => {
+                // Show stream in some <video> element.
+            });
+        },
+        (err) => {
+            console.error("Failed to get local stream", err);
+        },
+    );
+
+    peer.on("call", (call) => {
+        navigator.mediaDevices.getUserMedia(
+            { audio: true },
+            (stream) => {
+                call.answer(stream); // Answer the call with an A/V stream.
+                call.on("stream", (remoteStream) => {
+                    // Show stream in some <video> element.
+                });
+            },
+            (err) => {
+                console.error("Failed to get local stream", err);
+            },
+        );
+    });
 
 
     const username = getUsername()
