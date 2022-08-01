@@ -50,7 +50,7 @@ export function Lobby() {
     proxChatInstance.current = proxChat;
   }, [])
 
-  const proximityChat = (remotePeerId) => {
+  const proximityChat = (proxChatId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     getUserMedia({ video: true, audio: true }, (audio) => {
@@ -58,7 +58,7 @@ export function Lobby() {
     //   currentUserVideoRef.current.srcObject = audio;
     //   currentUserVideoRef.current.play();
 
-      const proxChat = proxChatInstance.current.call(remotePeerId, audio)
+      const proxChat = proxChatInstance.current.call(proxChatId, audio)
 
       proxChat.on('stream', (audioStream) => {
         remoteAudioRef.current.srcObject = audioStream
