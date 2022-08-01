@@ -38,9 +38,9 @@ passport.use(
       console.log(profile)
       console.log("111111231231231231")
       console.log(profile.displayName)
-      User.findOne({ googleID: profile.displayName }, function (err, user) {
-        console.log('GOT HERE')
-       console.log(user)
+      User.findOne({ googleID: profile.id }, function (err, user) {
+      //   console.log('GOT HERE')
+      //  console.log(user)
        // console.log(err)
         if (err) return res.status(500).end(err)
        // console.log(user)
@@ -48,11 +48,17 @@ passport.use(
           //console.log(user);
           return cb(err, user)
         }
-
-       // console.log(profile)
+        User.countDocuments({displayName: profile.displayName}, function (err, amount) {
+       console.log(amount)
+       if(amount === 0){
+        add = ""
+       }
+       else{
+        add = amount
+       }
         const new_user = new User({
           googleID: profile.id,
-          displayName: profile.displayName,
+          displayName: profile.displayName + add,
           imageURL: profile.photos[0].value,
           points: 0,
           hash: 'N/A',
@@ -64,6 +70,8 @@ passport.use(
          // console.log(new_user)
           return cb(err, newuser)
         })
+      })
+
       })
     }
   )
