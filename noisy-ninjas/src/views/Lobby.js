@@ -20,54 +20,54 @@ export function Lobby() {
   const [monsterIndex, setMonsterIndex] = useState(0)
 
 
-  const [peerId, setPeerId] = useState('');
+  const [proxChatId, setProxChatId] = useState('');
   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-  const remoteVideoRef = useRef(null);
+  const remoteAudioRef = useRef(null);
   const currentUserVideoRef = useRef(null);
-  const peerInstance = useRef(null);
+  const proxChatInstance = useRef(null);
 
   useEffect(() => {
-    const peer = new Peer();
+    const proxChat = new Peer();
 
-    peer.on('open', (id) => {
-      setPeerId(id)
+    proxChat.on('open', (id) => {
+      setProxChatId(id)
     });
 
-    peer.on('call', (call) => {
+    proxChat.on('call', (otheruser) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ video: true, audio: true }, (mediaStream) => {
-        currentUserVideoRef.current.srcObject = mediaStream;
-        currentUserVideoRef.current.play();
-        call.answer(mediaStream)
-        call.on('stream', function(remoteStream) {
-          remoteVideoRef.current.srcObject = remoteStream
-          remoteVideoRef.current.play();
+      getUserMedia({ video: true, audio: true }, (audio) => {
+        // currentUserVideoRef.current.srcObject = audio;
+        // currentUserVideoRef.current.play();
+        otheruser.answer(audio)
+        otheruser.on('stream', function(audioStream) {
+          remoteAudioRef.current.srcObject = audioStream
+          remoteAudioRef.current.play();
         });
       });
     })
 
-    peerInstance.current = peer;
+    proxChatInstance.current = proxChat;
   }, [])
 
-  const call = (remotePeerId) => {
+  const proximityChat = (remotePeerId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ video: true, audio: true }, (mediaStream) => {
+    getUserMedia({ video: true, audio: true }, (audio) => {
 
-      currentUserVideoRef.current.srcObject = mediaStream;
-      currentUserVideoRef.current.play();
+    //   currentUserVideoRef.current.srcObject = audio;
+    //   currentUserVideoRef.current.play();
 
-      const call = peerInstance.current.call(remotePeerId, mediaStream)
+      const proxChat = proxChatInstance.current.call(remotePeerId, audio)
 
-      call.on('stream', (remoteStream) => {
-        remoteVideoRef.current.srcObject = remoteStream
-        remoteVideoRef.current.play();
+      proxChat.on('stream', (audioStream) => {
+        remoteAudioRef.current.srcObject = audioStream
+        remoteAudioRef.current.play();
       });
     });
   }
 
-  console.log(peerId);
+  console.log(proxChatId);
 //   const [peerID, setPeerID] = useState(null);
 //   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
 //   const remoteAudioRef = useRef(null);
@@ -210,9 +210,9 @@ export function Lobby() {
       
       <div className={'title'}> Welcome {username}</div>
       <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
-      <button onClick={() => call(remotePeerIdValue)}>Call</button>
-      <video ref={remoteVideoRef} />
-      <video ref={currentUserVideoRef} />
+      <button onClick={() => proximityChat(remotePeerIdValue)}>Call</button>
+      <video ref={remoteAudioRef} />
+      {/* <video ref={currentUserVideoRef} /> */}
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}

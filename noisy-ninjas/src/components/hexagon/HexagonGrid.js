@@ -28,6 +28,7 @@ export function HexagonGrid(props) {
   const [srcy, setSrcY] = useState(y)
 
   client.onmessage = (message) => {
+    //TODO: Check if in game
     if (message.data === "Everyone Ready") {
       //Consider health
       updatePOV(srcx,srcy, 3);
