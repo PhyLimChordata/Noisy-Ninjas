@@ -220,6 +220,7 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
   
       cor2.newCor = `cor${0},${0}`
       cor2.oldCor = `cor${x},${y}`
+      
   
       cor2.x = x
       cor2.y = y
@@ -357,19 +358,27 @@ router.post('/generate', function (req, res) {
         for(i=0; i<req.body.ninjas.length; i++){
           let randomneg1 =  (Math.random() * 100)
           let randomneg2 =  (Math.random() * 100)
-          let randomx = Math.floor(Math.random() * 10 + 2); 
-          let randomy = Math.floor(Math.random() * 10 + 2); 
+          let randomx = Math.floor(Math.random() * 5 + 3); 
+          let randomy = Math.floor(Math.random() * 5 + 3); 
           if(randomneg1 > 50){
             
   
-              randomx = randomx  +12
+              randomx = 20 - randomx
               
+          }
+          else{
+
+              randomx = 20 + randomx
+
           }
           console.log("x")
               console.log(randomx)
           if(randomneg2 > 50){
-              randomy = randomy + 12
+             randomy = 20 - randomy
               
+          }
+          else{
+            randomy = 20 + randomy
           }
           console.log("y")
               console.log(randomy)
