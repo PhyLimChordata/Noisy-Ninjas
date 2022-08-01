@@ -15,17 +15,21 @@ import {
   getNinjas,
   getUsername,
   winPoints, 
-  losePoints
+  losePoints,
+  getMonsterChat,
+  getNinjaChat
 
 } from '../../apiService'
 
 import { client } from '../popups/QueuePopup'
 
 export function HexagonGrid(props) {
-  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proximityChat } = props
+  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proximityChat, closeProxChat } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
+
+  let playersInRange = [];
 
   client.onmessage = (message) => {
     let parsedData = JSON.parse(message.data);
@@ -201,6 +205,8 @@ const win = () => {
     let grid = {}
 
     newPOV(matchID, x, y, radius).then((hexes) => {
+      let players = {}
+      // Name: id
       hexes.forEach((hex) => {
         grid[hex['newCor']] = hex
         if (hex['newCor'] === "cor0,0") {
@@ -208,11 +214,32 @@ const win = () => {
         }
 
         if (hex['players']) {
-          //endpoint to get chatID
-          //proximityChat(chatID returned) -> Promise
+          hex['players'].forEach((player) => {
+            if (!playersInRange.includes(player.displayName)) {
+              console.log(matchID);
+              if (["draco", "screamer", "tiny"].includes(player.skin)) {
+                  getMonsterChat(player.displayName, matchID).then((chatId) => {
+                    proximityChat(chatId);
+                    players[player.displayName] = player.chatId;
+                  })
+                } else {
+                  getNinjaChat(player.displayName, matchID).then((chatId) => {
+                    proximityChat(chatId);
+                    players[player.displayName] = player.chatId;
+                })
+              }
+            }
+          })
         }
       })
 
+      playersInRange.forEach((player) => { 
+        if (!players.includes(player)) {
+          closeProxChat(playersInRange[player]);
+        }
+      })
+
+      playersInRange = players;
       setType(grid)
     })
   }

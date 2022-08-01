@@ -594,18 +594,20 @@ router.patch('/ninjas/:player/chat', function (req, res) {
   });
 })
 
-router.get('/ninjas/:player/chat', function (req, res) {
+router.post('/ninjas/:player/chat', function (req, res) {
   Match
 .findById(req.body.matchID)
 .exec(function (err, match) {
     if (err) return res.status(500).end(err);
+    console.log("Hit");
+    console.log(match.matchNinjas)
     newNinjas = match.matchNinjas
     let index = newNinjas.findIndex(n => n.displayName === req.params.player)
         return res.json(newNinjas[index].chat);
   });
 })
 
-router.get('/monsters/:player/chat', function (req, res) {
+router.post('/monsters/:player/chat', function (req, res) {
   Match
 .findById(req.body.matchID)
 .exec(function (err, match) {
@@ -792,11 +794,12 @@ router.patch('/move/:player', function (req, res) {
         let newMonsters = match.matchMonsters;
         newMonsters[i].x = req.query.tarx;
         newMonsters[i].y = req.query.tary;
-        let index = cor1.players.indexOf(req.params.player)
-                cor1.players.splice(index, 1)
-                cor2.players.push(req.params.player)
-                map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
-                map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
+        let index = cor1.players.findIndex(player => player.displayName === req.params.player);
+                let player = cor1.players[index];
+                cor1.players.splice(index, 1);
+                cor2.players.push(player);
+                map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1;
+                map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2;
         
         Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err)

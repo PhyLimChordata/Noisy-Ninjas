@@ -233,8 +233,8 @@ export function setMonsterChat(chatID, matchID) {
     })
 }
 
-export function getMonsterChat(matchID) {
-    return axios.get( `/match/monsters/${getUsername()}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+export function getMonsterChat(user, matchID) {
+    return axios.post( `/match/monsters/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }
@@ -245,8 +245,9 @@ export function setNinjaChat(chatID, matchID) {
     })
 }
 
-export function getNinjaChat(matchID) {
-    return axios.get( `/match/ninjas/${getUsername()}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+export function getNinjaChat(user, matchID) {
+
+    return axios.post( `/match/ninjas/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }

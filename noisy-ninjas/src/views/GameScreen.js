@@ -9,6 +9,8 @@ import {
   getUsername,
   getUser,
   getMonsters,
+  setNinjaChat,
+  setMonsterChat
 } from '../apiService'
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { useNavigate, useLocation } from 'react-router'
@@ -25,7 +27,7 @@ export function GameScreen() {
   const matchID = routeProps.matchID;
 
   const [role, setRole] = useState(
-    routeProps.role.slice(-5, routeProps.role.length) === 'ninja'
+    routeProps.role.slice(-5, routeProps.role.length) === 'ninja' 
       ? 'ninja'
       : 'monster'
   )
@@ -122,6 +124,7 @@ export function GameScreen() {
   const currentUserVideoRef = useRef(null);
   const proxChatInstance = useRef(null);
 
+  const proxChats = {}
   useEffect(() => {
     const proxChat = new Peer();
 
@@ -146,6 +149,15 @@ export function GameScreen() {
     proxChatInstance.current = proxChat;
   }, [])
 
+  useEffect(() => {
+    if (["draco", "tiny", "screamer"].includes(routeRole)) {
+      setMonsterChat(proxChatId, matchID);
+    } else {
+      setNinjaChat(proxChatId, matchID);
+    }
+
+  }, [proxChatId]);
+
   //proximityChat(proxchatID)
   const proximityChat = (proxChatId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -157,6 +169,11 @@ export function GameScreen() {
 
       const proxChat = proxChatInstance.current.call(proxChatId, audio)
 
+      proxChats[proxChatId] = proxChat
+      // {id: audio}
+
+      console.log(proxChats);
+
       proxChat.on('stream', (audioStream) => {
         remoteAudioRef.current.srcObject = audioStream
         remoteAudioRef.current.play();
@@ -164,6 +181,12 @@ export function GameScreen() {
     });
   }
   
+  const closeProxChat = (proxChatId) => {
+    if (proxChats[proxChatId]) {
+      proxChats[proxChatId].close();
+      delete proxChats[proxChatId];
+    }
+  }
 
 
   let grid = {}
@@ -244,7 +267,7 @@ export function GameScreen() {
       <video className ="proxchat" ref={remoteAudioRef} />
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} proxChat={proximityChat}/>}
+      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} proximityChat={proximityChat} closeProxChat={closeProxChat}/>}
       {!live  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                         title={
                           <div className={"summary-title"}>
