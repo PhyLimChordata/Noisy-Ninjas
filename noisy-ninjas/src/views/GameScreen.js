@@ -116,46 +116,49 @@ export function GameScreen() {
   }, [])
 
 
-  const [peerID, setPeerID] = useState(null);
+  const [proxChatId, setProxChatId] = useState('');
   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
   const remoteAudioRef = useRef(null);
-  const peerInstance = useRef(null);
+  const currentUserVideoRef = useRef(null);
+  const proxChatInstance = useRef(null);
 
-  //https://www.youtube.com/watch?v=5JTpRCo0e8s
   useEffect(() => {
-    const peer = new Peer();
+    const proxChat = new Peer();
 
-    peer.on('open', (id) => {
-      setPeerID(id)
+    proxChat.on('open', (id) => {
+      setProxChatId(id)
     });
 
-    peer.on('proxChat', (chat) => {
+    proxChat.on('call', (otheruser) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ audio: true }, (remoteAudio) => {
-        chat.answer(remoteAudio)
-        chat.on('stream', function(remoteStream) {
-          remoteAudioRef.current.srcObject = remoteStream
+      getUserMedia({ video: true, audio: true }, (audio) => {
+        // currentUserVideoRef.current.srcObject = audio;
+        // currentUserVideoRef.current.play();
+        otheruser.answer(audio)
+        otheruser.on('stream', function(audioStream) {
+          remoteAudioRef.current.srcObject = audioStream
           remoteAudioRef.current.play();
         });
       });
     })
 
-    peerInstance.current = peer;
-
+    proxChatInstance.current = proxChat;
   }, [])
 
-    // proxChat(remotePeerIdValue)
-
-  const proxChat = (remotePeerId) => {
+  //proximityChat(proxchatID)
+  const proximityChat = (proxChatId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ audio: true }, (remoteAudio) => {
+    getUserMedia({ video: true, audio: true }, (audio) => {
 
-      const chat = peerInstance.current.proxChat(remotePeerId, remoteAudio)
+    //   currentUserVideoRef.current.srcObject = audio;
+    //   currentUserVideoRef.current.play();
 
-      chat.on('stream', (remoteStream) => {
-        remoteAudioRef.current.srcObject = remoteStream
+      const proxChat = proxChatInstance.current.call(proxChatId, audio)
+
+      proxChat.on('stream', (audioStream) => {
+        remoteAudioRef.current.srcObject = audioStream
         remoteAudioRef.current.play();
       });
     });

@@ -8,8 +8,6 @@ import { getUsername, signOut, generateMatch } from '../apiService'
   
 import { client } from '../components/popups/QueuePopup'
 
-import { Peer } from "peerjs";
-
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
   const [lobbyPopup, setLobbyPopup] = useState(false)
@@ -19,55 +17,6 @@ export function Lobby() {
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
 
-
-  const [proxChatId, setProxChatId] = useState('');
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-  const remoteAudioRef = useRef(null);
-  const currentUserVideoRef = useRef(null);
-  const proxChatInstance = useRef(null);
-
-  useEffect(() => {
-    const proxChat = new Peer();
-
-    proxChat.on('open', (id) => {
-      setProxChatId(id)
-    });
-
-    proxChat.on('call', (otheruser) => {
-      var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-      getUserMedia({ video: true, audio: true }, (audio) => {
-        // currentUserVideoRef.current.srcObject = audio;
-        // currentUserVideoRef.current.play();
-        otheruser.answer(audio)
-        otheruser.on('stream', function(audioStream) {
-          remoteAudioRef.current.srcObject = audioStream
-          remoteAudioRef.current.play();
-        });
-      });
-    })
-
-    proxChatInstance.current = proxChat;
-  }, [])
-
-  const proximityChat = (proxChatId) => {
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-    getUserMedia({ video: true, audio: true }, (audio) => {
-
-    //   currentUserVideoRef.current.srcObject = audio;
-    //   currentUserVideoRef.current.play();
-
-      const proxChat = proxChatInstance.current.call(proxChatId, audio)
-
-      proxChat.on('stream', (audioStream) => {
-        remoteAudioRef.current.srcObject = audioStream
-        remoteAudioRef.current.play();
-      });
-    });
-  }
-
-  console.log(proxChatId);
 //   const [peerID, setPeerID] = useState(null);
 //   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
 //   const remoteAudioRef = useRef(null);
@@ -203,16 +152,7 @@ export function Lobby() {
   }
   return (
     <div className={'lobby-page'}>
-         {/* <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
-      <button onClick={() => proxChat(remotePeerIdValue)}>Call</button>
-      
-      <video className ="proxchat" ref={remoteAudioRef} /> */}
-      
       <div className={'title'}> Welcome {username}</div>
-      <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
-      <button onClick={() => proximityChat(remotePeerIdValue)}>Call</button>
-      <video ref={remoteAudioRef} />
-      {/* <video ref={currentUserVideoRef} /> */}
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}
