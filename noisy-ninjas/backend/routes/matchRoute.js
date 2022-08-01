@@ -579,6 +579,28 @@ router.patch('/ninjas/:player/chat', function (req, res) {
   });
 })
 
+router.get('/ninjas/:player/chat', function (req, res) {
+  Match
+.findById(req.body.matchID)
+.exec(function (err, match) {
+    if (err) return res.status(500).end(err);
+    newNinjas = match.matchNinjas
+    let index = newNinjas.findIndex(n => n.displayName === req.params.player)
+        return res.json(newNinjas[index].chat);
+  });
+})
+
+router.get('/monsters/:player/chat', function (req, res) {
+  Match
+.findById(req.body.matchID)
+.exec(function (err, match) {
+    if (err) return res.status(500).end(err);
+    newMonsters = match.matchMonsters
+    let index = newMonsters.findIndex(n => n.displayName === req.params.player)
+        return res.json(newMonsters[index].chat);
+  });
+})
+
 //sample call 'map/source?x=2&y=2&radius=2
 router.post('/source', function (req, res) {
   Match.findById(req.body.matchID).exec(function (err, match) {
