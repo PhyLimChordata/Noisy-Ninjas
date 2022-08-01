@@ -84,7 +84,7 @@ client.onmessage = (message) => {
             state: { role: role, matchID: matchID },
         });
     } 
-    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 2 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
+    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
         ninjaQueue.forEach((ninja) => {
             ninjas.push(ninja.name);
         })

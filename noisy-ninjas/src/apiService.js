@@ -140,7 +140,7 @@ export function getMonsters(matchID) {
     })
 }
 
-export function movePlayer(matchID, srcx, srcy, tarx, tary) {
+export function movePlayer(matchID, srcx, srcy, tarx, tary, routeRole) {
   return axios
     .patch(
       `/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`,

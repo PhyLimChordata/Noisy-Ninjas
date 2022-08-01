@@ -244,7 +244,7 @@ export function GameScreen() {
       <video className ="proxchat" ref={remoteAudioRef} />
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} proxChat={proxChat}/>}
+      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} proxChat={proximityChat}/>}
       {!live  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                         title={
                           <div className={"summary-title"}>

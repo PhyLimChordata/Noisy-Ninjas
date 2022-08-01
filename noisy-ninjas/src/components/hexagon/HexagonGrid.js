@@ -22,7 +22,7 @@ import {
 import { client } from '../popups/QueuePopup'
 
 export function HexagonGrid(props) {
-  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proxChat } = props
+  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proximityChat } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
@@ -84,7 +84,7 @@ const lose = () => {
     if (res.demoted) {
       console.log("demoted");
     }
-    setElo(res.user.points);
+    setElo(res.user.points - 3);
   })
 }
 
@@ -97,7 +97,7 @@ const win = () => {
     if(res.promoted) {
       console.log("Promoted")
     }
-    setElo(res.user.points);
+    setElo(res.user.points - 3);
   })
 }
 
@@ -106,7 +106,7 @@ const win = () => {
       return;
     }
     if (mode === 'move') {
-      movePlayer(matchID, srcx, srcy, x, y).then(() => {
+      movePlayer(matchID, srcx, srcy, x, y, routeRole).then(() => {
 
         //processHP(hexinfo)
         updatePOV(x, y, 3)
@@ -189,9 +189,13 @@ const win = () => {
         if (hex['newCor'] === "cor0,0") {
           processHP(hex);
         }
+
+        if (hex['players']) {
+          //endpoint to get chatID
+          //proximityChat(chatID returned) -> Promise
+        }
       })
 
-      // print mydict.keys()[mydict.values().index(16)]
       setType(grid)
     })
   }

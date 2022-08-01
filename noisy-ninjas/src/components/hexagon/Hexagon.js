@@ -1,6 +1,7 @@
 import React from 'react'
 import '../../style/hexagon.css'
 import '../../style/character.css'
+import { getNinjas } from '../../apiService'
 
 export function Hexagon(props) {
   const { info, id, onClick, mode, hover, unhover } = props
@@ -9,15 +10,15 @@ export function Hexagon(props) {
     if (skin) {
       return skin
     }
-    if (players && players[0] == 'x') {
-      return 'ninjas'
-    } else if (players && players[0] == 'y') {
-      return 'monster'
+    //TODO: export the array
+    
+    //Monsters will have priority in being seen
+    if (players && players[0] && ["draco", "screamer", "tiny"].includes(players[0].role)) {
+      return "in-game-" + players[0].role;
+    } else if (players && players[0] &&  ["black-ninja", "pink-ninja", "red-ninja", "blue-ninja", "green-ninja"].includes(players[0].role)) {
+      return "in-game-" + players[0].role;
     }
     return (type && type[0]) || ''
-  }
-  if (x == 18 && y == 17) {
-    console.log(info)
   }
   return (
     <div
