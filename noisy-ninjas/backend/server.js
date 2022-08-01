@@ -783,12 +783,12 @@ wsServer.on('request', function (request) {
           if(!(currMatch === undefined)){
             currPlayer = currMatch.user.find(e=> e.name === data.name);
             if (currPlayer === undefined) {
-                let user = {name: data.name , ready: false}
+                let user = {name: data.name , skin: data.skin, chat: data.chat, ready: false}
                 currMatch.user.push(user);
             }           
           }
           else{
-            let match = { matchId: data.matchId, user: [{name: data.name, ready: false}]}
+            let match = { matchId: data.matchId, user: [{name: data.name, skin: data.skin, chat: data.chat, ready: false}]}
             Matches.push(match)
             //return "New match"
           }
@@ -815,9 +815,9 @@ wsServer.on('request', function (request) {
         }
   
         if(ready){
-            console.log("Everyone's ready");
+            console.log(data.matchId);
             for(key in clients) {
-                clients[key].sendUTF("Everyone Ready");
+                clients[key].send(JSON.stringify({message: "ready", data: data.matchId}));
               }
 
         for(i = 0; i < currMatch.user.length; i++){
@@ -829,17 +829,24 @@ wsServer.on('request', function (request) {
        
     
     }
-    // else if (data.type === "death") {
-    //     currMatch = Matches.find(e => e.matchId === data.matchId)
-    //     currPlayer = currMatch.user.find(e=>e.name === data.name);
+    else if (data.type === "death") {
+        currMatch = Matches.find(e => e.matchId === data.matchId)
+        currPlayer = currMatch.user.find(e=>e.name === data.name);
+        currMatch.user.pop(currPlayer);
+        if (["draco", "screamer", "tiny"].includes(data.skin)) {
+          
+          for (key in clients) {
+            clients[key].send(JSON.stringify({message: "ninjas won", data: currMatch}))
+        }
+        }
         
-    //     currMatch.user.pop(currPlayer);
-    //     if (currMatch.user.length === 0) {
-    //         for (key in clients) {
-    //             clients[key].send("Monster won")
-    //         }
-    //     }
-    // }    
+        
+        else if (currMatch.user.length === 1) {
+            for (key in clients) {
+                clients[key].send(JSON.stringify({message: "monster won", data: currMatch}))
+            }
+        }
+    }    
       }
     })
   });
