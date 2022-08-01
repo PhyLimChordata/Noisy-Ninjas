@@ -225,6 +225,32 @@ export function monsterHealth(matchID) {
     })
 }
 
+export function setMonsterChat(chatID, matchID) {
+    console.log(chatID);
+    return axios.patch( `/match/monsters/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+        console.log(res.data);
+        return res.data;
+    })
+}
+
+export function getMonsterChat(matchID) {
+    return axios.get( `/match/monsters/${getUsername()}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+        return res.data;
+    })
+}
+
+export function setNinjaChat(chatID, matchID) {
+    return axios.patch( `/match/ninjas/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+        return res.data;
+    })
+}
+
+export function getNinjaChat(matchID) {
+    return axios.get( `/match/ninjas/${getUsername()}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+        return res.data;
+    })
+}
+
 export function winPoints() {
     return axios
     .patch(

@@ -60,6 +60,8 @@ export function QueuePopup(props) {
 client.onmessage = (message) => {
     let parsedData = JSON.parse(message.data);
 
+    let queue = parsedData.queue;
+    
     let ninjaQueue = parsedData.ninjaQueue;
     let monsterQueue = parsedData.monsterQueue;
 
@@ -91,7 +93,8 @@ client.onmessage = (message) => {
                 type: "matchFound",
                 matchID: matchID,
                 ninjaQueue: ninjaQueue,
-                monsterQueue: monsterQueue
+                monsterQueue: monsterQueue,
+                queue: queue
             }));
         });
     } 

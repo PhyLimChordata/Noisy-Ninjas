@@ -663,8 +663,10 @@ wsServer.on('request', function (request) {
             }
           }
 
-          for(key in clients) {
-            clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters}));
+          console.log(Queue);
+
+        for(key in clients) {
+            clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters, queue: q}));
           }       
 
             
@@ -720,12 +722,16 @@ wsServer.on('request', function (request) {
         }
 
         if(data.type === "matchFound"){ 
+            console.log(Queue);
 
-            console.log(data.queue);
             Queue.pop({ninjas: data.ninjaQueue, monsters: data.monsterQueue});
+            Queue.pop(data.queue);
+            monsterPlayers--;
+
             if (Queue.length === 0) {
                 Queue.push({ninjas: [], monsters: []})
             }
+            console.log("Updated queue");
             console.log(Queue);
 
         for (key in clients) {
