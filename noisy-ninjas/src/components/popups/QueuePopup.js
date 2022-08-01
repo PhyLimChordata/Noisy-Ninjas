@@ -85,11 +85,8 @@ client.onmessage = (message) => {
         });
     } 
     else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
-        ninjaQueue.forEach((ninja) => {
-            ninjas.push(ninja.name);
-        })
 
-        generateMatch(ninjas, monsterQueue[0].name).then((matchID) => {
+        generateMatch(ninjaQueue, monsterQueue[0]).then((matchID) => {
             client.send(JSON.stringify({
                 type: "matchFound",
                 matchID: matchID,
@@ -102,8 +99,6 @@ client.onmessage = (message) => {
     // Update the queue popup
     if (inNinjaQueue || inMonsterQueue) {
         let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
-        console.log("Oh gawd")
-        console.log(monsterInQueue)
         if (monsterInQueue === undefined) {
             setMonster1(false);
         } else {

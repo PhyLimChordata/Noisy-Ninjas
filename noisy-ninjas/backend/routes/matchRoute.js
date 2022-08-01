@@ -222,12 +222,18 @@ let hexagonsInRadius = function (x, y, n, map, smallMap) {
       cor2.oldCor = `cor${x},${y}`
       
   
+      if (cor2["players"]) {
+        delete cor2["players"];
+
+      }
+
       cor2.x = x
       cor2.y = y
   
       //console.log(newmap.push(cor2))
   
       smallMap.push(cor2)
+      
     //   console.log('NEW:')
     //   console.log(smallMap)
     } else {

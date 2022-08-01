@@ -11,12 +11,12 @@ export function Hexagon(props) {
       return skin
     }
     //TODO: export the array
-    
+
     //Monsters will have priority in being seen
-    if (players && players[0] && ["draco", "screamer", "tiny"].includes(players[0].role)) {
-      return "in-game-" + players[0].role;
-    } else if (players && players[0] &&  ["black-ninja", "pink-ninja", "red-ninja", "blue-ninja", "green-ninja"].includes(players[0].role)) {
-      return "in-game-" + players[0].role;
+    if (players && players[0] && ["draco", "screamer", "tiny"].includes(players[0].skin)) {
+      return "in-game-" + players[0].skin;
+    } else if (players && players[0] &&  ["black-ninja", "pink-ninja", "red-ninja", "blue-ninja", "green-ninja"].includes(players[0].skin)) {
+      return "in-game-" + players[0].skin;
     }
     return (type && type[0]) || ''
   }

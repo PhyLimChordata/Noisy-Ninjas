@@ -28,12 +28,23 @@ export function HexagonGrid(props) {
   const [srcy, setSrcY] = useState(y)
 
   client.onmessage = (message) => {
+    let parsedData = JSON.parse(message.data);
     //TODO: Check if in game
-    if (message.data === "Everyone Ready") {
+    if (parsedData.message === "ready" && matchID === parsedData.data) {
       //Consider health
       updatePOV(srcx,srcy, 3);
       setTimer(5);
       setMode("move");
+    }
+    if (parsedData.message === "monster won" && matchID === parsedData.data.matchId) {
+      if (role === "monster") {
+        win();
+      }
+    }    
+    if (parsedData.message === "ninjas won" && matchID === parsedData.data.matchId) {
+      if (role === "ninja") {
+        win();
+      }
     }
   };
   
@@ -80,6 +91,12 @@ const lose = () => {
   setLive(false);
   setWon(false);
   setSummaryTitle("You died");
+  client.send(JSON.stringify({
+    type: "death",
+    matchId: matchID,
+    name: getUsername(),
+    skin: routeRole
+  }))
   losePoints().then((res) => {
     if (res.demoted) {
       console.log("demoted");
@@ -97,7 +114,7 @@ const win = () => {
     if(res.promoted) {
       console.log("Promoted")
     }
-    setElo(res.user.points - 3);
+    setElo(res.user.points + 5);
   })
 }
 

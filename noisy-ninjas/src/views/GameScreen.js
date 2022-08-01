@@ -75,7 +75,7 @@ export function GameScreen() {
   useEffect (() => {
     liveRef.current = live
   }, [live]);
-
+  
   useEffect(() => {
     setInterval(() => {
       if (
