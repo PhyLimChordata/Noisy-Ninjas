@@ -360,19 +360,25 @@ router.post('/generate', function (req, res) {
           let randomx = Math.floor(Math.random() * 10 + 2); 
           let randomy = Math.floor(Math.random() * 10 + 2); 
           if(randomneg1 > 50){
+            
   
               randomx = randomx  +12
+              
           }
+          console.log("x")
+              console.log(randomx)
           if(randomneg2 > 50){
               randomy = randomy + 12
+              
           }
+          console.log("y")
+              console.log(randomy)
   
-  
-          map.map[`cor${randomx},${randomy}`].players.push(req.body.ninjas[i]);
-          newNinjas.push(new Ninja({displayName: req.body.ninjas[i], health: 3, x: randomx, y:randomy})  )
+          map.map[`cor${randomx},${randomy}`].players.push({displayName: req.body.ninjas[i].name, skin: req.body.ninjas[i].skin});
+          newNinjas.push(new Ninja({displayName: req.body.ninjas[i].name, skin: req.body.ninjas[i].skin , chat: "", health: 3, x: randomx, y:randomy})  )
         }
-        map.map[`cor20,19`].players.push(req.body.monster);
-        const newMonster  = new Monster({displayName: req.body.monster, health: 5, x: 20, y:19})  
+        map.map[`cor20,19`].players.push({displayName: req.body.monster.name, skin: req.body.monster.skin});
+        const newMonster  = new Monster({displayName: req.body.monster.name, skin: req.body.monster.skin, chat: "", health: 5, x: 20, y:19})  
         const newMatch = new Match({matchMap: map,  matchNinjas: newNinjas, matchMonsters: [newMonster]});
             newMatch.save(function(err, match){
                 if (err) return res.status(500).end(err);
@@ -453,6 +459,8 @@ router.patch('/monsters/:player/health', function (req, res) {
         });
 
     });
+
+    
     
     /*
   Match.findById(req.body.matchID).exec(function (err, match) {
@@ -485,6 +493,25 @@ router.patch('/monsters/:player/health', function (req, res) {
     })
   })
   */
+})
+
+
+router.patch('/monsters/:player/chat', function (req, res) {
+  Match
+.findById(req.body.matchID)
+.exec(function (err, match) {
+    if (err) return res.status(500).end(err);
+    newMonsters = match.matchMonsters
+    let updateIndex = newMonsters.findIndex(n => n.displayName === req.params.player)
+    
+    newMonsters[updateIndex].chat = req.query.id;
+
+        Match.findByIdAndUpdate(req.body.matchID, {matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
+        if (err) return res.status(500).end(err);
+        return res.json(newMonsters[updateIndex].chat);
+      });
+
+  });
 })
 
 router.patch('/ninjas/:player/health', function (req, res) {
@@ -532,6 +559,24 @@ router.patch('/ninjas/:player/health', function (req, res) {
     })
   })
   */
+})
+
+router.patch('/ninjas/:player/chat', function (req, res) {
+  Match
+.findById(req.body.matchID)
+.exec(function (err, match) {
+    if (err) return res.status(500).end(err);
+    newNinjas = match.matchNinjas
+    let updateIndex = newNinjas.findIndex(n => n.displayName === req.params.player)
+    
+    newNinjas[updateIndex].chat = req.query.id;
+
+        Match.findByIdAndUpdate(req.body.matchID, {matchNinjas: newNinjas}, {new: true}, function (err, newmatch) {
+        if (err) return res.status(500).end(err);
+        return res.json(newNinjas[updateIndex].chat);
+      });
+
+  });
 })
 
 //sample call 'map/source?x=2&y=2&radius=2
@@ -683,33 +728,17 @@ router.patch('/move/:player', function (req, res) {
         
         
         for(i=0; i<match.matchNinjas.length; i++){
-            // console.log("SDIJMO");
-
-        // console.log(match.matchNinjas)
-        // console.log(req.params.player)
-        // console.log(req.query.tarx);
-        // console.log(req.query.tary);
-
-        // console.log(req.query.srcx);
-
-        // console.log(req.query.srcy);
-
-      // console.log(match.matchNinjas)
-      // console.log(req.params.player)
-      // console.log(req.query.tarx);
-      // console.log(req.query.tary);
-      //
-      // console.log(req.query.srcx);
-      //
-      // console.log(req.query.srcy);
+            
 
         if(match.matchNinjas[i].displayName == req.params.player){
                 let newNinjas = match.matchNinjas;
                 newNinjas[i].x = req.query.tarx;
                 newNinjas[i].y = req.query.tary;
-                let index = cor1.players.indexOf(req.params.player)
-                cor1.players.splice(index, 1)
-                cor2.players.push(req.params.player)
+                //let index = cor1.players.indexOf(req.params.player)
+                let index = cor1.players.findIndex(player => player.displayName === req.params.player);
+                let player = cor1.players[index];
+                cor1.players.splice(index, 1);
+                cor2.players.push(player);
                 map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
                 map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
             
