@@ -22,7 +22,7 @@ import {
 import { client } from '../popups/QueuePopup'
 
 export function HexagonGrid(props) {
-  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, setSummaryCharacter } = props
+  const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proxChat } = props
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)

@@ -64,8 +64,6 @@ export function GameScreen() {
 
   const [hearts, setHearts] = useState(role === 'ninja' ? 3 : 5)
 
-
-
   useEffect(() => {
     timerRef.current = timer
   }, [timer])
@@ -120,10 +118,10 @@ export function GameScreen() {
 
   const [peerID, setPeerID] = useState(null);
   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-  const remoteVideoRef = useRef(null);
-  const currentUserVideoRef = useRef(null);
+  const remoteAudioRef = useRef(null);
   const peerInstance = useRef(null);
 
+  //https://www.youtube.com/watch?v=5JTpRCo0e8s
   useEffect(() => {
     const peer = new Peer();
 
@@ -131,42 +129,38 @@ export function GameScreen() {
       setPeerID(id)
     });
 
-    peer.on('call', (call) => {
+    peer.on('proxChat', (chat) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ audio: true }, (mediaStream) => {
-        currentUserVideoRef.current.srcObject = mediaStream;
-        currentUserVideoRef.current.play();
-        call.answer(mediaStream)
-        call.on('stream', function(remoteStream) {
-          remoteVideoRef.current.srcObject = remoteStream
-          remoteVideoRef.current.play();
+      getUserMedia({ audio: true }, (remoteAudio) => {
+        chat.answer(remoteAudio)
+        chat.on('stream', function(remoteStream) {
+          remoteAudioRef.current.srcObject = remoteStream
+          remoteAudioRef.current.play();
         });
       });
     })
 
     peerInstance.current = peer;
 
-    console.log(peerID);
   }, [])
 
-  const call = (remotePeerId) => {
+    // proxChat(remotePeerIdValue)
+
+  const proxChat = (remotePeerId) => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ audio: true }, (mediaStream) => {
+    getUserMedia({ audio: true }, (remoteAudio) => {
 
-      currentUserVideoRef.current.srcObject = mediaStream;
-      currentUserVideoRef.current.play();
+      const chat = peerInstance.current.proxChat(remotePeerId, remoteAudio)
 
-      const call = peerInstance.current.call(remotePeerId, mediaStream)
-
-      call.on('stream', (remoteStream) => {
-        remoteVideoRef.current.srcObject = remoteStream
-        remoteVideoRef.current.play();
+      chat.on('stream', (remoteStream) => {
+        remoteAudioRef.current.srcObject = remoteStream
+        remoteAudioRef.current.play();
       });
     });
   }
-
+  
 
 
   let grid = {}
@@ -244,18 +238,10 @@ export function GameScreen() {
 }
   
   return <div className = "gamescreen">
-      
-      <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
-      <button onClick={() => call(remotePeerIdValue)}>Call</button>
-      <div>
-        <video ref={currentUserVideoRef} />
-      </div>
-      <div>
-        <video ref={remoteVideoRef} />
-      </div>
+      <video className ="proxchat" ref={remoteAudioRef} />
       <Overlay role={role} mode={mode} timer={timer} setMode={setMode} setTimer={setTimer} hearts={hearts}/>
       <Character role={routeRole}/>
-      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} setSummaryCharacter={setSummaryCharacter}/>}
+      {loaded && <HexagonGrid matchID={matchID} routeRole={routeRole} role={role} POV={POV} mode={mode} setMode={setMode} setTimer={setTimer} x={x} y={y} setHearts={setHearts} hearts={hearts} setLive={setLive} setElo={setElo} setWon={setWon} setSummaryTitle={setSummaryTitle} proxChat={proxChat}/>}
       {!live  && <ConfirmationPopup confirmAction={() => navigate("/lobby")} confirmText={"lobby"} cancelText={"spectate"}
                         title={
                           <div className={"summary-title"}>

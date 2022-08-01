@@ -13,6 +13,12 @@
   width: 100%;
 }
 
+.proxchat {
+ height: 0%;
+ width: 0%; 
+ position: absolute;
+}
+
 .main {
   display: grid;
   grid-row-gap: 2.5vw;

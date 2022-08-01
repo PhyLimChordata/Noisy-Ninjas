@@ -99,12 +99,6 @@ client.onmessage = (message) => {
         });
     } 
 
-    console.log("hit");
-    console.log(ninjaQueue);
-    console.log(monsterQueue);
-    console.log(inNinjaQueue);
-    console.log(inMonsterQueue)
-
     // Update the queue popup
     if (inNinjaQueue || inMonsterQueue) {
         let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");

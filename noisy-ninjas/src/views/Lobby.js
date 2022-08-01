@@ -8,6 +8,7 @@ import { getUsername, signOut, generateMatch } from '../apiService'
   
 import { client } from '../components/popups/QueuePopup'
 
+import { Peer } from "peerjs";
 
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
@@ -18,7 +19,102 @@ export function Lobby() {
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
 
+
+  const [peerId, setPeerId] = useState('');
+  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
+  const remoteVideoRef = useRef(null);
+  const currentUserVideoRef = useRef(null);
+  const peerInstance = useRef(null);
+
+  useEffect(() => {
+    const peer = new Peer();
+
+    peer.on('open', (id) => {
+      setPeerId(id)
+    });
+
+    peer.on('call', (call) => {
+      var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+      getUserMedia({ video: true, audio: true }, (mediaStream) => {
+        currentUserVideoRef.current.srcObject = mediaStream;
+        currentUserVideoRef.current.play();
+        call.answer(mediaStream)
+        call.on('stream', function(remoteStream) {
+          remoteVideoRef.current.srcObject = remoteStream
+          remoteVideoRef.current.play();
+        });
+      });
+    })
+
+    peerInstance.current = peer;
+  }, [])
+
+  const call = (remotePeerId) => {
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    getUserMedia({ video: true, audio: true }, (mediaStream) => {
+
+      currentUserVideoRef.current.srcObject = mediaStream;
+      currentUserVideoRef.current.play();
+
+      const call = peerInstance.current.call(remotePeerId, mediaStream)
+
+      call.on('stream', (remoteStream) => {
+        remoteVideoRef.current.srcObject = remoteStream
+        remoteVideoRef.current.play();
+      });
+    });
+  }
+
+  console.log(peerId);
+//   const [peerID, setPeerID] = useState(null);
+//   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
+//   const remoteAudioRef = useRef(null);
+//   const peerInstance = useRef(null);
+
+//   //https://www.youtube.com/watch?v=5JTpRCo0e8s
+//   useEffect(() => {
+//     const peer = new Peer();
+
+//     peer.on('open', (id) => {
+//       setPeerID(id)
+//     });
+
+//     peer.on('proxChat', (chat) => {
+//       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+//       getUserMedia({ video: true, audio: true }, (remoteAudio) => {
+//         chat.answer(remoteAudio)
+//         chat.on('stream', function(remoteStream) {
+//           remoteAudioRef.current.srcObject = remoteStream
+//           remoteAudioRef.current.play();
+//         });
+//       });
+//     })
+
+//     peerInstance.current = peer;
+
+//   }, [])
+
+//     // proxChat(remotePeerIdValue)
+
+//   const proxChat = (remotePeerId) => {
+//     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+//     getUserMedia({ video: true, audio: true }, (remoteAudio) => {
+
+//       const chat = peerInstance.current.proxChat(remotePeerId, remoteAudio)
+
+//       chat.on('stream', (remoteStream) => {
+//         remoteAudioRef.current.srcObject = remoteStream
+//         remoteAudioRef.current.play();
+//       });
+//     });
+//   }
   
+//   console.log(peerID);
+
 
   const navigate = useNavigate();
 
@@ -107,8 +203,16 @@ export function Lobby() {
   }
   return (
     <div className={'lobby-page'}>
+         {/* <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
+      <button onClick={() => proxChat(remotePeerIdValue)}>Call</button>
+      
+      <video className ="proxchat" ref={remoteAudioRef} /> */}
       
       <div className={'title'}> Welcome {username}</div>
+      <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
+      <button onClick={() => call(remotePeerIdValue)}>Call</button>
+      <video ref={remoteVideoRef} />
+      <video ref={currentUserVideoRef} />
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}
