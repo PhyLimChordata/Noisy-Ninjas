@@ -135,7 +135,7 @@ export function GameScreen() {
     proxChat.on('call', (otheruser) => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      getUserMedia({ video: true, audio: true }, (audio) => {
+      getUserMedia({ audio: true }, (audio) => {
         // currentUserVideoRef.current.srcObject = audio;
         // currentUserVideoRef.current.play();
         otheruser.answer(audio)

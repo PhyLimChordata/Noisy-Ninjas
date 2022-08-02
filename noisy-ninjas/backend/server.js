@@ -212,7 +212,7 @@ app.get('/api/users/:displayName/stats', isAuthenticated, function (req, res) {
   const displayName = req.params.displayName
   User.findOne(
     { displayName: displayName },
-    { gamesPlayed: 1, gamesWon: 1, points: 1, _id: 0 },
+    { gamesPlayed: 1, gamesWon: 1, points: 1, beltRank: 1, _id: 0 },
     function (err, user) {
       if (err) return res.status(500).end(err)
       if (!user) return res.status(404).end(`User ${displayName} not found`)

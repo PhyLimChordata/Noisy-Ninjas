@@ -29,6 +29,7 @@ export function Account() {
     points: '?',
     gamesPlayed: '?',
     gamesWon: '?',
+      beltRank: White,
   })
 
   const [newUsername, setNewUsername] = useState('')
@@ -52,7 +53,8 @@ export function Account() {
       setUserStats(res)
     })
 
-    getUser(getUsername()).then((user) => {
+    getUser(username).then((user) => {
+
         setBeltRank(user.beltRank);
       });
   }, []);
@@ -125,7 +127,9 @@ export function Account() {
       .then(() => {
         toggleChangeUsernamePopup()
         alert('Username was changed')
-        setErrorMessage(null)
+          setErrorMessage(null)
+          navigate('/lobby')
+          navigate(0)
       })
       .catch((err) => {
         const res = err.response
@@ -181,7 +185,7 @@ export function Account() {
           <div style={{ height: '17vw', width: '17vw' }}>
             <Hexagon
               id={'-profile'}
-              info={{backgroundColor: beltRank, color: White, skin: skin }}
+              info={{backgroundColor: userStats.beltRank, color: White, skin: "black-ninja" }}
             ></Hexagon>
           </div>
           {/* <img className={"ninja-img"} src={require("../assets/static/icons/profile-pic-icon.png")} alt={"current-ninja"}/> */}
