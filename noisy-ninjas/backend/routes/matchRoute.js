@@ -3,7 +3,7 @@ const Match = require('../schemas/match')
 const Map = require('../schemas/map')
 const Ninja = require('../schemas/ninja')
 const Monster = require('../schemas/monster')
-const User = require('../../models/User')
+const User = require('../models/User')
 
 let shurikenDown = function(x,y,n,v,map,effect){
     // console.log(`cor${x},${y}`)
