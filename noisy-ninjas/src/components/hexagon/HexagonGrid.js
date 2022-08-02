@@ -28,9 +28,7 @@ export function HexagonGrid(props) {
   const [type, setType] = useState(POV)
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
-
-  let playersInRange = [];
-
+  const [playersInRange, setPlayersInRange] = useState({})
   client.onmessage = (message) => {
     let parsedData = JSON.parse(message.data);
     //TODO: Check if in game
@@ -206,6 +204,8 @@ const win = () => {
 
     newPOV(matchID, x, y, radius).then((hexes) => {
       let players = {}
+      let newPlayersInRange = playersInRange
+
       // Name: id
       hexes.forEach((hex) => {
         grid[hex['newCor']] = hex
@@ -215,31 +215,45 @@ const win = () => {
 
         if (hex['players']) {
           hex['players'].forEach((player) => {
-            if (!playersInRange.includes(player.displayName)) {
-              console.log(matchID);
+            console.log("Player:")
+            console.log(playersInRange);
+
+            if (player.displayName !== null && !Object.keys(playersInRange).includes(player.displayName)) {
               if (["draco", "screamer", "tiny"].includes(player.skin)) {
                   getMonsterChat(player.displayName, matchID).then((chatId) => {
                     proximityChat(chatId);
-                    players[player.displayName] = player.chatId;
+                    // playersInRange[player.displayName] = chatId;
+                    players[player.displayName] = chatId;
+                    newPlayersInRange[player.displayName] = chatId
+                    // console.log(playersInRange);
                   })
                 } else {
                   getNinjaChat(player.displayName, matchID).then((chatId) => {
                     proximityChat(chatId);
-                    players[player.displayName] = player.chatId;
+                    players[player.displayName] = chatId;
+                    newPlayersInRange[player.displayName] = chatId
+                    // console.log(playersInRange);
                 })
               }
             }
           })
         }
       })
-
-      playersInRange.forEach((player) => { 
-        if (!players.includes(player)) {
-          closeProxChat(playersInRange[player]);
+      console.log(playersInRange)
+      Object.keys(playersInRange).forEach((player) => {
+        console.log("New PLayer")
+        console.log(player)
+        if (!Object.keys(players).includes(player)) {
+          console.log("Found a non existing user");
+          console.log(player);
+          console.log(player === "x")
+          console.log(newPlayersInRange)
+          console.log(newPlayersInRange['x'])
+          closeProxChat(newPlayersInRange[player]);
+          delete newPlayersInRange[player]
         }
       })
-
-      playersInRange = players;
+      setPlayersInRange(newPlayersInRange)
       setType(grid)
     })
   }

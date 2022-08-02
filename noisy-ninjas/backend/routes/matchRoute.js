@@ -768,18 +768,28 @@ router.patch('/move/:player', function (req, res) {
         
         for(i=0; i<match.matchNinjas.length; i++){
             
-
+          console.log("HERE");
         if(match.matchNinjas[i].displayName == req.params.player){
+                
                 let newNinjas = match.matchNinjas;
                 newNinjas[i].x = req.query.tarx;
                 newNinjas[i].y = req.query.tary;
                 //let index = cor1.players.indexOf(req.params.player)
                 let index = cor1.players.findIndex(player => player.displayName === req.params.player);
+
                 let player = cor1.players[index];
+                if(player === undefined){
+                  console.log(cor1.players)
+                }
+                else{
+
+                  
                 cor1.players.splice(index, 1);
                 cor2.players.push(player);
                 map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
                 map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2
+                }
+                
             
                 Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchNinjas: newNinjas}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err);
@@ -790,17 +800,27 @@ router.patch('/move/:player', function (req, res) {
         }
     }
     for (i = 0; i < match.matchMonsters.length; i++) {
+      console.log("HERE4");
       if (match.matchMonsters[i].displayName == req.params.player) {
+        console.log("HERE5");
         let newMonsters = match.matchMonsters;
         newMonsters[i].x = req.query.tarx;
         newMonsters[i].y = req.query.tary;
         let index = cor1.players.findIndex(player => player.displayName === req.params.player);
+        console.log("HERE6");
+
                 let player = cor1.players[index];
+                if(player === undefined){
+                  console.log(cor1.players)
+                }
+                else{
+                
                 cor1.players.splice(index, 1);
                 cor2.players.push(player);
                 map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1;
                 map.map[`cor${req.query.tarx},${req.query.tary}`] = cor2;
-        
+                }
+                
         Match.findByIdAndUpdate(req.body.matchID, {matchMap: map, matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {
                 if (err) return res.status(500).end(err)
 

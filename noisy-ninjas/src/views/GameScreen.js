@@ -171,7 +171,7 @@ export function GameScreen() {
 
       proxChats[proxChatId] = proxChat
       // {id: audio}
-
+      console.log("Adding an ID")
       console.log(proxChats);
 
       proxChat.on('stream', (audioStream) => {
@@ -182,10 +182,16 @@ export function GameScreen() {
   }
   
   const closeProxChat = (proxChatId) => {
+    console.log(proxChats)
+    console.log(proxChats[proxChatId])
+    console.log(proxChatId)
     if (proxChats[proxChatId]) {
       proxChats[proxChatId].close();
       delete proxChats[proxChatId];
     }
+
+    console.log("proxChats23456789098765434567890987654");
+    console.log(proxChats);
   }
 
 
@@ -241,6 +247,7 @@ export function GameScreen() {
     } else {
       getMonsters(matchID).then((monsters) => {
         monsters.forEach((monster) => {
+        
           if (monster.displayName === getUsername()) {
             newPOV(matchID, monster.x, monster.y, 3).then((hexes) => {
               hexes.forEach((hex) => {
