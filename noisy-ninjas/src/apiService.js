@@ -7,6 +7,7 @@ import axios from 'axios'
  ************************************************************/
 
 export function login(username, password) {
+  console.log("ok");
   return axios
     .post(
       '/api/signin',

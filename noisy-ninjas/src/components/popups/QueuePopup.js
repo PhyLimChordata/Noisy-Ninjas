@@ -7,22 +7,10 @@ import {useNavigate} from "react-router";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 // https://noisy-ninjas.nn.r.appspot.com/
-// export const client = new W3CWebSocket('wss://noisy-ninjas.nn.r.appspot.com:8080');
+export const client = new W3CWebSocket('wss://noisy-ninjas.nn.r.appspot.com:8080');
 
-import io from 'socket.io-client'
-export const socket = io("http://localhost:3210")
-
-// socket.emit("enter", {message: "hello"})
-// useEffect(() => {socket.on("entered_queue", (data) => {//do something} )}, [socket])
-
-
-
-
-// export const client = new W3CWebSocket('wss://noisy-ninjas.herokuapp.com:8002')
-// export const client = new W3CWebSocket('wss://api-dot-noisy-ninjas.nn.r.appspot.com:8000');
-export const client = new W3CWebSocket('ws://localhost:8000');
-// export const client = new W3CWebSocket('ws://9234-209-171-85-2.ngrok.io');
-
+// export const client = new W3CWebSocket('ws://localhost:8000');
+console.log(client);
 
 
 export function QueuePopup(props) {
@@ -73,9 +61,8 @@ export function QueuePopup(props) {
 
   const navigate = useNavigate();
 
-  socket.on("left_queue", (message) => {
-    let parsedData = JSON.parse(message);
-    console.log(parsedData);
+client.onmessage = (message) => {
+    let parsedData = JSON.parse(message.data);
 
     let queue = parsedData.queue;
     
@@ -96,67 +83,23 @@ export function QueuePopup(props) {
         lastToJoin = inNinjaQueue.name
     }
 
-    // Update the queue popup
-    if (inNinjaQueue || inMonsterQueue) {
-      let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
-      if (monsterInQueue === undefined) {
-          setMonster1(false);
-      } else {
-          setMonster1(true);
-          setMonsterImage(monster[monsterInQueue.skin]);
-      }
-  
-      let ninjasInQueue = 0;
-      let ninjaArr = [[setNinja1, setNinja1Image], [setNinja2, setNinja2Image], [setNinja3, setNinja3Image], [setNinja4, setNinja4Image]];
-      while (ninjaQueue.length > ninjasInQueue) {
-          let nextNinjaInQueue = ninjaQueue[ninjasInQueue]
-  
-          ninjaArr[ninjasInQueue][0](true);
-          ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
-          ninjasInQueue++;
-      }
-  
-      while (ninjasInQueue < ninjaArr.length) {
-          ninjaArr[ninjasInQueue][0](false);
-          ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
-          ninjasInQueue++;
-      }
-  }
-  })
-
-  socket.on("entered_queue", (message) => {
-    let parsedData = JSON.parse(message);
-    console.log(parsedData);
-
-    let queue = parsedData.queue;
-    
-    let ninjaQueue = parsedData.ninjaQueue;
-    let monsterQueue = parsedData.monsterQueue;
-
-    
-    let matchID = parsedData.matchID;
-
-
-    let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
-    let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
-
-    let lastToJoin = "";
-
-    let ninjas = []
-    if (inNinjaQueue) {
-        lastToJoin = inNinjaQueue.name
-    }
-
-    if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
+    if (matchID && (inNinjaQueue || inMonsterQueue)) {
+        setMatchFound(matchID);
+        
+        navigate('/game', {
+            state: { role: role, matchID: matchID },
+        });
+    } 
+    else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
 
         generateMatch(ninjaQueue, monsterQueue[0]).then((matchID) => {
-          socket.emit("matchFound", JSON.stringify({
-            type: "matchFound",
-            matchID: matchID,
-            ninjaQueue: ninjaQueue,
-            monsterQueue: monsterQueue,
-            queue: queue
-        }));
+            client.send(JSON.stringify({
+                type: "matchFound",
+                matchID: matchID,
+                ninjaQueue: ninjaQueue,
+                monsterQueue: monsterQueue,
+                queue: queue
+            }));
         });
     } 
 
@@ -186,112 +129,8 @@ export function QueuePopup(props) {
             ninjasInQueue++;
         }
     }
-  })
-
-  socket.on("foundMatch", (message) => {
-    let parsedData = JSON.parse(message);
-    console.log(parsedData);
-
-    let queue = parsedData.queue;
     
-    let ninjaQueue = parsedData.ninjaQueue;
-    let monsterQueue = parsedData.monsterQueue;
-
-    
-    let matchID = parsedData.matchID;
-
-
-    let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
-    let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
-
-    let lastToJoin = "";
-
-    let ninjas = []
-    if (inNinjaQueue) {
-        lastToJoin = inNinjaQueue.name
-    }
-
-    if (matchID && (inNinjaQueue || inMonsterQueue)) {
-        setMatchFound(matchID);
-        
-        navigate('/game', {
-            state: { role: role, matchID: matchID },
-        });
-    } 
-  })
-
-// client.onmessage = (message) => {
-//     let parsedData = JSON.parse(message.data);
-
-//     let queue = parsedData.queue;
-    
-//     let ninjaQueue = parsedData.ninjaQueue;
-//     let monsterQueue = parsedData.monsterQueue;
-
-    
-//     let matchID = parsedData.matchID;
-
-
-//     let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
-//     let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
-
-//     let lastToJoin = "";
-
-//     let ninjas = []
-//     if (inNinjaQueue) {
-//         lastToJoin = inNinjaQueue.name
-//     }
-
-//     if (matchID && (inNinjaQueue || inMonsterQueue)) {
-//         setMatchFound(matchID);
-        
-//         navigate('/game', {
-//             state: { role: role, matchID: matchID },
-//         });
-//     } 
-//     else if ((inNinjaQueue || inMonsterQueue) && ninjaQueue.length == 1 && monsterQueue.length == 1 && lastToJoin === getUsername()) {
-
-//         generateMatch(ninjaQueue, monsterQueue[0]).then((matchID) => {
-          
-          
-//             client.send(JSON.stringify({
-//                 type: "matchFound",
-//                 matchID: matchID,
-//                 ninjaQueue: ninjaQueue,
-//                 monsterQueue: monsterQueue,
-//                 queue: queue
-//             }));
-//         });
-//     } 
-
-//     // Update the queue popup
-//     if (inNinjaQueue || inMonsterQueue) {
-//         let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
-//         if (monsterInQueue === undefined) {
-//             setMonster1(false);
-//         } else {
-//             setMonster1(true);
-//             setMonsterImage(monster[monsterInQueue.skin]);
-//         }
-    
-//         let ninjasInQueue = 0;
-//         let ninjaArr = [[setNinja1, setNinja1Image], [setNinja2, setNinja2Image], [setNinja3, setNinja3Image], [setNinja4, setNinja4Image]];
-//         while (ninjaQueue.length > ninjasInQueue) {
-//             let nextNinjaInQueue = ninjaQueue[ninjasInQueue]
-    
-//             ninjaArr[ninjasInQueue][0](true);
-//             ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
-//             ninjasInQueue++;
-//         }
-    
-//         while (ninjasInQueue < ninjaArr.length) {
-//             ninjaArr[ninjasInQueue][0](false);
-//             ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
-//             ninjasInQueue++;
-//         }
-//     }
-    
-// }
+}
   
   const increment = () => {
     setTimer(timerRef.current + 1)

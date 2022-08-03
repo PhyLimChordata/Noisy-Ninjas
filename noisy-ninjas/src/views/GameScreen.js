@@ -15,8 +15,7 @@ import {
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { useNavigate, useLocation } from 'react-router'
 
-import {client, socket} from '../components/popups/QueuePopup';
-
+import {client} from '../components/popups/QueuePopup';
 
 import { Hexagon } from '../components/hexagon/Hexagon'
 
@@ -106,17 +105,11 @@ export function GameScreen() {
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
 
-          socket.emit("update", JSON.stringify({
+          client.send(JSON.stringify({
             type: "update",
             matchId: matchID,
             name: getUsername() 
-          }))
-
-          // client.send(JSON.stringify({
-          //   type: "update",
-          //   matchId: matchID,
-          //   name: getUsername() 
-          // }));
+          }));
         } 
       } else if (timerRef.current > 0) {
         setTimer(timerRef.current - 1)
@@ -208,18 +201,11 @@ export function GameScreen() {
   const [y, setY] = useState(0)
 
   if (!loaded) {
-    
-      socket.emit("create", JSON.stringify({
+      client.send(JSON.stringify({
         type: "create",
         matchId: matchID,
         name: getUsername() 
       }));
-
-      // client.send(JSON.stringify({
-      //   type: "create",
-      //   matchId: matchID,
-      //   name: getUsername() 
-      // }));
     
     if (role === "ninja") {
       getNinjas(matchID).then((ninjas) => {

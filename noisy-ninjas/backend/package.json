@@ -13,16 +13,16 @@
 	"dependencies": {
 		"bcrypt": "^5.0.1",
 		"bcryptjs": "^2.4.3",
-		"cookie-parser": "^1.4.6",
-		"cors": "^2.8.5",
-		"dotenv": "^16.0.1",
-		"express": "^4.18.1",
-		"express-session": "^1.17.3",
-		"mongoose": "^6.4.2",
-		"passport": "^0.6.0",
-		"passport-google-oauth20": "^2.0.0",
-		"server": "^1.0.37",
-		"socket.io": "^4.5.1",
-		"websocket": "^1.0.34"
+    "cookie-parser": "^1.4.6",
+    "mongoose": "^6.4.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "websocket": "^1.0.34",
+    "server": "^1.0.37"
 	}
 }
+

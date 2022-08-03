@@ -24,7 +24,6 @@
     "react-scripts": "5.0.1",
     "react-tooltip": "^4.2.21",
     "server": "^1.0.37",
-    "socket.io-client": "^4.3.1",
     "web-vitals": "^2.1.4",
     "websocket": "^1.0.34"
   },
