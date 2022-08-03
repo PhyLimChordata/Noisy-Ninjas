@@ -136,19 +136,53 @@ const win = () => {
     }
 
     if (mode === 'direction-S') {
+
+      let dir = 'up'
+      let dirLetter = direction.slice(2, direction.length - 1)
+
+      if (dirLetter === 'U') {
+        dir = 'up'
+      } else if (dirLetter === 'D') {
+        dir = 'down'
+      } else if (dirLetter === 'L') {
+        dir = 'left'
+      } else if (dirLetter === 'R') {
+        dir = 'right'
+      } else {
+        return;
+      }
       setTimer(5)
       if (role === 'ninja') {
-        throwShuriken(3, direction).then(() => {
+        throwShuriken(3, dir).then(() => {
           updateMode()
         })
       } else {
-        yellEcho(6, direction).then(() => {
-        updateMode()
+        yellEcho(8, dir).then(() => {
+          updateMode()
       })
       }
     }
 
     if (mode === 'direction-E') {
+      let dirLetter = direction.slice(2, direction.length - 1)
+
+      if (dirLetter.length === 2) {
+        dirLetter = dirLetter.slice(0, dirLetter.length - 1)
+      }
+
+      let dir = 'up'
+      if (dirLetter === 'U') {
+        dir = 'up'
+      } else if (dirLetter === 'D') {
+        dir = 'down'
+      } else if (dirLetter === 'L') {
+        dir = 'left'
+      } else if (dirLetter === 'R') {
+        dir = 'right'
+      } else {
+        return false
+      }
+
       setTimer(5)
 
       if (role === 'ninja') {
@@ -156,7 +190,7 @@ const win = () => {
           updateMode()
         })
       } else {
-        yellScream(6, direction).then(() => {
+        yellScream(5, direction).then(() => {
           updateMode()
         })
       }
@@ -257,86 +291,19 @@ const win = () => {
     })
   }
 
-  const throwShuriken = (range = 0, direction) => {
-    let dir = 'up'
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
+  const throwShuriken = (range = 0, dir) => {
     return shuriken(matchID, dir, srcx, srcy, range)
   }
 
-  const throwBomb = (range = 0, direction) => {
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter.length === 2) {
-      dirLetter = dirLetter.slice(0, dirLetter.length - 1)
-    }
-
-    let dir = 'up'
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const throwBomb = (range = 0, dir) => {
     return explosion(matchID, dir, srcx, srcy, range)
   }
 
-  const yellEcho = (range = 0, direction) => {
-    let dir = 'up'
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const yellEcho = (range = 0, dir) => {
     return echo(matchID, dir, srcx, srcy, range)
   }
 
-  const yellScream = (range = 0, direction) => {
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter.length === 2) {
-      dirLetter = dirLetter.slice(0, dirLetter.length - 1)
-    }
-
-    let dir = 'up'
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const yellScream = (range = 0, dir) => {
     return scream(matchID, dir, srcx, srcy, range)
   }
 
