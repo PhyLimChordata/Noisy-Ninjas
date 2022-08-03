@@ -16,7 +16,7 @@ export function Leaderboard() {
     getUserRanking(username).then((res) => {
       setRank(res.rank + 1)
     })
-  }, [])
+  }, [username])
 
   return (
     <div className={'leaderboard-page'}>

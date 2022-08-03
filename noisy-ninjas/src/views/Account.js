@@ -7,7 +7,6 @@ import {
   changePassword,
   changeUsername,
   deleteAccount,
-  getUser,
   getUsername,
   getUserStats,
 } from '../apiService'
@@ -51,7 +50,7 @@ export function Account() {
     getUserStats(username).then((res) => {
       setUserStats(res)
     })
-  }, []);
+  }, [username]);
 
 
 
