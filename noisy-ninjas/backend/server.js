@@ -10,49 +10,46 @@ require('dotenv').config({ path: '../../.env' })
 const session = require('express-session')
 const cookie = require('cookie')
 const bcrypt = require('bcrypt')
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+
+
 require('./passport-google')
-
-const swaggerJsDoc = require('swagger-jsdoc')
-const swaggerUI = require('swagger-ui-express')
-
-
-
-
-
 
 const saltRounds = 10
 
-/*
-Annas: Code for Passport.js and any google authentication has been derived or manipulated from this tutorial: https://www.youtube.com/watch?v=o9e3ex-axzA
-       Code related to mongoose has been derived or manipulated https://rahmanfadhil.com/express-rest-api/
-       Code related to basic session has been derived from assignment and lecture code
-*/
-
-
 const app = express();
 
-const swaggerOption = {
-  swaggerDefinition: {
-    info: {
-      title: 'API',
-      version: '1.0.0'
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./Swagger.json');
+// const swaggerJsDoc = require('swagger-jsdoc')
+// const swaggerUI = require('swagger-ui-express')
 
-    }
-  },
-  apis: ['server.js']
-}
-const swaggerDocs = swaggerJsDoc(swaggerOption);
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+
+// const swaggerOption = {
+//   swaggerDefinition: {
+//     info: {
+//       title: 'API',
+//       version: '1.0.0'
+
+//     }
+//   },
+//   apis: ['server.js']
+// }
+// const swaggerDocs = swaggerJsDoc(swaggerOption);
+
+// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+
 
 
 const port = process.env.PORT || 5000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://noisy-ninjas.nn.r.appspot.com',
   credentials: true,
+  methods: "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS",
+  allowedHeaders: ["*"]
 }
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -65,14 +62,23 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: 'lax', //TODO: CHANGE THIS to none
-      secure: false, //TODO: CHANGE THIS to true
+      sameSite: 'none', 
+      secure: true, 
     },
   })
 )
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.set("trust proxy", 1);
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PATCH,PUT");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept,Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
+  next();
+});
 
 //Mongoose connects to the db based on uri
 const uri = process.env.URI
@@ -97,7 +103,6 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const isAuthenticated = function (req, res, next) {
   console.log(req.displayName)
@@ -115,7 +120,7 @@ const hasAccess = function (req, res, next) {
 
 
 app.get(
-  '/google',
+  '/api/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
@@ -126,9 +131,9 @@ app.get(
  *     description:  Endpoint for everything
  */
 app.get(
-  '/google/callback',
+  '/api/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:3000/',
+    failureRedirect: 'https://noisy-ninjas.nn.r.appspot.com',
   }),
   function (req, res) {
     // Successful authentication, redirect home.
@@ -143,7 +148,7 @@ app.get(
         maxAge: 60 * 60 * 24 * 7, // 1 week in number of seconds
       })
     )
-    res.redirect('http://localhost:3000/lobby')
+    res.redirect('https://noisy-ninjas.nn.r.appspot.com/lobby')
   }
 )
 
@@ -358,7 +363,7 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
 });
 
 
-app.get('/signout/', function(req, res, next){
+app.get('/api/signout/', function(req, res, next){
     req.session.destroy();
     res.setHeader('Set-Cookie', cookie.serialize('displayName', '', {
           path : '/', 
@@ -411,7 +416,7 @@ app.patch('/api/users/:displayName/username', hasAccess, function (req, res) {
   })
 })
 
-app.get('/signout/', function (req, res, next) {
+app.get('/api/signout/', function (req, res, next) {
   req.session.destroy()
   res.setHeader(
     'Set-Cookie',
@@ -422,7 +427,7 @@ app.get('/signout/', function (req, res, next) {
   )
   return res.json({})
 })
-  app.post('/signup/', function (req, res, next) {
+  app.post('/api/signup/', function (req, res, next) {
       if (!("displayName" in req.body))
           return res.status(422).end("displayName is missing");
       if (!("password" in req.body))
@@ -445,7 +450,7 @@ app.get('/signout/', function (req, res, next) {
       });
   });
 
-app.post('/signin/', function (req, res, next) {
+app.post('/api/signin/', function (req, res, next) {
   if (!('displayName' in req.body))
     return res.status(422).end('displayName is missing')
   if (!('password' in req.body))
@@ -475,6 +480,8 @@ app.post('/signin/', function (req, res, next) {
           })
         )
         req.session.displayName = displayName
+        req.session.save();
+
         return res.json(displayName)
       } else {
         return res.status(401).end('access denied')
@@ -483,7 +490,7 @@ app.post('/signin/', function (req, res, next) {
   })
 })
 
-app.post('/signup/', function (req, res, next) {
+app.post('/api/signup/', function (req, res, next) {
   if (!('displayName' in req.body))
     return res.status(422).end('displayName is missing')
   if (!('password' in req.body))
@@ -527,23 +534,18 @@ app.post('/signup/', function (req, res, next) {
 //Primitive tests for Authentication / Authorization
 app.get('/', (req, res) => res.send('Not logged in'))
 
-app.use('/map', require('./routes/mapRoute'))
-app.use('/match', require('./routes/matchRoute'))
-
-//Adds routes for express to use
-//Example route: http://localhost:5000/example/add
-// const loginRouter = require('./routes/login');
-// app.use('/login', loginRouter);
+app.use('/api/map', require('./routes/mapRoute'))
+app.use('/api/match', require('./routes/matchRoute'))
 
 const hexRouter = require('./routes/hex')
-app.use('/map', hexRouter)
+app.use('/api/map', hexRouter)
 
 //App is now listening for calls
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
-// Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
+// // Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
 
 const webSocketServer = require('websocket').server;
 const http = require('http');
@@ -576,8 +578,6 @@ wsServer.on('request', function (request) {
     clients[userID] = connection;
     console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
 
-    //Needs to make a random MatchID
-    //Send out the random matchID when everyones ready
   
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
@@ -622,54 +622,6 @@ wsServer.on('request', function (request) {
                 clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters}));
             }   
            
-        //     currMatch = Matches.find(e=> e.matchId === data.matchId)
-
-        //     currPlayer = currMatch.user.find(e=> e.name === data.name);
-        //         currMatch.user.pop(currPlayer);
-            
-        //   console.log(Matches);
-
-        //   for(key in clients) {
-        //     clients[key].send(currMatch.user.length);
-        //   }      
-        // foundNinja = 0
-        // for(i = 0; i< Queue.length; i++){
-        //   ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
-        //   if(ninjaPlayer){
-        //     foundNinja = i;
-        //   }
-        // }
-
-        // foundMonster = 0
-        // for(i = 0; i< Queue.length; i++){
-        //   monsterPlater = Queue[i].monsters.find(e => e.name === data.name);
-        //   if(monsterPlayer){
-        //     foundMonster = i;
-        //   }
-        // }
-
-           
-          
-            
-        //     if ((foundNinja === 0) && (foundMonster === 0)) {
-        //         return;
-        //     }
-        //     else if(!(foundNinja === 0)){
-        //     const index = Queue[foundNinja].ninjas.indexOf(data.name);
-        //     Queue[foundNinja].ninjas.splice(index, 1);
-        //   }
-        //     else{
-        //       const index = Queue[foundMonster].monsters.indexOf(data.name);
-        //     Queue[foundMonster].monsters.splice(index, 1);
-        //     }
-            
-
-        //     console.log(Queue);
-        //     for(key in clients) {
-        //         clients[key].send(JSON.stringify({queue: Queue}));
-        //     }   
-            
-
         }
 
         
@@ -716,49 +668,6 @@ wsServer.on('request', function (request) {
           }       
 
             
-        //   foundNinja = 0
-        //   for(i = 0; i< Queue.length; i++){
-        //     ninjaPlayer = Queue[i].ninjas.find(e => e.name === data.name);
-        //     if(ninjaPlayer){
-        //       foundNinja = foundNinja + 1;
-        //     }
-        //   }
-
-        //   foundMonster = 0
-        //   for(i = 0; i< Queue.length; i++){
-        //     monsterPlayer = Queue[i].monsters.find(e => e.name === data.name);
-        //     if(monsterPlayer){
-        //       foundMonster = foundMonster + 1;
-        //     }
-        //   }
-
-            
-        //     // if ((ninjaPlayer === undefined) || (monsterPlayer === undefined)) {
-        //       if(["draco", "screamer", "tiny"].includes(data.skin)){
-        //         for(i = 0; i< Queue.length; i++){
-        //             if((Queue[i].monsters.length === 0) && (foundMonster === 0)) {
-        //             Queue[i].monsters.push({name: data.name, skin: data.skin});
-        //             foundMonster = 1;
-        //             }
-        //         }
-        //         if(foundMonster === 0){
-        //           Queue.add({ninjas:[], monsters: [{name: data.name, skin: data.skin}]})
-        //         }
-        //       }
-        //         else{
-        //           for(i = 0; i< Queue.length; i++){
-        //             if((Queue[i].length <= 3) && (foundNinja === 0)) {
-        //               Queue[i].ninjas.push({name: data.name, skin: data.skin});
-        //               foundNinja = 1;
-        //             }
-        //             }
-        //             if(foundNinja === 0){
-        //               Queue.push({ninjas:[{name: data.name, skin: data.skin}], monsters: []})
-        //             }
-        //         }
-        //     // }
-
-        //     console.log(Queue);
 
            
             for(key in clients) {
@@ -784,46 +693,6 @@ wsServer.on('request', function (request) {
             clients[key].send(JSON.stringify({matchID: data.matchID, ninjaQueue: data.ninjaQueue, monsterQueue: data.monsterQueue}));
         }
 
-
-        //   if(["draco", "screamer", "tiny"].includes(data.skin)){
-        //     for(i = 0; i < Queue.length; i++){
-        //       if(Queue[i].monsters.includes(data.name)){
-        //         for (key in clients) {
-        //           clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
-        //       }
-        //         Queue.splice(i,1)
-
-        //       }
-
-        //     }
-
-        //   }
-        //   else{
-
-        //     for(i = 0; i < Queue.length; i++){
-        //       if(Queue[i].ninjas.includes(data.name)){
-        //         for (key in clients) {
-        //           clients[key].send(JSON.stringify({matchID: data.matchID, queue: Queue[i]}));
-        //       }
-        //         Queue.splice(i,1)
-
-        //       }
-
-        //     }
-
-        //   }
-
-
-            // console.log(data.matchID);
-            // newQueue = {ninjas: [], monsters: []}
-            // for(i =0; i < 4; i++){
-            //   newQueue.ninjas.push(Queue.ninjas.shift())
-            // }
-            // newQueue.monsters.push(Queue.monsters.shift())
-            // for (key in clients) {
-            //     clients[key].send(JSON.stringify({matchID: data.matchID, queue: newQueue}));
-            // }
-            // //remove them from the queue
         }
 
         if(data.type === "create"){

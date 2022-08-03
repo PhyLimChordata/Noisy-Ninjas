@@ -1,0 +1,3 @@
+runtime: nodejs16
+service: api
+entrypoint: cd backend; node server.js

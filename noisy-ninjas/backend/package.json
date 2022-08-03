@@ -22,7 +22,7 @@
 		"passport": "^0.6.0",
 		"passport-google-oauth20": "^2.0.0",
 		"server": "^1.0.37",
-		"swagger-jsdoc": "^6.2.2",
+		"swagger-jsdoc": "^6.2.3",
 		"swagger-ui-express": "^4.5.0",
 		"websocket": "^1.0.34"
 	}

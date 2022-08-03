@@ -31,7 +31,7 @@ passport.use(
       clientID:
         '1042176168336-9d9980j4hn9ij9hk534lvhjdmt86o0qq.apps.googleusercontent.com',
       clientSecret: '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',
-      callbackURL: 'http://localhost:5000/google/callback',
+      callbackURL: 'https://noisy-ninjas.nn.r.appspot.com/api/google/callback',
     },
     function (accessToken, refreshToken, profile, cb) {
       console.log("111111")
