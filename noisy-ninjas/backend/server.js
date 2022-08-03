@@ -16,7 +16,7 @@ const saltRounds = 10
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
   origin: 'https://noisy-ninjas.nn.r.appspot.com',
