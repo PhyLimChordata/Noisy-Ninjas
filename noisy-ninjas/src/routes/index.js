@@ -6,6 +6,7 @@ import { Account } from '../views/Account'
 import { Leaderboard } from '../views/Leaderboard'
 import { Navigate } from 'react-router-dom'
 import { getUsername } from '../apiService'
+import {Credits} from "../views/Credits";
 
 const username = getUsername()
 const ProtectedRoute = ({ children }) => {
@@ -77,6 +78,10 @@ const mainRoutes = [
       </ProtectedRoute>
     ),
   },
+  {
+    path: "/credits",
+    element: <Credits/>
+  }
 ]
 
 export default mainRoutes

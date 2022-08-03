@@ -1,0 +1,15 @@
+.credits-page {
+  margin: 0px 50px;
+}
+
+.credits-page .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 46px;
+  margin-bottom: 100px;
+}
+
+.credits-page .link {
+  color: #7558f7
+}
