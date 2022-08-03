@@ -6,7 +6,11 @@ import {useNavigate} from "react-router";
 
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-export const client = new W3CWebSocket('ws://localhost:8000');
+// https://noisy-ninjas.nn.r.appspot.com/
+export const client = new W3CWebSocket('wss://noisy-ninjas.nn.r.appspot.com:8080');
+
+// export const client = new W3CWebSocket('ws://localhost:8000');
+console.log(client);
 
 
 export function QueuePopup(props) {

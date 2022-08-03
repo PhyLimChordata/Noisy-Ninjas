@@ -127,7 +127,6 @@ export function Login() {
         </form>
         <div>
           <div className={'oauth-container'}>
-            {/*TODO: CHANGE LOCALHOST:5000 AND GET RID OF FACEBOOK*/}
             <div
               className={'clickable oauth-btn'}
               onClick={() => googleLogin()}

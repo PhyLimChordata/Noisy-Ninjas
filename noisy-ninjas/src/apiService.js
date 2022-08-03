@@ -23,7 +23,7 @@ export function login(username, password) {
 }
 
 export function googleLogin() {
-  return (window.location = 'http://localhost:5000/google')
+  return (window.location = 'https://noisy-ninjas.nn.r.appspot.com/api/google')
 }
 
 export function signUp(username, password) {

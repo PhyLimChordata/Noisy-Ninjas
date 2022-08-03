@@ -1,0 +1,3 @@
+runtime: nodejs16
+service: websocket
+entrypoint: cd backend; node websocket.js

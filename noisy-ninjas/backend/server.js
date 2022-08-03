@@ -14,13 +14,6 @@ require('./passport-google')
 
 const saltRounds = 10
 
-/*
-Annas: Code for Passport.js and any google authentication has been derived or manipulated from this tutorial: https://www.youtube.com/watch?v=o9e3ex-axzA
-       Code related to mongoose has been derived or manipulated https://rahmanfadhil.com/express-rest-api/
-       Code related to basic session has been derived from assignment and lecture code
-*/
-
-
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -99,14 +92,14 @@ const hasAccess = function (req, res, next) {
 }
 
 app.get(
-  '/google',
+  '/api/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
 app.get(
-  '/google/callback',
+  '/api/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:3000/',
+    failureRedirect: 'https://noisy-ninjas.nn.r.appspot.com',
   }),
   function (req, res) {
     // Successful authentication, redirect home.
@@ -121,7 +114,7 @@ app.get(
         maxAge: 60 * 60 * 24 * 7, // 1 week in number of seconds
       })
     )
-    res.redirect('http://localhost:3000/lobby')
+    res.redirect('https://noisy-ninjas.nn.r.appspot.com/lobby')
   }
 )
 
@@ -499,11 +492,6 @@ app.get('/', (req, res) => res.send('Not logged in'))
 app.use('/api/map', require('./routes/mapRoute'))
 app.use('/api/match', require('./routes/matchRoute'))
 
-//Adds routes for express to use
-//Example route: http://localhost:5000/example/add
-// const loginRouter = require('./routes/login');
-// app.use('/login', loginRouter);
-
 const hexRouter = require('./routes/hex')
 app.use('/api/map', hexRouter)
 
@@ -512,7 +500,7 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
-// Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
+// // Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
 
 const webSocketServer = require('websocket').server;
 const http = require('http');
