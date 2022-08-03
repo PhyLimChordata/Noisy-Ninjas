@@ -1,5 +1,5 @@
 import React from 'react'
-import '../style/overlay.css'
+import '../style/Overlay.css'
 
 export function Hearts(props) {
   return (

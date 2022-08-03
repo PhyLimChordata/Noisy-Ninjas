@@ -27,3 +27,7 @@ main {
 .title {
   font-size: 46px;
 }
+
+body {
+  margin: 0
+}

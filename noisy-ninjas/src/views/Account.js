@@ -19,11 +19,10 @@ import {White} from '../assets/colors';
 
 export function Account() {
   const { state } = useLocation()
-  const { username, skin } = state // Read values passed on state
+  const { username } = state // Read values passed on state
   const [deleteAccountPopup, setDeleteAccountPopup] = useState(false)
   const [changePasswordPopup, setChangePasswordPopup] = useState(false)
   const [changeUsernamePopup, setChangeUsernamePopup] = useState(false)
-  const [beltRank, setBeltRank] = useState(White);
 
   const [userStats, setUserStats] = useState({
     points: '?',
@@ -52,11 +51,6 @@ export function Account() {
     getUserStats(username).then((res) => {
       setUserStats(res)
     })
-
-    getUser(username).then((user) => {
-
-        setBeltRank(user.beltRank);
-      });
   }, []);
 
 

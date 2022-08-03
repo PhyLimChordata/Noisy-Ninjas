@@ -128,3 +128,19 @@
   align-items: center;
   color: #ff8385;
 }
+
+.modal-component .input-footer {
+  display: flex;
+  flex-direction: row;
+}
+
+
+.modal-component .input-footer Button:first-child {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.modal-component .input-footer Button:last-child {
+  font-size: 20px;
+  margin-left: 20px;
+}

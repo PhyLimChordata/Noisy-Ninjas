@@ -5,13 +5,14 @@ import {ClosablePopup} from "./ClosablePopup";
 import {useNavigate} from "react-router";
 
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import {ninjaMapping} from "../../assets/mappings/ninja-mapping";
+import {monsterMapping} from "../../assets/mappings/monster-mapping";
 
 export const client = new W3CWebSocket('ws://localhost:8000');
 
 
 export function QueuePopup(props) {
   const {closeAction, role } = props
-
   const [timer, setTimer] = useState(0)
   const timerRef = useRef(timer)
 
@@ -19,30 +20,13 @@ export function QueuePopup(props) {
   const [ninja2, setNinja2] = useState(false)
   const [ninja3, setNinja3] = useState(false)
   const [ninja4, setNinja4] = useState(false)
-  const [monster1, setMonster1] = useState(false);
+  const [monster, setMonster] = useState(false);
+  const [ninja1Image, setNinja1Image] = useState(ninjaMapping["black-ninja"]);
+  const [ninja2Image, setNinja2Image] = useState(ninjaMapping["black-ninja"]);
+  const [ninja3Image, setNinja3Image] = useState(ninjaMapping["black-ninja"]);
+  const [ninja4Image, setNinja4Image] = useState(ninjaMapping["black-ninja"]);
 
-  const [matchFound, setMatchFound] = useState("");
-
-  const [ninja1Image, setNinja1Image] = useState(require('../../assets/static/queue/black-ninja.png'));
-  const [ninja2Image, setNinja2Image] = useState(require('../../assets/static/queue/black-ninja.png'));
-  const [ninja3Image, setNinja3Image] = useState(require('../../assets/static/queue/black-ninja.png'));
-  const [ninja4Image, setNinja4Image] = useState(require('../../assets/static/queue/black-ninja.png'));
-
-  const [monsterImage, setMonsterImage] = useState(require('../../assets/static/bosses/draco.png'));
-
-  const ninja = {
-    "black-ninja": require('../../assets/static/lobby/ninjas/black-ninja.png'),
-    "red-ninja": require('../../assets/static/lobby/ninjas/red-ninja.png'),
-    "blue-ninja": require('../../assets/static/lobby/ninjas/blue-ninja.png'),
-    "green-ninja": require('../../assets/static/lobby/ninjas/green-ninja.png'),
-    "pink-ninja": require('../../assets/static/lobby/ninjas/pink-ninja.png'),
-  }
-
-  const monster = {
-    draco: require('../../assets/static/bosses/draco.png'),
-    screamer: require('../../assets/static/bosses/screamer.png'),
-    tiny: require('../../assets/static/bosses/tiny.png'),
-  }
+  const [monsterImage, setMonsterImage] = useState(monsterMapping["draco"]);
 
   useEffect(() => {
     const interval = setInterval(increment, 1000)
@@ -58,30 +42,19 @@ export function QueuePopup(props) {
   const navigate = useNavigate();
 
 client.onmessage = (message) => {
-    let parsedData = JSON.parse(message.data);
+    const parsedData = JSON.parse(message.data);
 
-    let queue = parsedData.queue;
-    
-    let ninjaQueue = parsedData.ninjaQueue;
-    let monsterQueue = parsedData.monsterQueue;
-
-    
-    let matchID = parsedData.matchID;
+    const queue = parsedData.queue;
+    const ninjaQueue = parsedData.ninjaQueue;
+    const monsterQueue = parsedData.monsterQueue;
+    const matchID = parsedData.matchID;
 
 
-    let inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
-    let inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
-
-    let lastToJoin = "";
-
-    let ninjas = []
-    if (inNinjaQueue) {
-        lastToJoin = inNinjaQueue.name
-    }
+    const inNinjaQueue = ninjaQueue.find(e => e.name === getUsername());
+    const inMonsterQueue = monsterQueue.find(e => e.name === getUsername());
+    const lastToJoin = inNinjaQueue ? inNinjaQueue.name : "";
 
     if (matchID && (inNinjaQueue || inMonsterQueue)) {
-        setMatchFound(matchID);
-        
         navigate('/game', {
             state: { role: role, matchID: matchID },
         });
@@ -101,12 +74,12 @@ client.onmessage = (message) => {
 
     // Update the queue popup
     if (inNinjaQueue || inMonsterQueue) {
-        let monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
+        const monsterInQueue = monsterQueue.find(e => e.skin === "draco" || e.skin === "tiny" || e.skin === "screamer");
         if (monsterInQueue === undefined) {
-            setMonster1(false);
+            setMonster(false);
         } else {
-            setMonster1(true);
-            setMonsterImage(monster[monsterInQueue.skin]);
+            setMonster(true);
+            setMonsterImage(monsterMapping[monsterInQueue.skin]);
         }
     
         let ninjasInQueue = 0;
@@ -115,13 +88,13 @@ client.onmessage = (message) => {
             let nextNinjaInQueue = ninjaQueue[ninjasInQueue]
     
             ninjaArr[ninjasInQueue][0](true);
-            ninjaArr[ninjasInQueue][1](ninja[nextNinjaInQueue.skin])
+            ninjaArr[ninjasInQueue][1](ninjaMapping[nextNinjaInQueue.skin])
             ninjasInQueue++;
         }
     
         while (ninjasInQueue < ninjaArr.length) {
             ninjaArr[ninjasInQueue][0](false);
-            ninjaArr[ninjasInQueue][1](require('../../assets/static/queue/black-ninja.png'))
+            ninjaArr[ninjasInQueue][1](ninjaMapping["black-ninja"])
             ninjasInQueue++;
         }
     }
@@ -169,7 +142,7 @@ client.onmessage = (message) => {
       <div>
         <img
           className={'monster-img'}
-          style={{ opacity: !monster1 && 0.2 }}
+          style={{ opacity: !monster && 0.2 }}
           src={monsterImage}
           alt={'monster-draco'}
         />

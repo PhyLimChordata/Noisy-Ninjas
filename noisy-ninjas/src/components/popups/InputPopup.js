@@ -13,19 +13,17 @@ export function InputPopup(props) {
     modalStyle,
   } = props
   const footer = (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div className={"input-footer"}>
       <Button
         content={confirmText}
         form={'input-popup-form'}
         type={'submit'}
         className={'hollow-btn skinny'}
-        style={{ fontSize: '20px', marginRight: '20px' }}
         onPress={() => confirmAction()}
       ></Button>
       <Button
         content={cancelText}
         className={'hollow-btn skinny'}
-        style={{ fontSize: '20px', marginLeft: '20px' }}
         onPress={() => cancelAction()}
       ></Button>
     </div>

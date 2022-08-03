@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../style/overlay.css'
+import '../style/Overlay.css'
 
 import { Hearts } from './Heart'
 

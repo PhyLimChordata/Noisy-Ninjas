@@ -7,7 +7,6 @@ import {
   newPOV,
   getNinjas,
   getUsername,
-  getUser,
   getMonsters,
   setNinjaChat,
   setMonsterChat
@@ -17,9 +16,9 @@ import { useNavigate, useLocation } from 'react-router'
 
 import {client} from '../components/popups/QueuePopup';
 
-import { Hexagon } from '../components/hexagon/Hexagon'
-
 import { Peer } from "peerjs";
+import {ninjaMapping} from "../assets/mappings/ninja-mapping";
+import {monsterMapping} from "../assets/mappings/monster-mapping";
 
 
 export function GameScreen() {
@@ -36,21 +35,7 @@ export function GameScreen() {
 
   const navigate = useNavigate()
 
-  const ninja = {
-    "black-ninja": require('../assets/static/lobby/ninjas/black-ninja.png'),
-    "red-ninja": require('../assets/static/lobby/ninjas/red-ninja.png'),
-    "blue-ninja": require('../assets/static/lobby/ninjas/blue-ninja.png'),
-    "green-ninja": require('../assets/static/lobby/ninjas/green-ninja.png'),
-    "pink-ninja": require('../assets/static/lobby/ninjas/pink-ninja.png'),
-  }
-
-  const monster = {
-    draco: require('../assets/static/bosses/draco.png'),
-    screamer: require('../assets/static/bosses/screamer.png'),
-    tiny: require('../assets/static/bosses/tiny.png'),
-  }
-
-  const [summaryCharacter, setSummaryCharacter] = useState(role === 'ninja' ? ninja[routeRole] : monster[routeRole]);
+  const [summaryCharacter, setSummaryCharacter] = useState(role === 'ninja' ? ninjaMapping[routeRole] : monsterMapping[routeRole]);
   const [elo, setElo] = useState(0);
   const [live, setLive] = useState(true);
   const [won, setWon] = useState(false);

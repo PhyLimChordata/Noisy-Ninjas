@@ -187,9 +187,6 @@ export function SignUp() {
                 alt={'google-icon'}
               />
             </div>
-            {/* <div className={"clickable oauth-btn"}>
-                            <img className={"oauth-icon"} src={require("../assets/static/icons/facebook-icon.png")} alt={"facebook-icon"}/>
-                        </div> */}
           </div>
           <div className={'clickable'} onClick={() => navigate('/')}>
             Already have an account?
