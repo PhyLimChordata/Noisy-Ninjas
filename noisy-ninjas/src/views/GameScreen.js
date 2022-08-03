@@ -279,12 +279,12 @@ export function GameScreen() {
                               </div>
                               {won ?
                               <>
-                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow up"}/>
+                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} alt={"elo up"} className={"summary-arrow up"}/>
                                   <div className={"summary-elo-diff green"}>
                                     5
                                   </div>
                               </>:<>
-                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} className={"summary-arrow down"}/>
+                                  <img src={require("../assets/static/icons/triangle-right-icon.png")} alt={"elo down"} className={"summary-arrow down"}/>
                                   <div className={"summary-elo-diff red"}>
                                     3
                                   </div>

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router'
 import { getUsername, signOut, generateMatch } from '../apiService'
   
 import { client } from '../components/popups/QueuePopup'
+import {ninjaMapping} from "../assets/mappings/ninja-mapping";
+import {monsterMapping} from "../assets/mappings/monster-mapping";
 
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
@@ -90,25 +92,9 @@ export function Lobby() {
                 skin: skin
               }));
         }
-      
-        
     }
-
   const ninjaKeys = ['black', 'red', 'blue', 'green', 'pink']
-  const ninja = {
-    black: require('../assets/static/lobby/ninjas/black-ninja.png'),
-    red: require('../assets/static/lobby/ninjas/red-ninja.png'),
-    blue: require('../assets/static/lobby/ninjas/blue-ninja.png'),
-    green: require('../assets/static/lobby/ninjas/green-ninja.png'),
-    pink: require('../assets/static/lobby/ninjas/pink-ninja.png'),
-  }
   const monsterKeys = ['draco', 'screamer', 'tiny']
-
-  const monster = {
-    draco: require('../assets/static/bosses/draco.png'),
-    screamer: require('../assets/static/bosses/screamer.png'),
-    tiny: require('../assets/static/bosses/tiny.png'),
-  }
 
   useEffect(() => {
     setSkin(ninjaKeys[ninjaIndex] + '-ninja')
@@ -128,24 +114,24 @@ export function Lobby() {
 
   function selectPrev() {
     if (role === 'ninja') {
-      if (ninjaIndex != 0) {
+      if (ninjaIndex !== 0) {
         setNinjaIndex(ninjaIndex - 1)
       } else {
         setNinjaIndex(ninjaKeys.length - 1)
       }
     } else {
-      if (monsterIndex != 0) {
+      if (monsterIndex !== 0) {
         setMonsterIndex(monsterIndex - 1)
       } else setMonsterIndex(monsterKeys.length - 1)
     }
   }
   function selectNext() {
     if (role === 'ninja') {
-      if (ninjaIndex != ninjaKeys.length - 1) {
+      if (ninjaIndex !== ninjaKeys.length - 1) {
         setNinjaIndex(ninjaIndex + 1)
       } else setNinjaIndex(0)
     } else {
-      if (monsterIndex != monsterKeys.length - 1) {
+      if (monsterIndex !== monsterKeys.length - 1) {
         setMonsterIndex(monsterIndex + 1)
       } else setMonsterIndex(0)
     }
@@ -156,12 +142,14 @@ export function Lobby() {
       {role === 'ninja' ? (
         <img
           className={'role-select clickable'}
+          alt={"monster-select"}
           src={require('../assets/static/lobby/icons/monster-role-icon.png')}
           onClick={() => setRole('monster')}
         />
       ) : (
         <img
           className={'role-select clickable'}
+          alt={"ninja-select"}
           src={require('../assets/static/lobby/icons/ninja-role-icon.png')}
           onClick={() => setRole('ninja')}
         />
@@ -178,13 +166,13 @@ export function Lobby() {
             {role === 'ninja' ? (
               <img
                 className={'ninja-img'}
-                src={ninja[ninjaKeys[ninjaIndex]]}
+                src={ninjaMapping[skin]}
                 alt={'current-ninja'}
               />
             ) : (
               <img
                 className={'ninja-img'}
-                src={monster[monsterKeys[monsterIndex]]}
+                src={monsterMapping[skin]}
                 alt={'current-monster'}
               />
             )}
@@ -245,12 +233,7 @@ export function Lobby() {
       )}
       {lobbyPopup && (
         <QueuePopup
-          client={client}
           closeAction={() => toggleLobbyPopup()}
-          confirmText={'sign out'}
-          title={'sign out'}
-          body={'are you sure you want to sign out?'}
-          confirmAction={() => console.log('signed out')}
           role={skin}
         />
       )}
