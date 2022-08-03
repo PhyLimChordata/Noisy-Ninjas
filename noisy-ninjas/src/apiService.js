@@ -7,9 +7,10 @@ import axios from 'axios'
  ************************************************************/
 
 export function login(username, password) {
+  console.log("ok");
   return axios
     .post(
-      '/signin',
+      '/api/signin',
       {
         displayName: username,
         password,
@@ -28,7 +29,7 @@ export function googleLogin() {
 export function signUp(username, password) {
   return axios
     .post(
-      '/signup',
+      '/api/signup',
       {
         displayName: username,
         password,
@@ -41,7 +42,7 @@ export function signUp(username, password) {
 }
 
 export function signOut() {
-  return axios.get('/signout', { withCredentials: true }).then((res) => {
+  return axios.get('/api/signout', { withCredentials: true }).then((res) => {
     return res.data
   })
 }
@@ -107,7 +108,7 @@ export function getUser(name) {
  ************************************************************/
 
 export function generateMatch(ninjas, monster) {
-    return axios.post(`/match/generate`, {mapID: '62e4920a3c0f976c00ccfe53', ninjas: ninjas, monster: monster}, {withCredentials: true }).then((res) => {
+    return axios.post(`/api/match/generate`, {mapID: '62e4920a3c0f976c00ccfe53', ninjas: ninjas, monster: monster}, {withCredentials: true }).then((res) => {
         return res.data;
     })
 }
@@ -115,7 +116,7 @@ export function generateMatch(ninjas, monster) {
 export function newPOV(matchID, x, y, radius) {
   return axios
     .post(
-      `/match/source?x=${x}&y=${y}&radius=${radius}`,
+      `/api/match/source?x=${x}&y=${y}&radius=${radius}`,
       { matchID: matchID },
       { withCredentials: true }
     )
@@ -126,7 +127,7 @@ export function newPOV(matchID, x, y, radius) {
 
 export function getNinjas(matchID) {
   return axios
-    .post(`/match/ninjas`, { matchID: matchID }, { withCredentials: true })
+    .post(`/api/match/ninjas`, { matchID: matchID }, { withCredentials: true })
     .then((res) => {
       return res.data
     })
@@ -134,7 +135,7 @@ export function getNinjas(matchID) {
 
 export function getMonsters(matchID) {
   return axios
-    .post(`/match/monsters`, { matchID: matchID }, { withCredentials: true })
+    .post(`/api/match/monsters`, { matchID: matchID }, { withCredentials: true })
     .then((res) => {
       return res.data
     })
@@ -143,7 +144,7 @@ export function getMonsters(matchID) {
 export function movePlayer(matchID, srcx, srcy, tarx, tary, routeRole) {
   return axios
     .patch(
-      `/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`,
+      `/api/match/move/${getUsername()}?srcx=${srcx}&srcy=${srcy}&tarx=${tarx}&tary=${tary}`,
       { matchID: matchID },
       { withCredentials: true }
     )
@@ -155,7 +156,7 @@ export function movePlayer(matchID, srcx, srcy, tarx, tary, routeRole) {
 export function shuriken(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
-      `/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
+      `/api/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
       { matchID: matchID, effect: 'shuriken' },
       { withCredentials: true }
     )
@@ -167,7 +168,7 @@ export function shuriken(matchID, direction, srcx, srcy, range) {
 export function explosion(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
-      `/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
+      `/api/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
       { matchID: matchID, effect: 'bomb' },
       { withCredentials: true }
     )
@@ -179,7 +180,7 @@ export function explosion(matchID, direction, srcx, srcy, range) {
 export function echo(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
-      `/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
+      `/api/match/shuriken/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
       { matchID: matchID, effect: 'echo' },
       { withCredentials: true }
     )
@@ -191,7 +192,7 @@ export function echo(matchID, direction, srcx, srcy, range) {
 export function scream(matchID, direction, srcx, srcy, range) {
   return axios
     .patch(
-      `/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
+      `/api/match/explosion/${direction}?x=${srcx}&y=${srcy}&range=${range}`,
       { matchID: matchID, effect: 'scream' },
       { withCredentials: true }
     )
@@ -204,7 +205,7 @@ export function scream(matchID, direction, srcx, srcy, range) {
 export function ninjaHealth(matchID) {
   return axios
     .patch(
-      `/match/ninjas/${getUsername()}/health?damage=1`,
+      `/api/match/ninjas/${getUsername()}/health?damage=1`,
       { matchID: matchID },
       { withCredentials: true }
     )
@@ -216,7 +217,7 @@ export function ninjaHealth(matchID) {
 export function monsterHealth(matchID) {
   return axios
     .patch(
-      `/match/monsters/${getUsername()}/health?damage=1`,
+      `/api/match/monsters/${getUsername()}/health?damage=1`,
       { matchID: matchID },
       { withCredentials: true }
     )
@@ -227,27 +228,27 @@ export function monsterHealth(matchID) {
 
 export function setMonsterChat(chatID, matchID) {
     console.log(chatID);
-    return axios.patch( `/match/monsters/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+    return axios.patch( `/api/match/monsters/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         console.log(res.data);
         return res.data;
     })
 }
 
 export function getMonsterChat(user, matchID) {
-    return axios.post( `/match/monsters/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+    return axios.post( `/api/match/monsters/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }
 
 export function setNinjaChat(chatID, matchID) {
-    return axios.patch( `/match/ninjas/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+    return axios.patch( `/api/match/ninjas/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }
 
 export function getNinjaChat(user, matchID) {
 
-    return axios.post( `/match/ninjas/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
+    return axios.post( `/api/match/ninjas/${user}/chat`, {matchID: matchID}, {withCredentials: true}).then((res) => {
         return res.data;
     })
 }

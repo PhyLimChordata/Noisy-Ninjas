@@ -22,11 +22,14 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
 
 
 const app = express();
+
 const port = process.env.PORT || 3000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://noisy-ninjas.nn.r.appspot.com',
   credentials: true,
+  methods: "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS",
+  allowedHeaders: ["*"]
 }
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -39,14 +42,24 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: 'lax', //TODO: CHANGE THIS to none
-      secure: false, //TODO: CHANGE THIS to true
+      sameSite: 'none', //TODO: CHANGE THIS to none
+      secure: true, //TODO: CHANGE THIS to true
     },
   })
 )
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.set("trust proxy", 1);
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PATCH,PUT");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept,Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
+  // res.header("Access-Control-Expose-Headers", "Set-Cookie");
+  next();
+});
 
 //Mongoose connects to the db based on uri
 const uri = process.env.URI
@@ -312,7 +325,7 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
 });
 
 
-app.get('/signout/', function(req, res, next){
+app.get('/api/signout/', function(req, res, next){
     req.session.destroy();
     res.setHeader('Set-Cookie', cookie.serialize('displayName', '', {
           path : '/', 
@@ -365,7 +378,7 @@ app.patch('/api/users/:displayName/username', hasAccess, function (req, res) {
   })
 })
 
-app.get('/signout/', function (req, res, next) {
+app.get('/api/signout/', function (req, res, next) {
   req.session.destroy()
   res.setHeader(
     'Set-Cookie',
@@ -376,7 +389,7 @@ app.get('/signout/', function (req, res, next) {
   )
   return res.json({})
 })
-  app.post('/signup/', function (req, res, next) {
+  app.post('/api/signup/', function (req, res, next) {
       if (!("displayName" in req.body))
           return res.status(422).end("displayName is missing");
       if (!("password" in req.body))
@@ -399,7 +412,7 @@ app.get('/signout/', function (req, res, next) {
       });
   });
 
-app.post('/signin/', function (req, res, next) {
+app.post('/api/signin/', function (req, res, next) {
   if (!('displayName' in req.body))
     return res.status(422).end('displayName is missing')
   if (!('password' in req.body))
@@ -429,6 +442,8 @@ app.post('/signin/', function (req, res, next) {
           })
         )
         req.session.displayName = displayName
+        req.session.save();
+
         return res.json(displayName)
       } else {
         return res.status(401).end('access denied')
@@ -437,7 +452,7 @@ app.post('/signin/', function (req, res, next) {
   })
 })
 
-app.post('/signup/', function (req, res, next) {
+app.post('/api/signup/', function (req, res, next) {
   if (!('displayName' in req.body))
     return res.status(422).end('displayName is missing')
   if (!('password' in req.body))
@@ -481,8 +496,8 @@ app.post('/signup/', function (req, res, next) {
 //Primitive tests for Authentication / Authorization
 app.get('/', (req, res) => res.send('Not logged in'))
 
-app.use('/map', require('./routes/mapRoute'))
-app.use('/match', require('./routes/matchRoute'))
+app.use('/api/map', require('./routes/mapRoute'))
+app.use('/api/match', require('./routes/matchRoute'))
 
 //Adds routes for express to use
 //Example route: http://localhost:5000/example/add
@@ -490,7 +505,7 @@ app.use('/match', require('./routes/matchRoute'))
 // app.use('/login', loginRouter);
 
 const hexRouter = require('./routes/hex')
-app.use('/map', hexRouter)
+app.use('/api/map', hexRouter)
 
 //App is now listening for calls
 app.listen(port, () => {
