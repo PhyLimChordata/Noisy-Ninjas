@@ -10,7 +10,17 @@ require('dotenv').config({ path: '../../.env' })
 const session = require('express-session')
 const cookie = require('cookie')
 const bcrypt = require('bcrypt')
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 require('./passport-google')
+
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+
+
+
+
+
 
 const saltRounds = 10
 
@@ -22,7 +32,23 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+
+const swaggerOption = {
+  swaggerDefinition: {
+    info: {
+      title: 'API',
+      version: '1.0.0'
+
+    }
+  },
+  apis: ['server.js']
+}
+const swaggerDocs = swaggerJsDoc(swaggerOption);
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+
+const port = process.env.PORT || 5000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -71,6 +97,8 @@ app.use(function (req, res, next) {
   next()
 })
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const isAuthenticated = function (req, res, next) {
   console.log(req.displayName)
   if (!req.displayName) return res.status(401).end('access denied')
@@ -85,11 +113,18 @@ const hasAccess = function (req, res, next) {
   next()
 }
 
+
 app.get(
   '/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     description:  Endpoint for everything
+ */
 app.get(
   '/google/callback',
   passport.authenticate('google', {
@@ -112,6 +147,17 @@ app.get(
   }
 )
 
+/**
+ * @swagger
+ * /books:
+ *  get:
+ *    description: test
+ *    parameters: 
+ *      - name: title 
+ *    responses:
+ *      200: 
+ *        description: success
+ */
 app.get('/api/users/:displayName', hasAccess, function (req, res) {
   User.findOne({ displayName: req.params.displayName }).exec(function (
     err,
