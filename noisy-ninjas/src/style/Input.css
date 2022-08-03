@@ -1,4 +1,10 @@
-@import '../assets/fonts.css';
+@import "../assets/fonts.css";
+
+.input-component {
+  box-sizing: border-box;
+  border-style: solid;
+  font-family: Minecraftia;
+}
 
 .input-component:focus,
 input:not(:placeholder-shown) {
@@ -6,38 +12,33 @@ input:not(:placeholder-shown) {
   outline: none !important;
 }
 
+.input-component:not(:last-child) {
+  padding: 8px 40px 8px 8px;
+}
+
 .input-component:not(:focus):placeholder-shown:not(.error-input) {
   opacity: 0.8;
   border-color: transparent !important;
 }
 
-.input-component {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  border-style: solid;
-  font-family: Minecraftia;
-}
-
 .input-component.black-input {
-  background-color: #222222;
-  color: #ffffff;
+  background-color: #222;
+  color: #fff;
   width: 100%;
   font-size: 18px;
   padding: 8px;
-  border-color: #ffffff;
+  border-color: #fff;
 }
 
 .input-component.error-input {
-  background-color: #222222;
-  color: #ffffff;
+  background-color: #222;
+  color: #fff;
   font-size: 18px;
   width: 100%;
   border-color: red;
   padding: 8px;
 }
-.input-component:not(:last-child) {
-  padding: 8px 40px 8px 8px;
-}
+
 .input-component-wrapper {
   padding: 8px;
   width: 100%;

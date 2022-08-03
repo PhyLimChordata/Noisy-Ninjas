@@ -1,4 +1,4 @@
-@import './assets/fonts.css';
+@import "./assets/fonts.css";
 
 .App {
   text-align: center;
@@ -21,7 +21,7 @@ main {
   background-color: #2e2e2e;
   height: 100vh;
   color: white;
-  font-family: 'Minecraftia';
+  font-family: Minecraftia;
 }
 
 .title {
@@ -29,5 +29,5 @@ main {
 }
 
 body {
-  margin: 0
+  margin: 0;
 }

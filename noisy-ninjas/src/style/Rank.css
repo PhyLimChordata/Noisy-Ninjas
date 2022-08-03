@@ -20,11 +20,11 @@
 }
 
 .rank-component:first-child {
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0 0;
 }
 
 .rank-component:last-child {
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 0 0 10px 10px;
 }
 
 .rank-component.orange-rank {
@@ -36,5 +36,5 @@
 }
 
 .rank-component.alternating-dark-rank:nth-child(odd) {
-  background-color: #222222;
+  background-color: #222;
 }

@@ -1,17 +1,17 @@
-@import '../assets/fonts.css';
-
-.btn-component:not(:disabled) {
-  cursor: pointer;
-}
+@import "../assets/fonts.css";
 
 .btn-component {
   font-family: Minecraftia;
   text-align: center;
 }
 
+.btn-component:not(:disabled) {
+  cursor: pointer;
+}
+
 .btn-component.grey-btn {
   background-color: #9a9a9a;
-  color: #ffffff;
+  color: #fff;
   font-size: 24px;
   padding: 8px;
   border: none;
@@ -21,7 +21,7 @@
 
 .btn-component.orange-btn {
   background-color: #ff8a00;
-  color: #ffffff;
+  color: #fff;
   font-size: 24px;
   padding: 8px;
   border: none;
@@ -31,16 +31,16 @@
 
 .btn-component.hollow-btn {
   background-color: inherit;
-  color: #ffffff;
+  color: #fff;
   font-size: 24px;
   padding: 8px;
-  border: #ffffff solid 1px;
+  border: #fff solid 1px;
   border-radius: 10px;
   width: 100%;
 }
 
 .btn-component.skinny {
-  padding: 0px 0px 5px 0px;
+  padding: 0 0 5px;
 }
 
 .btn-component.skinny:hover {

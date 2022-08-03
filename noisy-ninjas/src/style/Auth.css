@@ -6,10 +6,12 @@
   margin-bottom: 10px;
   width: 100%;
 }
+
 .auth-page #img-col {
   flex: 1;
   overflow: hidden;
 }
+
 .auth-page #form-col {
   display: flex;
   flex: 1;
@@ -17,7 +19,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin: 0px 50px;
+  margin: 0 50px;
 }
 
 .auth-page {
@@ -28,7 +30,7 @@
 
 .auth-page .input-container {
   flex: 1;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0;
   justify-content: space-between;
   flex-direction: column;
   display: flex;
@@ -45,7 +47,7 @@
 .auth-page .oauth-btn {
   width: 100px;
   height: 50px;
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 5px;
   justify-content: center;
   align-items: center;

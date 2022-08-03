@@ -4,11 +4,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0px 50px;
+  margin: 0 50px;
   height: 100%;
 }
 
-.lobby-page .button-container Button + Button {
+.lobby-page .button-container button + button {
   margin-top: 20px;
 }
 
@@ -52,11 +52,6 @@
 .lobby-page .arrow-img.left {
   transition: 0.5s;
   transform: rotateY(180deg);
-}
-
-.lobby-page .arrow-img:hover {
-  transition: 0.75s;
-  filter: brightness(150%);
 }
 
 .lobby-page .arrow-img:hover {

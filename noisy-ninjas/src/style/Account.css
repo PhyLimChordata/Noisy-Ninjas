@@ -4,11 +4,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0px 50px;
+  margin: 0 50px;
   height: 100%;
 }
 
-.account-page .button-container Button + Button {
+.account-page .button-container button + button {
   margin-top: 20px;
 }
 

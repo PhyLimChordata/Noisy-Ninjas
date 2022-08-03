@@ -14,9 +14,9 @@
 }
 
 .proxchat {
- height: 0%;
- width: 0%; 
- position: absolute;
+  height: 0%;
+  width: 0%;
+  position: absolute;
 }
 
 .main {
@@ -25,14 +25,13 @@
   grid-template-columns: repeat(13, 4.3vw);
   grid-auto-rows: 4.3vw;
   grid-template-areas:
-    '. . . gA1 . gA2 . gA3 . gA4 . . .'
-    '. . gB1 . gB2 . gB3 . gB4 . gB5 . .'
-    '. gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 .'
-    'gD1 . gD2 . gD3 . gD4 . gD5 . gD6 . gD7'
-    '. gE1 . gE2 . gE3 . gE4 .  gE5 . gE6 .'
-    '. . gF1 . gF2 . gF3 . gF4 . gF5 . .'
-    '. . . gG1 . gG2 . gG3 . gG4 . . .';
-
+    ". . . gA1 . gA2 . gA3 . gA4 . . ."
+    ". . gB1 . gB2 . gB3 . gB4 . gB5 . ."
+    ". gC1 . gC2 . gC3 . gC4 .  gC5 . gC6 ."
+    "gD1 . gD2 . gD3 . gD4 . gD5 . gD6 . gD7"
+    ". gE1 . gE2 . gE3 . gE4 .  gE5 . gE6 ."
+    ". . gF1 . gF2 . gF3 . gF4 . gF5 . ."
+    ". . . gG1 . gG2 . gG3 . gG4 . . .";
   justify-content: space-evenly;
 }
 
@@ -44,7 +43,6 @@
   transform: scale(1.8);
   transition: 0.5s;
   z-index: 3;
-
   display: grid;
   align-items: center;
 }
@@ -61,7 +59,6 @@
   transform: scale(1.8);
   transition: 0.5s;
   z-index: 3;
-
   display: grid;
   align-items: center;
 }
@@ -74,7 +71,6 @@
   transform: scale(1.8);
   transition: 0.5s;
   z-index: 3;
-
   display: grid;
   align-items: center;
 }
@@ -90,7 +86,6 @@
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transform: scale(0.9);
   transition: 0.3s;
-
   display: grid;
   align-items: center;
   z-index: 4;
@@ -109,7 +104,7 @@
 .shuriken {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/actions/shuriken.png');
+  background-image: url("../assets/static/gamescreen/actions/shuriken.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -117,7 +112,7 @@
 .monster {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/actions/shuriken.png');
+  background-image: url("../assets/static/gamescreen/actions/shuriken.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -125,7 +120,7 @@
 .bomb {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/actions/bomb.png');
+  background-image: url("../assets/static/gamescreen/actions/bomb.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -133,7 +128,7 @@
 .scream {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/actions/scream.png');
+  background-image: url("../assets/static/gamescreen/actions/scream.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -141,7 +136,7 @@
 .echo {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/actions/echo.png');
+  background-image: url("../assets/static/gamescreen/actions/echo.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -149,7 +144,7 @@
 .ninjas {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/static/gamescreen/ninjas/black-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/black-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -157,7 +152,7 @@
 .content-hex .black-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/black-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/black-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -167,7 +162,7 @@
 .content-hex .in-game-black-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/black-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/black-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 15%;
@@ -177,7 +172,7 @@
 .content-hex .red-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/red-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/red-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -187,7 +182,7 @@
 .content-hex .in-game-red-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/red-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/red-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 15%;
@@ -197,7 +192,7 @@
 .content-hex .green-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/green-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/green-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -207,7 +202,7 @@
 .content-hex .in-game-green-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/green-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/green-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 15%;
@@ -217,7 +212,7 @@
 .content-hex .pink-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/pink-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/pink-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -227,7 +222,7 @@
 .content-hex .in-game-pink-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/pink-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/pink-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 15%;
@@ -237,7 +232,7 @@
 .content-hex .blue-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/blue-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/blue-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2vw;
@@ -247,7 +242,7 @@
 .content-hex .in-game-blue-ninja {
   height: 80%;
   width: 80%;
-  background-image: url('../assets/static/gamescreen/ninjas/blue-ninja.png');
+  background-image: url("../assets/static/gamescreen/ninjas/blue-ninja.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 15%;
@@ -257,7 +252,7 @@
 .content-hex .draco {
   height: 70%;
   width: 100%;
-  background-image: url('../assets/static/bosses/draco.png');
+  background-image: url("../assets/static/bosses/draco.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 2.5vw;
@@ -267,18 +262,17 @@
 .content-hex .in-game-draco {
   height: 70%;
   width: 70%;
-  background-image: url('../assets/static/bosses/draco.png');
+  background-image: url("../assets/static/bosses/draco.png");
   background-size: contain;
-    background-repeat: no-repeat;
-    margin: 15%;
-    margin-top: 20%;
+  background-repeat: no-repeat;
+  margin: 15%;
+  margin-top: 20%;
 }
-
 
 .content-hex .screamer {
   height: 70%;
   width: 100%;
-  background-image: url('../assets/static/bosses/screamer.png');
+  background-image: url("../assets/static/bosses/screamer.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 3vw;
@@ -287,17 +281,17 @@
 .content-hex .in-game-screamer {
   height: 70%;
   width: 70%;
-  background-image: url('../assets/static/bosses/screamer.png');
+  background-image: url("../assets/static/bosses/screamer.png");
   background-size: contain;
-    background-repeat: no-repeat;
-    margin: 15%;
-    margin-top: 20%;
+  background-repeat: no-repeat;
+  margin: 15%;
+  margin-top: 20%;
 }
 
 .content-hex .tiny {
   height: 80%;
   width: 100%;
-  background-image: url('../assets/static/bosses/tiny.png');
+  background-image: url("../assets/static/bosses/tiny.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 1.5vw;
@@ -307,12 +301,11 @@
 .content-hex .in-game-tiny {
   height: 70%;
   width: 70%;
-  background-image: url('../assets/static/bosses/tiny.png');
+  background-image: url("../assets/static/bosses/tiny.png");
   background-size: contain;
-    background-repeat: no-repeat;
-    margin: 15%;
-    margin-top: 20%;
-
+  background-repeat: no-repeat;
+  margin: 15%;
+  margin-top: 20%;
   position: absolute;
 }
 
@@ -575,6 +568,7 @@
 #hexE-DR1 {
   grid-area: gE4;
 }
+
 #hexE-DR2 {
   grid-area: gF4;
 }
@@ -586,12 +580,15 @@
 #hexE-L1 {
   grid-area: gB1;
 }
+
 #hexE-L2 {
   grid-area: gC1;
 }
+
 #hexE-L3 {
   grid-area: gC2;
 }
+
 #hexE-L4 {
   grid-area: gD1;
 }
@@ -619,12 +616,15 @@
 #hexE-R1 {
   grid-area: gB5;
 }
+
 #hexE-R2 {
   grid-area: gC5;
 }
+
 #hexE-R3 {
   grid-area: gC6;
 }
+
 #hexE-R4 {
   grid-area: gD5;
 }

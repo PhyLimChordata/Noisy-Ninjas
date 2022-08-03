@@ -3,8 +3,9 @@
   flex: 1;
   flex-direction: column;
   justify-content: center;
-  /*align-items: center;*/
-  margin: 0px 50px;
+
+  /* align-items: center; */
+  margin: 0 50px;
   height: 100%;
 }
 
@@ -18,7 +19,7 @@
 
 .leaderboard-page .ninja-img {
   height: 60px;
-  margin: 0px 20px;
+  margin: 0 20px;
 }
 
 .leaderboard-page .rankings {
