@@ -1,7 +1,6 @@
 import React from 'react'
 import '../../style/hexagon.css'
 import '../../style/character.css'
-import { getNinjas } from '../../apiService'
 
 export function Hexagon(props) {
   const { info, id, onClick, mode, hover, unhover } = props

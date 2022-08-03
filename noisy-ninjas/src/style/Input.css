@@ -41,6 +41,7 @@ input:not(:placeholder-shown) {
 .input-component-wrapper {
   padding: 8px;
   width: 100%;
+  position: relative;
 }
 
 .input-icon {

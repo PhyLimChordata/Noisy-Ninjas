@@ -14,7 +14,7 @@ export function Input(props) {
     tooltipBody,
   } = props
   return (
-    <div style={{ position: 'relative' }} className={`input-component-wrapper`}>
+    <div className={`input-component-wrapper`}>
       <input
         className={`input-component ${className}`}
         type={type}
@@ -33,6 +33,7 @@ export function Input(props) {
           <div data-tip data-for={tooltipId} className={'input-icon'}>
             {' '}
             <img
+              alt={"input-icon"}
               src={icon}
               style={{ objectFit: 'cover', width: '100%', height: '100%' }}
             />

@@ -1,8 +1,8 @@
-import React from 'react'
-import '../../style/Popup.css'
-import { Popup } from './Popup'
+import React from 'react';
+import '../../style/Popup.css';
+import { Popup } from './Popup';
 export function ClosablePopup(props) {
-  const { closeAction, body, title, modalStyle, backgroundStyle } = props
+  const { closeAction, body, title, modalStyle, backgroundStyle } = props;
   const header = (
     <div className="close-modal clickable" onClick={() => closeAction()}>
       &times;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import '../style/Overlay.css'
 
 import { Hearts } from './Heart'
@@ -26,14 +26,14 @@ export function Overlay(props) {
         className="move"
         onClick={() => finishAction('direction-S')}
       >
-        <p>{role == 'ninja' ? 'Shuriken' : 'Echo'}</p>
+        <p>{role === 'ninja' ? 'Shuriken' : 'Echo'}</p>
       </div>
       <div
         id="move2"
         className="move"
         onClick={() => finishAction('direction-E')}
       >
-        <p>{role == 'ninja' ? 'Bomb' : 'Scream'}</p>
+        <p>{role === 'ninja' ? 'Bomb' : 'Scream'}</p>
       </div>
       {/* TODO: Clean up if not used */}
       {/* <div id="move3" className="move" onClick={() => finishAction("direction")}><p>Item</p></div>

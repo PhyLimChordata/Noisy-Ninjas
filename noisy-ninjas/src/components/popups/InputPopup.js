@@ -13,7 +13,7 @@ export function InputPopup(props) {
     modalStyle,
   } = props
   const footer = (
-    <div className={"input-footer"}>
+    <div className={'input-footer'}>
       <Button
         content={confirmText}
         form={'input-popup-form'}

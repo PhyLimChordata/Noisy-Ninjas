@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import '../../style/hexagon.css'
 import { Hexagon } from './Hexagon'
-import { useLocation } from 'react-router'
 
 import {
   movePlayer,
@@ -262,13 +261,13 @@ const win = () => {
     let dir = 'up'
     let dirLetter = direction.slice(2, direction.length - 1)
 
-    if (dirLetter == 'U') {
+    if (dirLetter === 'U') {
       dir = 'up'
-    } else if (dirLetter == 'D') {
+    } else if (dirLetter === 'D') {
       dir = 'down'
-    } else if (dirLetter == 'L') {
+    } else if (dirLetter === 'L') {
       dir = 'left'
-    } else if (dirLetter == 'R') {
+    } else if (dirLetter === 'R') {
       dir = 'right'
     } else {
       return false
@@ -279,18 +278,18 @@ const win = () => {
   const throwBomb = (range = 0, direction) => {
     let dirLetter = direction.slice(2, direction.length - 1)
 
-    if (dirLetter.length == 2) {
+    if (dirLetter.length === 2) {
       dirLetter = dirLetter.slice(0, dirLetter.length - 1)
     }
 
     let dir = 'up'
-    if (dirLetter == 'U') {
+    if (dirLetter === 'U') {
       dir = 'up'
-    } else if (dirLetter == 'D') {
+    } else if (dirLetter === 'D') {
       dir = 'down'
-    } else if (dirLetter == 'L') {
+    } else if (dirLetter === 'L') {
       dir = 'left'
-    } else if (dirLetter == 'R') {
+    } else if (dirLetter === 'R') {
       dir = 'right'
     } else {
       return false
@@ -303,13 +302,13 @@ const win = () => {
     let dir = 'up'
     let dirLetter = direction.slice(2, direction.length - 1)
 
-    if (dirLetter == 'U') {
+    if (dirLetter === 'U') {
       dir = 'up'
-    } else if (dirLetter == 'D') {
+    } else if (dirLetter === 'D') {
       dir = 'down'
-    } else if (dirLetter == 'L') {
+    } else if (dirLetter === 'L') {
       dir = 'left'
-    } else if (dirLetter == 'R') {
+    } else if (dirLetter === 'R') {
       dir = 'right'
     } else {
       return false
@@ -321,18 +320,18 @@ const win = () => {
   const yellScream = (range = 0, direction) => {
     let dirLetter = direction.slice(2, direction.length - 1)
 
-    if (dirLetter.length == 2) {
+    if (dirLetter.length === 2) {
       dirLetter = dirLetter.slice(0, dirLetter.length - 1)
     }
 
     let dir = 'up'
-    if (dirLetter == 'U') {
+    if (dirLetter === 'U') {
       dir = 'up'
-    } else if (dirLetter == 'D') {
+    } else if (dirLetter === 'D') {
       dir = 'down'
-    } else if (dirLetter == 'L') {
+    } else if (dirLetter === 'L') {
       dir = 'left'
-    } else if (dirLetter == 'R') {
+    } else if (dirLetter === 'R') {
       dir = 'right'
     } else {
       return false
@@ -343,7 +342,7 @@ const win = () => {
 
   let showDirection = (id, range) => {
     if (mode === 'direction-S') {
-      if (id.slice(0, 1) != 'S') {
+      if (id.slice(0, 1) !== 'S') {
         return
       }
       id = id.slice(0, id.length - 1)
@@ -355,7 +354,7 @@ const win = () => {
 
       let dir = id.slice(2, id.length)
       let prefix = id.slice(0, 2)
-      if (id.length == 4) {
+      if (id.length === 4) {
         dir = id.slice(id.length - 2, id.length - 1)
       }
       let i = 1
@@ -407,7 +406,7 @@ const win = () => {
     }
 
     if (mode === 'direction-S') {
-      if (id.slice(0, 1) != 'S') {
+      if (id.slice(0, 1) !== 'S') {
         return
       }
       id = id.slice(0, id.length - 1)
@@ -420,7 +419,7 @@ const win = () => {
 
       let dir = id.slice(2, id.length)
       let prefix = id.slice(0, 2)
-      if (id.length == 4) {
+      if (id.length === 4) {
         dir = id.slice(id.length - 2, id.length - 1)
       }
       let i = 1
