@@ -517,8 +517,9 @@ router.patch('/monsters/:player/chat', function (req, res) {
 .exec(function (err, match) {
     if (err) return res.status(500).end(err);
     newMonsters = match.matchMonsters
+    console.log(newMonsters)
     let updateIndex = newMonsters.findIndex(n => n.displayName === req.params.player)
-    
+    console.log(updateIndex)
     newMonsters[updateIndex].chat = req.query.id;
 
         Match.findByIdAndUpdate(req.body.matchID, {matchMonsters: newMonsters}, {new: true}, function (err, newmatch) {

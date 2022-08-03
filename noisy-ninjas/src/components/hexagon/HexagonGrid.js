@@ -21,7 +21,8 @@ import {
 
 } from '../../apiService'
 
-import { client } from '../popups/QueuePopup'
+import { client, socket} from '../popups/QueuePopup'
+
 
 export function HexagonGrid(props) {
   const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proximityChat, closeProxChat } = props
@@ -29,27 +30,56 @@ export function HexagonGrid(props) {
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
   const [playersInRange, setPlayersInRange] = useState({})
-  client.onmessage = (message) => {
-    let parsedData = JSON.parse(message.data);
-    //TODO: Check if in game
+
+  
+  // client.onmessage = (message) => {
+  //   let parsedData = JSON.parse(message.data);
+  //   //TODO: Check if in game
+  //   if (parsedData.message === "ready" && matchID === parsedData.data) {
+  //     //Consider health
+  //     updatePOV(srcx,srcy, 3);
+  //     setTimer(5);
+  //     setMode("move");
+  //   }
+  //   if (parsedData.message === "monster won" && matchID === parsedData.data.matchId) {
+  //     if (role === "monster") {
+  //       win();
+  //     }
+  //   }    
+  //   if (parsedData.message === "ninjas won" && matchID === parsedData.data.matchId) {
+  //     if (role === "ninja") {
+  //       win();
+  //     }
+  //   }
+  // };
+
+  socket.on("ready", (message) => {
+    let parsedData = JSON.parse(message);
     if (parsedData.message === "ready" && matchID === parsedData.data) {
-      //Consider health
       updatePOV(srcx,srcy, 3);
       setTimer(5);
       setMode("move");
     }
-    if (parsedData.message === "monster won" && matchID === parsedData.data.matchId) {
-      if (role === "monster") {
-        win();
-      }
-    }    
-    if (parsedData.message === "ninjas won" && matchID === parsedData.data.matchId) {
-      if (role === "ninja") {
-        win();
-      }
-    }
-  };
+  })
   
+  socket.on("monster won", (message) => {
+    let parsedData = JSON.parse(message);
+    if (matchID === parsedData.data.matchId && role === "monster") {
+              win();
+            }
+    
+    
+  })
+
+  socket.on("ninjas won", (message) => {
+    let parsedData = JSON.parse(message);
+
+    if (matchID === parsedData.data.matchId && role === "ninja") {
+      win();
+    }
+  
+  })
+
   const processHP = (hex) => {
     if (role === "ninja") {
       if (hex["type"] && hex["type"][0] === "scream" || hex["type"][0] === "echo") {
@@ -93,12 +123,21 @@ const lose = () => {
   setLive(false);
   setWon(false);
   setSummaryTitle("You died");
-  client.send(JSON.stringify({
+  
+  socket.emit("death", JSON.stringify({
     type: "death",
     matchId: matchID,
     name: getUsername(),
     skin: routeRole
   }))
+
+  // client.send(JSON.stringify({
+  //   type: "death",
+  //   matchId: matchID,
+  //   name: getUsername(),
+  //   skin: routeRole
+  // }))
+
   losePoints().then((res) => {
     if (res.demoted) {
       console.log("demoted");
@@ -187,11 +226,17 @@ const win = () => {
       setMode("wait");
       setTimer(0);
 
-      client.send(JSON.stringify({
+      socket.emit("update", JSON.stringify({
         type: "update",
         matchId: matchID,
         name: getUsername()
-      }));
+      }))
+
+      // client.send(JSON.stringify({
+      //   type: "update",
+      //   matchId: matchID,
+      //   name: getUsername()
+      // }));
     }
   }
 

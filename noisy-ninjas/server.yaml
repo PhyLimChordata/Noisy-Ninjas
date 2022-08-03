@@ -6,3 +6,4 @@ network:
   forwarded_ports: 
   - 8000
   instance_tag: websocket
+  session_affinity: true

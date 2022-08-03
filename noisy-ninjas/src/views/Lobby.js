@@ -6,7 +6,8 @@ import { QueuePopup } from '../components/popups/QueuePopup'
 import { useNavigate } from 'react-router'
 import { getUsername, signOut, generateMatch } from '../apiService'
   
-import { client } from '../components/popups/QueuePopup'
+import { client, socket } from '../components/popups/QueuePopup'
+
 
 export function Lobby() {
   const [signOutPopup, setSignOutPopup] = useState(false)
@@ -78,17 +79,27 @@ export function Lobby() {
         setLobbyPopup(!lobbyPopup)
 
         if (!lobbyPopup) {
-            client.send(JSON.stringify({
-                type: "enter",
-                name: getUsername(),
-                skin: skin
-              }));
+          socket.emit("enter", JSON.stringify({
+            type: "enter",
+            name: getUsername(),
+            skin: skin
+          }))
+            // client.send(JSON.stringify({
+            //     type: "enter",
+            //     name: getUsername(),
+            //     skin: skin
+            //   }));
         } else {
-            client.send(JSON.stringify({
-                type: "leave",
-                name: getUsername(),
-                skin: skin
-              }));
+          socket.emit("leave", JSON.stringify({
+            type: "leave",
+            name: getUsername(),
+            skin: skin
+          }))
+            // client.send(JSON.stringify({
+            //     type: "leave",
+            //     name: getUsername(),
+            //     skin: skin
+            //   }));
         }
       
         
