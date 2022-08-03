@@ -2,17 +2,16 @@ const Map = require('../schemas/map')
 
 module.exports = async (req, res) => {
   try {
-    let {} = req.body
-    const orange = '#FF8A00';
-    const yellow = '#FFB800';
-    const brown = '#B66200';
-    const tan = '#E0A158';
-    const green = '#3D8B00';
-    const lightgreen = '#75C337';
-    const blue = '#3366BD';
-    const lightblue = '#82AFFC';
-    const grey = '#9A9A9A';
-    const lightgrey = '#C6C6C6';
+    const orange = '#FF8A00'
+    const yellow = '#FFB800'
+    const brown = '#B66200'
+    const tan = '#E0A158'
+    const green = '#3D8B00'
+    const lightgreen = '#75C337'
+    const blue = '#3366BD'
+    const lightblue = '#82AFFC'
+    const grey = '#9A9A9A'
+    const lightgrey = '#C6C6C6'
 
     let newMap = new Map({
       map: {
@@ -1276,10 +1275,8 @@ module.exports = async (req, res) => {
       },
     })
     await newMap.save()
-    console.log(newMap)
     return res.status(200).json('Success')
   } catch (error) {
-    console.error(error)
     return res.status(500).json('Server error')
   }
 }
