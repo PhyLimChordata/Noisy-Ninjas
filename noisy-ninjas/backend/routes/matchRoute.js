@@ -104,7 +104,7 @@ let explosionUp = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x - i},${y - n}`] = cor
       }
     }
 
@@ -127,7 +127,7 @@ let explosionDown = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x + i},${y + n}`] = cor
       }
     }
 
@@ -150,7 +150,7 @@ let explosionRight = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x + i},${y - n + i}`] = cor
       }
     }
     for (let i = 1; i < n; i++) {
@@ -165,7 +165,7 @@ let explosionRight = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x + n},${y + i}`] = cor
       }
     }
 
@@ -188,7 +188,7 @@ let explosionLeft = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x - n},${y - i}`] = cor
       }
     }
     for (let i = 1; i < n; i++) {
@@ -203,7 +203,7 @@ let explosionLeft = function (x, y, n, map, effect) {
           cor.type.splice(index, 1)
           cor.type.push(effect)
         }
-        map.map[`cor${x},${y}`] = cor
+        map.map[`cor${x - n + i},${y + i}`] = cor
       }
     }
 
