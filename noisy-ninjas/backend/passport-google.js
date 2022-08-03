@@ -50,12 +50,7 @@ passport.use(
         }
         User.countDocuments({displayName: profile.displayName}, function (err, amount) {
        console.log(amount)
-       if(amount === 0){
-        add = ""
-       }
-       else{
-        add = amount
-       }
+        const add = amount === 0 ? "" : profile.id;
         const new_user = new User({
           googleID: profile.id,
           displayName: profile.displayName + add,
