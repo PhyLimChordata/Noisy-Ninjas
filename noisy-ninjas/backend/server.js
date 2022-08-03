@@ -4,7 +4,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const User = require('./models/User')
+const User = require('./schemas/user')
 const passport = require('passport')
 require('dotenv').config({ path: '../../.env' })
 const session = require('express-session')
@@ -17,34 +17,9 @@ require('./passport-google')
 const saltRounds = 10
 
 const app = express();
-
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerDocument = require('./Swagger.json');
-// const swaggerJsDoc = require('swagger-jsdoc')
-// const swaggerUI = require('swagger-ui-express')
-
-
-
-
-// const swaggerOption = {
-//   swaggerDefinition: {
-//     info: {
-//       title: 'API',
-//       version: '1.0.0'
-
-//     }
-//   },
-//   apis: ['server.js']
-// }
-// const swaggerDocs = swaggerJsDoc(swaggerOption);
-
-// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
-
-
-
 const port = process.env.PORT || 5000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
+// TODO: env file?
 const corsOptions = {
   origin: 'https://noisy-ninjas.nn.r.appspot.com',
   credentials: true,
@@ -80,9 +55,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-//Mongoose connects to the db based on uri
-const uri = process.env.URI
-
+//TODO: ENV FILE?
 mongoose.connect(
   'mongodb+srv://noisyninja:D0LEynTxJbJbsYIL@noisyninjas.v6cmx.mongodb.net/?retryWrites=true&w=majority',
   {
@@ -105,9 +78,8 @@ app.use(function (req, res, next) {
 
 
 const isAuthenticated = function (req, res, next) {
-  console.log(req.displayName)
-  if (!req.displayName) return res.status(401).end('access denied')
-  next()
+    if (!req.displayName) return res.status(401).end('access denied')
+    next()
 }
 
 const hasAccess = function (req, res, next) {
@@ -133,13 +105,12 @@ app.get(
 app.get(
   '/api/google/callback',
   passport.authenticate('google', {
+      //TODO: ENV FILE?
     failureRedirect: 'https://noisy-ninjas.nn.r.appspot.com',
   }),
   function (req, res) {
     // Successful authentication, redirect home.
     const displayName = req.user.displayName
-    console.log("HELLOOOOOO")
-    console.log(displayName);
     req.session.displayName = displayName
     res.setHeader(
       'Set-Cookie',
@@ -148,6 +119,7 @@ app.get(
         maxAge: 60 * 60 * 24 * 7, // 1 week in number of seconds
       })
     )
+      //TODO: ENV FILE?
     res.redirect('https://noisy-ninjas.nn.r.appspot.com/lobby')
   }
 )
@@ -164,13 +136,12 @@ app.get(
  *        description: success
  */
 app.get('/api/users/:displayName', hasAccess, function (req, res) {
-  User.findOne({ displayName: req.params.displayName }).exec(function (
+  User.findOne({ displayName: req.params.displayName }, {hash: 0, _id: 0}).exec(function (
     err,
     user
   ) {
     if (err) return res.status(500).end(err)
     if (!user) return res.status(401).end('access denied')
-    delete user.hash
     return res.json(user)
   })
 })
@@ -235,11 +206,11 @@ app.delete('/api/users/:displayName', hasAccess, function (req, res) {
 })
 
 app.patch('/api/users/:displayName/password', hasAccess, function (req, res) {
-  const displayName = req.params.displayName
   if (!('password' in req.body))
     return res.status(400).end('password is missing')
-  const password = req.body.password
-  // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
+    const password = req.body.password
+    const displayName = req.params.displayName
+    // Checks longer than 7 characters, has numbers and letters, and has capitals and lowercase
   if (
     password.length <= 7 ||
     !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)
@@ -301,9 +272,9 @@ app.patch("/api/users/:displayName/win", function (req, res) {
     const displayName = req.params.displayName;
     User.findOne({displayName}, function (err, user) {
         if (err) return res.status(500).end(err);
-        let newPoints = user.points + 5;
-        let gamesPlayed = user.gamesPlayed + 1;
-        let gamesWon = user.gamesWon + 1;
+        const newPoints = user.points + 5;
+        const gamesPlayed = user.gamesPlayed + 1;
+        const gamesWon = user.gamesWon + 1;
         let beltRank = "N/A";
         if (newPoints >= 121) {
             beltRank = "#2E2E2E";
@@ -331,7 +302,7 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
     User.findOne({displayName}, function (err, user) {
         if (err) return res.status(500).end(err);
         let newPoints = 0;
-        let gamesPlayed = user.gamesPlayed + 1;
+        const gamesPlayed = user.gamesPlayed + 1;
         let beltRank = "N/A";
 
         if (user.points - 3 > 0) {

@@ -3,7 +3,7 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
        Code related to mongoose has been derived or manipulated https://rahmanfadhil.com/express-rest-api/
 */
 const passport = require('passport')
-const User = require('./models/User')
+const User = require('./schemas/user')
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
