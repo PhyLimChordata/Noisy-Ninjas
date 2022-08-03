@@ -108,8 +108,7 @@ export function GameScreen() {
   const remoteAudioRef = useRef(null);
   const currentUserVideoRef = useRef(null);
   const proxChatInstance = useRef(null);
-
-  const proxChats = {}
+  const [proxChats, setProxChats] = useState({})
   useEffect(() => {
     const proxChat = new Peer();
 
@@ -145,19 +144,17 @@ export function GameScreen() {
 
   //proximityChat(proxchatID)
   const proximityChat = (proxChatId) => {
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    getUserMedia({ video: true, audio: true }, (audio) => {
+    getUserMedia({ audio: true }, (audio) => {
 
     //   currentUserVideoRef.current.srcObject = audio;
     //   currentUserVideoRef.current.play();
 
       const proxChat = proxChatInstance.current.call(proxChatId, audio)
-
-      proxChats[proxChatId] = proxChat
-      // {id: audio}
-      console.log("Adding an ID")
-      console.log(proxChats);
+      const temp = proxChats;
+      temp[proxChatId] = proxChat
+      setProxChats(temp)
 
       proxChat.on('stream', (audioStream) => {
         remoteAudioRef.current.srcObject = audioStream
@@ -167,12 +164,15 @@ export function GameScreen() {
   }
   
   const closeProxChat = (proxChatId) => {
+    console.log("PROXXXXXXXXXX")
     console.log(proxChats)
     console.log(proxChats[proxChatId])
     console.log(proxChatId)
     if (proxChats[proxChatId]) {
       proxChats[proxChatId].close();
-      delete proxChats[proxChatId];
+      const temp = proxChats;
+      delete temp[proxChatId];
+      setProxChats(temp)
     }
 
     console.log("proxChats23456789098765434567890987654");
