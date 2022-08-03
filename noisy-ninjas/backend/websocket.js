@@ -1,21 +1,8 @@
 // Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
 
-const webSocketPort = process.env.WEBSOCKETPORT || 8000;
-
-const webSocketServer = require('websocket').server;
-const http = require('http');
-// Spinning the http server and the websocket server.
-const server = http.createServer();
-server.listen(webSocketPort, () => {console.log(`Websocket server running on websocketPort: ${webSocketPort}`)});
-const wsServer = new webSocketServer({
-  httpServer: server
-});
-
-console.log("WSSERRVER")
-console.log(wsServer);
-
-console.log("SERRVER")
-console.log(server);
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 3005
 
 // I'm maintaining all active connections in this object
 const clients = {};
@@ -23,6 +10,59 @@ const Matches = [];
 const Queue = [{ninjas: [], monsters: []}];
 var monsterPlayers = 0;
 var ninjaPlayers = 0;
+
+let a = 0;
+
+
+app.get('/', (req, res) => {
+  res.send('Hello World! ' + process.env.PORT);
+})
+
+
+const webSocketPort = 8002;
+app.listen(webSocketPort, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+const http = require('http');
+const {Server} = require('socket.io')
+const serve = http.createServer(app);
+
+// // const io = new Server(serve, { 
+// //   cors: {
+// //     origin: "http://localhost:3000",
+// //     methods: ["GET", "POST"]
+// //   }
+// // })
+
+// // io.on("connection", (socket) => {
+// //   console.log("User connected " + socket.id)
+
+// //   socket.on("enter", (data) => {
+// //     console.log("Ok");
+// //     socket.broadcast.emit("entered_queue", data);
+// //   })
+// // })
+// // // const PORTER = process.env.PORT || 3231
+
+// // serve.listen(3210)
+
+
+
+
+const webSocketServer = require('websocket').server;
+const https = require('http');
+// Spinning the http server and the websocket server.
+const server = https.createServer(app);
+
+server.listen(port, () => {console.log(`Websocket server running on websocketPort: ${webSocketPort}`)});
+const wsServer = new webSocketServer({
+  httpServer: server
+});
+
+
+
+
 
 // This code generates unique userid for everyuser.
 const getUniqueID = () => {
@@ -33,6 +73,8 @@ const getUniqueID = () => {
 
 wsServer.on('request', function (request) {
     var userID = getUniqueID();
+
+    a = 5;
     
     const connection = request.accept(null, request.origin);
     clients[userID] = connection;
