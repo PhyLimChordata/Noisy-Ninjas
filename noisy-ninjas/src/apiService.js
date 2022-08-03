@@ -86,10 +86,10 @@ export function changeUsername(newUsername) {
 }
 
 export function getUsername() {
-  return document.cookie.replace(
+  return decodeURI(document.cookie.replace(
     /(?:(?:^|.*;\s*)displayName\s*=\s*([^;]*).*$)|^.*$/,
     '$1'
-  )
+  ))
 }
 
 export function getUser(name) {
