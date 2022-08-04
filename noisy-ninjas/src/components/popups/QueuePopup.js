@@ -8,7 +8,9 @@ import { ninjaMapping } from '../../assets/mappings/ninja-mapping'
 import { monsterMapping } from '../../assets/mappings/monster-mapping'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-export const client = new W3CWebSocket('wss://noisy-ninjas.herokuapp.com');
+require('dotenv').config({ path: '../../../../.env' })
+
+export const client = new W3CWebSocket(process.env.WEBSOCKET_SERVER);
 
 export function QueuePopup(props) {
   const { closeAction, role } = props

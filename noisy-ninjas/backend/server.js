@@ -18,9 +18,8 @@ const saltRounds = 10
 const app = express()
 const port = process.env.PORT || 5000
 const webSocketPort = process.env.WEBSOCKETPORT || 8000
-// TODO: env file?
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.ORIGIN,
   credentials: true,
   methods: 'GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS',
   allowedHeaders: ['*'],
@@ -57,9 +56,8 @@ app.use(function (req, res, next) {
   next()
 })
 
-//TODO: ENV FILE?
 mongoose.connect(
-  'mongodb+srv://noisyninja:D0LEynTxJbJbsYIL@noisyninjas.v6cmx.mongodb.net/?retryWrites=true&w=majority',
+  process.env.URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -105,8 +103,7 @@ app.get(
 app.get(
   '/api/google/callback',
   passport.authenticate('google', {
-    //TODO: ENV FILE?
-    failureRedirect: 'https://noisy-ninjas.nn.r.appspot.com',
+    failureRedirect: process.env.ORIGIN,
   }),
   function (req, res) {
     // Successful authentication, redirect home.
@@ -119,8 +116,7 @@ app.get(
         maxAge: 60 * 60 * 24 * 7, // 1 week in number of seconds
       })
     )
-    //TODO: ENV FILE?
-    res.redirect('https://noisy-ninjas.nn.r.appspot.com/lobby')
+    res.redirect(process.env.ORIGIN  + '/lobby')
   }
 )
 

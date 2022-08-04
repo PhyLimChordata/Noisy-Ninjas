@@ -200,7 +200,6 @@ export function scream(matchID, direction, srcx, srcy, range) {
     })
 }
 
-//TODO: rename
 export function ninjaHealth(matchID) {
   return axios
     .patch(

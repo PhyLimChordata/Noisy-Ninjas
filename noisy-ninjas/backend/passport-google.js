@@ -4,6 +4,8 @@ Annas: Code for Passport.js and any google authentication has been derived or ma
 */
 const passport = require('passport')
 const User = require('./schemas/user')
+require('dotenv').config({ path: '../../.env' })
+
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
@@ -22,9 +24,8 @@ passport.use(
     {
       clientID:
         '1042176168336-9d9980j4hn9ij9hk534lvhjdmt86o0qq.apps.googleusercontent.com',
-      clientSecret: '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',
+      clientSecret: process.env.GOOGLE_SECRET,
       callbackURL: 'https://noisy-ninjas.nn.r.appspot.com/api/google/callback',
-      //TODO: ENV FILE?
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOne({ googleID: profile.id }, function (err, user) {

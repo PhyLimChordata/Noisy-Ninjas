@@ -5,7 +5,7 @@ const map = require('../function/map')
 
 router.post('/generate', map)
 
-router.get('/generate', function (req, res) {
+router.get('/', function (req, res) {
   Map.findById(req.body.mapID).exec(function (err, map) {
     if (err) return res.status(500).end(err)
     return res.json(map)
