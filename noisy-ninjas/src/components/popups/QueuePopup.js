@@ -47,8 +47,15 @@ export function QueuePopup(props) {
     const monsterQueue = parsedData.monsterQueue
     const matchID = parsedData.matchID
 
-    const inNinjaQueue = ninjaQueue.find((e) => e.name === getUsername())
-    const inMonsterQueue = monsterQueue.find((e) => e.name === getUsername())
+    const inNinjaQueue = undefined
+    const inMonsterQueue = undefined
+    
+    if (ninjaQueue) {
+      inNinjaQueue = ninjaQueue.find((e) => e.name === getUsername())
+    }
+    if (monsterQueue) {
+      inMonsterQueue = monsterQueue.find((e) => e.name === getUsername())
+    }
     const lastToJoin = inNinjaQueue ? inNinjaQueue.name : ''
 
     if (matchID && (inNinjaQueue || inMonsterQueue)) {

@@ -7,7 +7,6 @@ import axios from 'axios'
  ************************************************************/
 
 export function login(username, password) {
-  console.log("ok");
   return axios
     .post(
       '/api/signin',
@@ -227,9 +226,7 @@ export function monsterHealth(matchID) {
 }
 
 export function setMonsterChat(chatID, matchID) {
-    console.log(chatID);
     return axios.patch( `/api/match/monsters/${getUsername()}/chat?id=${chatID}`, {matchID: matchID}, {withCredentials: true}).then((res) => {
-        console.log(res.data);
         return res.data;
     })
 }

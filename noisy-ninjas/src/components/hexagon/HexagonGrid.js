@@ -187,11 +187,11 @@ const win = () => {
       setTimer(timePerRound)
 
       if (role === 'ninja') {
-        throwBomb(ninjaBombRange, direction).then(() => {
+        throwBomb(ninjaBombRange, dir).then(() => {
           updateMode()
         })
       } else {
-        yellScream(monsterScreamRange, direction).then(() => {
+        yellScream(monsterScreamRange, dir).then(() => {
           updateMode()
         })
       }

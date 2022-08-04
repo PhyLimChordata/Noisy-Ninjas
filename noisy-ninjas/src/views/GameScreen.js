@@ -19,7 +19,7 @@ import {client} from '../components/popups/QueuePopup';
 import { Peer } from "peerjs";
 import {ninjaMapping} from "../assets/mappings/ninja-mapping";
 import {monsterMapping} from "../assets/mappings/monster-mapping";
-import { timePerRound } from '../assets/mappings/character-mappings'
+import { eloGain, eloLoss, timePerRound } from '../assets/mappings/character-mappings'
 
 export function GameScreen() {
   const routeProps = useLocation().state;
@@ -30,6 +30,7 @@ export function GameScreen() {
       ? 'ninja'
       : 'monster'
   )
+  //More specific role of the character 
   const [routeRole, setRouteRole] = useState(routeProps.role)
 
 
@@ -63,6 +64,8 @@ export function GameScreen() {
     liveRef.current = live
   }, [live]);
   
+  // Timer that sets the mode of the game when the timer hits 0
+  // Modes go from: Move, Action, Direction(optional), Wait, ~~ Dead ~~
   useEffect(() => {
     setInterval(() => {
       if (
@@ -102,7 +105,7 @@ export function GameScreen() {
     }, 1000)
   }, [])
 
-
+  // Proximity chat gets set for each user when entering a game
   const [proxChatId, setProxChatId] = useState('');
   const remoteAudioRef = useRef(null);
   const proxChatInstance = useRef(null);
@@ -138,13 +141,11 @@ export function GameScreen() {
 
   }, [proxChatId]);
 
+  // Engage in proximity chat
   const proximityChat = (proxChatId) => {
     const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     getUserMedia({ audio: true }, (audio) => {
-
-    //   currentUserVideoRef.current.srcObject = audio;
-    //   currentUserVideoRef.current.play();
 
       const proxChat = proxChatInstance.current.call(proxChatId, audio)
       const temp = proxChats;
@@ -158,20 +159,14 @@ export function GameScreen() {
     });
   }
   
+  // Close proximity chat
   const closeProxChat = (proxChatId) => {
-    console.log("PROXXXXXXXXXX")
-    console.log(proxChats)
-    console.log(proxChats[proxChatId])
-    console.log(proxChatId)
     if (proxChats[proxChatId]) {
       proxChats[proxChatId].close();
       const temp = proxChats;
       delete temp[proxChatId];
       setProxChats(temp)
     }
-
-    console.log("proxChats23456789098765434567890987654");
-    console.log(proxChats);
   }
 
 
@@ -180,6 +175,7 @@ export function GameScreen() {
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
+  // Sets up the game: Gets characters and places them on the map
   if (!loaded) {
       client.send(JSON.stringify({
         type: "create",
@@ -261,7 +257,6 @@ export function GameScreen() {
                             {summaryTitle}
                           </div>
                         }
-                        cancelAction={() => console.log("SPECTATE")}
                         modalStyle={{height:"400px", width:"400px", marginTop:"-200px", marginLeft:"-200px"}}
                         backgroundStyle={{zIndex:999}}
                         body={
@@ -276,12 +271,12 @@ export function GameScreen() {
                               <>
                                   <img src={require("../assets/static/icons/triangle-right-icon.png")} alt={"elo up"} className={"summary-arrow up"}/>
                                   <div className={"summary-elo-diff green"}>
-                                    5
+                                    {eloGain}
                                   </div>
                               </>:<>
                                   <img src={require("../assets/static/icons/triangle-right-icon.png")} alt={"elo down"} className={"summary-arrow down"}/>
                                   <div className={"summary-elo-diff red"}>
-                                    3
+                                    {eloLoss}
                                   </div>
                                 </>
                               }

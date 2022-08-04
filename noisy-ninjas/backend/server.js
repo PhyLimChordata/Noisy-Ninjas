@@ -437,12 +437,6 @@ app.post('/api/signin/', function (req, res, next) {
     bcrypt.compare(password, hash, function (err, result) {
       if (err) return res.status(500).end(err)
       if (result) {
-        // initialize cookie
-        const a = cookie.serialize('displayName', displayName, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7, // 1 week in number of seconds
-        })
-        console.log(a)
         res.setHeader(
           'Set-Cookie',
           cookie.serialize('displayName', displayName, {
@@ -549,7 +543,6 @@ wsServer.on('request', function (request) {
     clients[userID] = connection;
     console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
 
-  
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
         
@@ -587,8 +580,6 @@ wsServer.on('request', function (request) {
                 }
             }
 
-            console.log(q);
-
             for(key in clients) {
                 clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters}));
             }   
@@ -611,13 +602,11 @@ wsServer.on('request', function (request) {
                 }
             }
           } else {
-              console.log(monsterPlayers);
             if (monsterPlayers > 0) {
                 for (i = 0; i<Queue.length; i++) {
                     if (Queue[i].monsters.length == 1) {
                         Queue[i].ninjas.push({name: data.name, skin: data.skin});
                         q = Queue[i];
-                        console.log(q);
                         break;
                     }
                 }
@@ -632,24 +621,15 @@ wsServer.on('request', function (request) {
             }
           }
 
-          console.log(Queue);
-
         for(key in clients) {
             clients[key].send(JSON.stringify({ninjaQueue: q.ninjas, monsterQueue: q.monsters, queue: q}));
           }       
-
-            
-
-           
             for(key in clients) {
-              
                 clients[key].send(JSON.stringify(Queue));
             }       
         }
 
         if(data.type === "matchFound"){ 
-            console.log(Queue);
-
             Queue.pop({ninjas: data.ninjaQueue, monsters: data.monsterQueue});
             Queue.pop(data.queue);
             monsterPlayers--;
@@ -657,8 +637,7 @@ wsServer.on('request', function (request) {
             if (Queue.length === 0) {
                 Queue.push({ninjas: [], monsters: []})
             }
-            console.log("Updated queue");
-            console.log(Queue);
+
 
         for (key in clients) {
             clients[key].send(JSON.stringify({matchID: data.matchID, ninjaQueue: data.ninjaQueue, monsterQueue: data.monsterQueue}));
@@ -667,11 +646,7 @@ wsServer.on('request', function (request) {
         }
 
         if(data.type === "create"){
-            console.log("CREATING")
-
-
             currMatch = Matches.find(e=> e.matchId === data.matchId)
-          
           if(!(currMatch === undefined)){
             currPlayer = currMatch.user.find(e=> e.name === data.name);
             if (currPlayer === undefined) {
@@ -684,7 +659,6 @@ wsServer.on('request', function (request) {
             Matches.push(match)
             //return "New match"
           }
-          console.log(Matches);
           currMatch = Matches.find(e=> e.matchId === data.matchId);
 
           for(key in clients) {
@@ -701,13 +675,7 @@ wsServer.on('request', function (request) {
         for(i = 0; i < currMatch.user.length; i++){
           ready = (ready && currMatch.user[i].ready)
         }
-
-        for(i = 0; i < Matches[0].user.length; i++){
-            console.log(Matches[0].user[i].ready);
-        }
-  
         if(ready){
-            console.log(data.matchId);
             for(key in clients) {
                 clients[key].send(JSON.stringify({message: "ready", data: data.matchId}));
               }
@@ -715,7 +683,6 @@ wsServer.on('request', function (request) {
         for(i = 0; i < currMatch.user.length; i++){
             currMatch.user[i].ready = false
             }
-            console.log(currMatch);
         }
     
        

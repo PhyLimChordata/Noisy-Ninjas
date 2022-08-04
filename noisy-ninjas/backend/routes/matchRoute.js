@@ -676,9 +676,7 @@ router.patch('/move/:player', function (req, res) {
         )
 
         let player = cor1.players[index]
-        if (player === undefined) {
-          console.log(cor1.players)
-        } else {
+        if (player) {
           cor1.players.splice(index, 1)
           cor2.players.push(player)
           map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
@@ -707,9 +705,7 @@ router.patch('/move/:player', function (req, res) {
         )
 
         let player = cor1.players[index]
-        if (player === undefined) {
-          console.log(cor1.players)
-        } else {
+        if (player) {
           cor1.players.splice(index, 1)
           cor2.players.push(player)
           map.map[`cor${req.query.srcx},${req.query.srcy}`] = cor1
