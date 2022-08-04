@@ -8,12 +8,6 @@ import { ninjaMapping } from '../../assets/mappings/ninja-mapping'
 import { monsterMapping } from '../../assets/mappings/monster-mapping'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-//TODO: Get rid
-// https://noisy-ninjas.nn.r.appspot.com/
-// export const client = new W3CWebSocket('wss://websocket-dot-noisy-ninjas.nn.r.appspot.com');
-// export const client = new W3CWebSocket('wss://b0e7-138-51-74-246.ngrok.io')
-// export const client = new W3CWebSocket('ws://localhost:8000');
-
 export const client = new W3CWebSocket('wss://noisy-ninjas.herokuapp.com');
 
 export function QueuePopup(props) {
@@ -63,7 +57,7 @@ export function QueuePopup(props) {
       })
     } else if (
       (inNinjaQueue || inMonsterQueue) &&
-      ninjaQueue.length === 1 &&
+      ninjaQueue.length >= 1 &&
       monsterQueue.length === 1 &&
       lastToJoin === getUsername()
     ) {

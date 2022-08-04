@@ -46,7 +46,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const webSocketPort = process.env.WEBSOCKETPORT || 8000;
 const corsOptions = {
-  origin: 'https://noisy-ninjas.nn.r.appspot.com',
+  origin: 'http://localhost:3000',
   credentials: true,
   methods: "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS",
   allowedHeaders: ["*"]
@@ -319,7 +319,7 @@ app.patch("/api/users/:displayName/win", function (req, res) {
             beltRank = "#FFFFFF";
         }
 
-        User.findOneAndUpdate({displayName}, {points: newPoints, beltRank: beltRank, gamesPlayed: gamesPlayed, gamesWon: gamesWon }).exec(function(err, updatedUser) {
+        User.findOneAndUpdate({displayName}, {points: newPoints, beltRank: beltRank, gamesPlayed: gamesPlayed, gamesWon: gamesWon, matchID: "N/A" }).exec(function(err, updatedUser) {
             if (err) return res.status(500).end(err);
             return res.json({promoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + (user.points + 5) + " points. The user is a " + beltRank + " belt.", user: updatedUser});
         });
@@ -355,7 +355,7 @@ app.patch("/api/users/:displayName/lose", function (req, res) {
             beltRank = "#2E2E2E";
         }
 
-        User.findOneAndUpdate({displayName}, {points: newPoints, gamesPlayed: gamesPlayed, beltRank: beltRank}).exec(function(err, updatedUser) {
+        User.findOneAndUpdate({displayName}, {points: newPoints, gamesPlayed: gamesPlayed, beltRank: beltRank, matchID: "N/A"}).exec(function(err, updatedUser) {
             if (err) return res.status(500).end(err);
             return res.json({demoted: beltRank !== user.beltRank, message: "+5 points have been added to " + displayName + "\'s account. The user now has " + newPoints + " points", user: updatedUser});
         });

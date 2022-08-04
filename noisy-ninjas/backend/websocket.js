@@ -2,7 +2,7 @@
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3005
+const port = 5000 || process.env.PORT || 3005
 
 // I'm maintaining all active connections in this object
 const clients = {};
