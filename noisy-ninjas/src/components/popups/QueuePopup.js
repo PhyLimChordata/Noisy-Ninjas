@@ -151,7 +151,6 @@ export function QueuePopup(props) {
     </div>
   )
 
-  //TODO: Consider what gets shown in queue
   const body = (
     <div style={{ textAlign: 'center' }}>
       <div>

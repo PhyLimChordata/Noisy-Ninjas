@@ -173,7 +173,6 @@ export function Account() {
         />
       </div>
       <div className={'body'}>
-        {/* TODO: Change div */}
         <div className={'ninja-select'}>
           <div style={{ height: '17vw', width: '17vw' }}>
             <Hexagon
@@ -181,7 +180,6 @@ export function Account() {
               info={{backgroundColor: userStats.beltRank, color: White, skin: "black-ninja" }}
             ></Hexagon>
           </div>
-          {/* <img className={"ninja-img"} src={require("../assets/static/icons/profile-pic-icon.png")} alt={"current-ninja"}/> */}
         </div>
         <div className={'button-container'}>
           <div className={'button-inner-container'}>

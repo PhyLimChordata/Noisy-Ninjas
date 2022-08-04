@@ -7,15 +7,12 @@ export function Overlay(props) {
   const { role, timer, mode, setMode, setTimer, hearts } = props
 
   let finishAction = (action) => {
-    console.log(action)
     if (mode !== 'dead') {
       setTimer(5)
 
       setMode(action)
       document.getElementById('move1').style.visibility = 'hidden'
       document.getElementById('move2').style.visibility = 'hidden'
-      // document.getElementById('move3').style.visibility = 'hidden'
-      // document.getElementById('move4').style.visibility = 'hidden'
     }
   }
 
@@ -35,9 +32,6 @@ export function Overlay(props) {
       >
         <p>{role === 'ninja' ? 'Bomb' : 'Scream'}</p>
       </div>
-      {/* TODO: Clean up if not used */}
-      {/* <div id="move3" className="move" onClick={() => finishAction("direction")}><p>Item</p></div>
-    <div id="move4" className="move" onClick={() => finishAction("direction")}><p>Etc</p></div> */}
       <div id="timer">{timer}</div>
       <div id="action">{mode}</div>
       <Hearts id="hearts" amount={hearts} />

@@ -57,6 +57,8 @@ wsServer.on('request', function (request) {
     if (message.type === 'utf8') {
       data = JSON.parse(message.utf8Data)
 
+      // Listens for people who leave the queue; updating the queue respectively based on role
+      // and sends back to the clients their updated queue to display
       if (data.type === 'leave') {
         if (['draco', 'screamer', 'tiny'].includes(data.skin)) {
           for (i = 0; i < Queue.length; i++) {
@@ -103,6 +105,8 @@ wsServer.on('request', function (request) {
         }
       }
 
+      // Listens for people who enter the queue; updating the queue respectively based on role
+      // and sends back to the clients their updated queue to display
       if (data.type === 'enter') {
         if (['draco', 'screamer', 'tiny'].includes(data.skin)) {
           for (i = 0; i < Queue.length; i++) {
@@ -151,6 +155,7 @@ wsServer.on('request', function (request) {
         }
       }
 
+      // Listens for when the last player of a queue enters; This is either a monster or a 5th player
       if (data.type === 'matchFound') {
         Queue.pop({ ninjas: data.ninjaQueue, monsters: data.monsterQueue })
         Queue.pop(data.queue)
@@ -171,6 +176,7 @@ wsServer.on('request', function (request) {
         }
       }
 
+    // Creates an array of the users which will illustrate the "health" of the game
       if (data.type === 'create') {
         currMatch = Matches.find((e) => e.matchId === data.matchId)
 
@@ -204,6 +210,8 @@ wsServer.on('request', function (request) {
         for (key in clients) {
           clients[key].send(currMatch.user.length)
         }
+        // Listens for when players are done their turns/actions. Rounds don't update 
+        // for all players until all players are done 
       } else if (data.type === 'update') {
         currMatch = Matches.find((e) => e.matchId === data.matchId)
         currPlayer = currMatch.user.find((e) => e.name === data.name)
@@ -223,6 +231,7 @@ wsServer.on('request', function (request) {
             currMatch.user[i].ready = false
           }
         }
+        // Listens for deaths in the game and updates other players whether they have won
       } else if (data.type === 'death') {
         currMatch = Matches.find((e) => e.matchId === data.matchId)
         currPlayer = currMatch.user.find((e) => e.name === data.name)

@@ -35,7 +35,6 @@ export function HexagonGrid(props) {
   // Process end of player turns
   client.onmessage = (message) => {
     let parsedData = JSON.parse(message.data);
-    //TODO: Check if in game
     if (parsedData.message === "ready" && matchID === parsedData.data) {
       updatePOV(srcx,srcy, characterPOV);
       setTimer(timePerRound);

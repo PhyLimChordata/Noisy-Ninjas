@@ -560,11 +560,10 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`)
 })
 
-// // Annas: rame for websocket code adapted from: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
 
+// See websocket.js for an understanding of what each listen does
 const webSocketServer = require('websocket').server
 const http = require('http')
-// Spinning the http server and the websocket server.
 const server = http.createServer()
 server.listen(webSocketPort, () => {
   console.log(`Websocket server running on websocketPort: ${webSocketPort}`)
@@ -573,14 +572,12 @@ const wsServer = new webSocketServer({
   httpServer: server,
 })
 
-// I'm maintaining all active connections in this object
 const clients = {}
 const Matches = []
 const Queue = [{ ninjas: [], monsters: [] }]
 var monsterPlayers = 0
 var ninjaPlayers = 0
 
-// This code generates unique userid for everyuser.
 const getUniqueID = () => {
   const s4 = () =>
     Math.floor((1 + Math.random()) * 0x10000)
@@ -741,7 +738,6 @@ wsServer.on('request', function (request) {
             ],
           }
           Matches.push(match)
-          //return "New match"
         }
         currMatch = Matches.find((e) => e.matchId === data.matchId)
 
