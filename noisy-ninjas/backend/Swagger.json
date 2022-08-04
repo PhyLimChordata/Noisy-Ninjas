@@ -1,1209 +1,1147 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "Noisy Ninjas routes documentation: powered by Swagger. JSON file built of tutorial: https://medium.com/bb-tutorials-and-thoughts/how-to-add-swagger-to-nodejs-rest-api-7a542cfdc5e1",
-        "version": "1.0.0",
-        "title": "Noisy Ninjas",
-        "contact": {
-            "email": "noisyninjasthegame@gmail.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        }
+  "swagger": "2.0",
+  "info": {
+    "description": "Noisy Ninjas routes documentation: powered by Swagger. JSON file built of tutorial: https://medium.com/bb-tutorials-and-thoughts/how-to-add-swagger-to-nodejs-rest-api-7a542cfdc5e1",
+    "version": "1.0.0",
+    "title": "Noisy Ninjas",
+    "contact": {
+      "email": "noisyninjasthegame@gmail.com"
     },
-    "schemes": ["http"],
-    "host": "https://noisy-ninjas.nn.r.appspot.com/",
-    "basePath": "/api",
-    "paths" : {
-        "/google" : {
-            "get" : {
-                "summary" : "Redirects to Google Oauth"
-            }
-        },
-        "/google/callback/{code}" : {
-            "get" : {
-                "summary" : "Callback for Google Oauth",
-                "consumes": ["application/json"],
-                
-                "responses": {
-                    "302": {
-                        "Location": "http://localhost:3000/lobby"
-                    }
-                }
-            }
-        },
-        "/api/users/{displayName}" : {
-            "get" : {
-                "summary" : "Returns a user",
-                
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "displayName",
-                        "in": "path",
-                        "description": "user requested",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "user found",
-                        "schema": {
-                            "type": "object",
-                            "schema": {
-                                "type": "array",
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "access denied"
-                    },
-                    "500": {
-                        "description": "unexpected conditon"
-                    }
-                }
-            }
-        },
-        "/api/rankings" : {
-            "get" : {
-                "summary" : "Get rankings of users",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "path",
-                        "description": "page for pagination",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "path",
-                        "description": "limit for pagination",
-                        "required": true,
-                        "type": "number"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "rankings found",
-                        "schema": {
-                            "type": "array",
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/rankings/{displayName}" : {
-            "get" : {
-                "summary" : "Get rankings of users",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "path",
-                        "description": "page for pagination",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "path",
-                        "description": "limit for pagination",
-                        "required": true,
-                        "type": "number"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "404": {
-                        "description": "displayName not found"
-                        
-                    },
-                    "200": {
-                        "description": "rankings found",
-                        "schema": {
-                            "type": "number"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users/{displayName}/" : {
-            "delete" : {
-                "summary" : "delete user by displayName",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "displayName",
-                        "in": "path",
-                        "description": "name of user",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user deleted"
-        
-                    }
-                }
-            }
-        },
-        "/api/users/{displayName}/password" : {
-            "delete" : {
-                "summary" : "update password of user",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "displayName",
-                        "in": "path",
-                        "description": "name of user",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "404": {
-                        "description": "User with displayName not found"
-                        
-                    },
-                    "200": {
-                        "description": "user found",
-                        "schema": {
-                            "type": "array",
-                            "$ref": "#/definitions/User"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/api/users/:displayName/stats" : {
-            "get" : {
-                "summary" : "get stats of user",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "displayName",
-                        "in": "path",
-                        "description": "name of user",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "404": {
-                        "description": "User with displayName not found"
-                        
-                    },
-                    "200": {
-                        "description": "user found",
-                        "schema": {
-                            "type": "array",
-                            "$ref": "#/definitions/User"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/api/users/:displayName/username" : {
-            "patch" : {
-                "summary" : "update username of user",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "displayName",
-                        "in": "path",
-                        "description": "name of user",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "username",
-                        "in": "body",
-                        "description": "new name for user",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "403": {
-                        "description": "New name already exists"
-                        
-                    },
-                    "200": {
-                        "description": "displayName updated",
-                        "type": "string",
-                        "example": "bobby"
-        
-                    }
-                }
-            }
-        },
-        "/signout" : {
-            "get" : {
-                "summary" : "signs the user out",
-                "produces": ["application/json"],
-                
-                "responses": {
-                    
-                    "200": {
-                        "description": "User signed out",
-                        "type": "object"
-        
-                    }
-                }
-            }
-        },
-        "/signup" : {
-            "post" : {
-                "summary" : "creates a user",
-                "produces": ["application/json"],
-                
-                "body": [
-                    {
-                        "name": "username",
-                        "in": "body",
-                        "description": "new name for user",
-                        "required": true,
-                        "type": "string",
-                        "example": "bobby"
-                    },
-                    {
-                        "name": "password",
-                        "in": "body",
-                        "description": "new name for user",
-                        "required": true,
-                        "type": "string",
-                        "example": "Password1_123"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "422": {
-                        "description": "password or displayName missing"
-                        
-                    },
-                    "200": {
-                        "description": "User added",
-                        "type": "string",
-                        "example": "bobby"
-        
-                    }
-                }
-            }
-        },
-        "/signin" : {
-            "post" : {
-                "summary" : "signs the user in",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "body",
-                        "description": "new name for user",
-                        "required": true,
-                        "type": "string",
-                        "example": "bobby"
-                    },
-                    {
-                        "name": "password",
-                        "in": "body",
-                        "description": "new name for user",
-                        "required": true,
-                        "type": "string",
-                        "example": "Password1_123"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "401": {
-                        "description": "access denied"
-                        
-                    },
-                    "422": {
-                        "description": "password or displayName missing"
-                        
-                    },
-                    "200": {
-                        "description": "User added",
-                        "type": "string",
-                        "example": "bobby"
-        
-                    }
-                }
-            }
-        },
-        "/match/generate" : {
-            "get" : {
-                "summary" : "Creates a match with ninjas and monsters",
-                "produces": ["application/json"],
-                
-                "paramters": [
-                    {
-                        "name": "mapID",
-                        "in": "body",
-                        "description": "ID of map",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    },
-                    {
-                        "name": "ninjas",
-                        "in": "body",
-                        "description": "ninjas for match",
-                        "required": true,
-                        "type": "array",
-                        "example": [{"name": "Andy", "skin": "1ninja"}, {"name": "Andy5", "skin": "2ninja"},{"name": "b", "skin": "3ninja"},{"name": "a", "skin": "4ninja"}]
-                    },
-                    {
-                        "name": "monster",
-                        "in": "body",
-                        "description": "monsters for match",
-                        "required": true,
-                        "type": "object",
-                        "example": {"name": "Calvin", "skin": "1monster"}}
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "match generated",
-                        "schema": {
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match" : {
-            "get" : {
-                "summary" : "Gets a match from the database",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "match found",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/Match"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/ninjas" : {
-            "post" : {
-                "summary" : "Returns ninjas of a match",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "match found",
-                        "schema": {
-                            "type": "array",
-                            "example": [{"name": "Andy", "skin": "1ninja"}, {"name": "Andy5", "skin": "2ninja"},{"name": "b", "skin": "3ninja"},{"name": "a", "skin": "4ninja"}]
-                    
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/monsters" : {
-            "post" : {
-                "summary" : "Returns monsters of a match",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "match found",
-                        "schema": {
-                            "type": "array",
-                            "example": [{"name": "Calvin", "skin": "1monster"}]
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/" : {
-            "delete" : {
-                "summary" : "Deletes a match from database",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "match has been deleted",
-                        "schema": {
-                            "type": "string",
-                            "example": "Match has been deleted"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/all" : {
-            "delete" : {
-                "summary" : "Deletes all match from database",
-                "produces": ["application/json"],
-                
-                "parameters": [
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "all matches have been deleted",
-                        "schema": {
-                            "type": "string",
-                            "example": "All Matches have been deleted"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/monsters/{player}/health" : {
-            "patch" : {
-                "summary" : "Updates monsters health",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "damage",
-                        "in": "path",
-                        "description": "how much to decrease monster health by",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    }
-                ,
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user health updated",
-                        "schema": {
-                            "type": "number",
-                            "example": 4
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/monsters/{player}/chat" : {
-            "patch" : {
-                "summary" : "Updates monsters chat",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id of chat connection for proximity chat",
-                        "required": true,
-                        "type": "number"
-                    },
-                
-       
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user chat updated",
-                        "schema": {
-                            "type": "string",
-                            "example": "ad94nfsdp0213"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/ninjas/{player}/health" : {
-            "patch" : {
-                "summary" : "Updates ninjas health",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "damage",
-                        "in": "path",
-                        "description": "how much to decrease ninja health by",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    }
-                ,
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user health updated",
-                        "schema": {
-                            "type": "number",
-                            "example": 4
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/ninjas/{player}/chat" : {
-            "patch" : {
-                "summary" : "Updates ninjas chat",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id of chat connection for proximity chat",
-                        "required": true,
-                        "type": "number"
-                    },
-                
-       
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user chat updated",
-                        "schema": {
-                            "type": "string",
-                            "example": "ad94nfsdp0213"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/ninjas/{player}/chat/" : {
-            "post" : {
-                "summary" : "Get ninjas chat",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-       
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user chat received",
-                        "schema": {
-                            "type": "string",
-                            "example": "ad94nfsdp0213"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/monster/{player}/chat/" : {
-            "post" : {
-                "summary" : "Get monster chat",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-       
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user chat received",
-                        "schema": {
-                            "type": "string",
-                            "example": "ad94nfsdp0213"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/source" : {
-            "post" : {
-                "summary" : "Get hexagons in radius of player",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-       
-                    {
-                        "name": "x",
-                        "in": "path",
-                        "description": "x coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "y",
-                        "in": "path",
-                        "description": "y coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "radius",
-                        "in": "path",
-                        "description": "radius for hexagons",
-                        "required": true,
-                        "type": "number"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "user chat received",
-                        "schema": {
-                            "type": "array"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/shuriken/{direction}" : {
-            "patch" : {
-                "summary" : "Place shurikens in a direction",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "description": "direction of projectile",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "x",
-                        "in": "path",
-                        "description": "x coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "y",
-                        "in": "path",
-                        "description": "y coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "range",
-                        "in": "path",
-                        "description": "range for projectile",
-                        "required": true,
-                        "type": "number"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    },
-                    {
-                        "name": "effect",
-                        "in": "body",
-                        "description": "effect of the shuriken",
-                        "required": true,
-                        "type": "string",
-                        "example": "damageMonsters"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "shurikens placed on match",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/Match"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/explosion/{direction}" : {
-            "patch" : {
-                "summary" : "Place bombs in a direction",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "description": "direction of projectile",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "x",
-                        "in": "path",
-                        "description": "x coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "y",
-                        "in": "path",
-                        "description": "y coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "range",
-                        "in": "path",
-                        "description": "range for projectile",
-                        "required": true,
-                        "type": "number"
-                    },
-                
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    },
-                    {
-                        "name": "effect",
-                        "in": "body",
-                        "description": "effect of the explosion",
-                        "required": true,
-                        "type": "string",
-                        "example": "damageNinjas"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "bombs placed on match",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/Match"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/move/{player}" : {
-            "patch" : {
-                "summary" : "Move player on the match",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                    
-                    {
-                        "name": "player",
-                        "in": "path",
-                        "description": "name of player",
-                        "required": true,
-                        "type": "string"
-                    },
-       
-                    {
-                        "name": "tarx",
-                        "in": "path",
-                        "description": "target x coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "tary",
-                        "in": "path",
-                        "description": "target y coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "srcx",
-                        "in": "path",
-                        "description": "source x coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },
-                    {
-                        "name": "srcy",
-                        "in": "path",
-                        "description": "source y coordinate of player",
-                        "required": true,
-                        "type": "number"
-                    },         
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "moved player on match",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/Match"
-                        }
-        
-                    }
-                }
-            }
-        },
-        "/match/clear" : {
-            "patch" : {
-                "summary" : "Clear all hazards on match",
-                "produces": ["application/json"],
-    
-                "parameters": [
-                
-                    
-                    {
-                        "name": "matchID",
-                        "in": "body",
-                        "description": "ID of match",
-                        "required": true,
-                        "type": "string",
-                        "example": "507f1f77bcf86cd799439011"
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "unexpected condition"
-                        
-                    },
-                    "200": {
-                        "description": "all hazards have been cleared",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/Match"
-                        }
-        
-                    }
-                }
-            }
-        }
-    }, 
-    
-    "definitions": {
-        "User": {
-            "type": "object",
-            "properties": {
-                "googleID": {
-                    "type": "string",
-                     "example": "10001000010"
-                },
-                "displayName": {
-                    "type": "string",
-                    "example": "Bobby"
-                },
-                "imageUrl": {
-                    "type": "string",
-                    "example": "google.com/catimg"},
-                "points": {
-                    "type": "number",
-                    "example": 5
-                },
-                "gamesPlayed": {
-                    "type": "number",
-                    "example": 5
-                },
-                "gamesWon": {
-                    "type": "number",
-                    "example": 4
-                },
-                "beltRank": {
-                    "type": "string",
-                    "example": "#FFFFFF"
-                },
-                "matchId": {
-                    "type": "string",
-                    "example": "507f1f77bcf86cd799439011"
-                },
-                "hash": {
-                    "type": "string",
-                    "example": "sd][nqwdm"
-                }
-            }
-        },
-        "Match": {
-            "type": "object",
-            "properties": {
-                "matchMap": {
-                    
-                    "schema": {
-                        "type": "array",
-                        "$ref": "#/definitions/Map"
-                    }
-                },
-                "matchNinjas": {
-                    "type": "array",
-                    "example": [{"name": "Andy", "skin": "1ninja"}, {"name": "Andy5", "skin": "2ninja"},{"name": "b", "skin": "3ninja"},{"name": "a", "skin": "4ninja"}]
-                },
-                "matchMonsters": {
-                    "type": "array",
-                    "example": [{"name": "Calvin", "skin": "1monster"}]
-
-                }
-            }
-        },
-        "Map": {
-            "type": "array",
-            "example": ["#3D8B00", []]
-    
-                
-            
-
-        }
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
+  },
+  "schemes": ["http"],
+  "host": "https://noisy-ninjas.nn.r.appspot.com/",
+  "basePath": "/api",
+  "paths": {
+    "/google": {
+      "get": {
+        "summary": "Redirects to Google Oauth"
+      }
+    },
+    "/google/callback/{code}": {
+      "get": {
+        "summary": "Callback for Google Oauth",
+        "consumes": ["application/json"],
+
+        "responses": {
+          "302": {
+            "Location": "http://localhost:3000/lobby"
+          }
+        }
+      }
+    },
+    "/api/users/{displayName}": {
+      "get": {
+        "summary": "Returns a user",
+
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "path",
+            "description": "user requested",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user found",
+            "schema": {
+              "type": "object",
+              "schema": {
+                "type": "array",
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "401": {
+            "description": "access denied"
+          },
+          "500": {
+            "description": "unexpected conditon"
+          }
+        }
+      }
+    },
+    "/api/rankings": {
+      "get": {
+        "summary": "Get rankings of users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "page for pagination",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "in": "path",
+            "description": "limit for pagination",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "rankings found",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/api/rankings/{displayName}": {
+      "get": {
+        "summary": "Get rankings of users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "page for pagination",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "in": "path",
+            "description": "limit for pagination",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "404": {
+            "description": "displayName not found"
+          },
+          "200": {
+            "description": "rankings found",
+            "schema": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{displayName}/": {
+      "delete": {
+        "summary": "delete user by displayName",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "path",
+            "description": "name of user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user deleted"
+          }
+        }
+      }
+    },
+    "/api/users/{displayName}/password": {
+      "delete": {
+        "summary": "update password of user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "path",
+            "description": "name of user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "404": {
+            "description": "User with displayName not found"
+          },
+          "200": {
+            "description": "user found",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/api/users/:displayName/stats": {
+      "get": {
+        "summary": "get stats of user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "path",
+            "description": "name of user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "404": {
+            "description": "User with displayName not found"
+          },
+          "200": {
+            "description": "user found",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/api/users/:displayName/username": {
+      "patch": {
+        "summary": "update username of user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "path",
+            "description": "name of user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "in": "body",
+            "description": "new name for user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "403": {
+            "description": "New name already exists"
+          },
+          "200": {
+            "description": "displayName updated",
+            "type": "string",
+            "example": "bobby"
+          }
+        }
+      }
+    },
+    "/signout": {
+      "get": {
+        "summary": "signs the user out",
+        "produces": ["application/json"],
+
+        "responses": {
+          "200": {
+            "description": "User signed out",
+            "type": "object"
+          }
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "summary": "creates a user",
+        "produces": ["application/json"],
+
+        "body": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "new name for user",
+            "required": true,
+            "type": "string",
+            "example": "bobby"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "new name for user",
+            "required": true,
+            "type": "string",
+            "example": "Password1_123"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "422": {
+            "description": "password or displayName missing"
+          },
+          "200": {
+            "description": "User added",
+            "type": "string",
+            "example": "bobby"
+          }
+        }
+      }
+    },
+    "/signin": {
+      "post": {
+        "summary": "signs the user in",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "new name for user",
+            "required": true,
+            "type": "string",
+            "example": "bobby"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "new name for user",
+            "required": true,
+            "type": "string",
+            "example": "Password1_123"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "401": {
+            "description": "access denied"
+          },
+          "422": {
+            "description": "password or displayName missing"
+          },
+          "200": {
+            "description": "User added",
+            "type": "string",
+            "example": "bobby"
+          }
+        }
+      }
+    },
+    "/match/generate": {
+      "get": {
+        "summary": "Creates a match with ninjas and monsters",
+        "produces": ["application/json"],
+
+        "paramters": [
+          {
+            "name": "mapID",
+            "in": "body",
+            "description": "ID of map",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          {
+            "name": "ninjas",
+            "in": "body",
+            "description": "ninjas for match",
+            "required": true,
+            "type": "array",
+            "example": [
+              { "name": "Andy", "skin": "1ninja" },
+              { "name": "Andy5", "skin": "2ninja" },
+              { "name": "b", "skin": "3ninja" },
+              { "name": "a", "skin": "4ninja" }
+            ]
+          },
+          {
+            "name": "monster",
+            "in": "body",
+            "description": "monsters for match",
+            "required": true,
+            "type": "object",
+            "example": { "name": "Calvin", "skin": "1monster" }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "match generated",
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        }
+      }
+    },
+    "/match": {
+      "get": {
+        "summary": "Gets a match from the database",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "match found",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Match"
+            }
+          }
+        }
+      }
+    },
+    "/match/ninjas": {
+      "post": {
+        "summary": "Returns ninjas of a match",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "match found",
+            "schema": {
+              "type": "array",
+              "example": [
+                { "name": "Andy", "skin": "1ninja" },
+                { "name": "Andy5", "skin": "2ninja" },
+                { "name": "b", "skin": "3ninja" },
+                { "name": "a", "skin": "4ninja" }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "/match/monsters": {
+      "post": {
+        "summary": "Returns monsters of a match",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "match found",
+            "schema": {
+              "type": "array",
+              "example": [{ "name": "Calvin", "skin": "1monster" }]
+            }
+          }
+        }
+      }
+    },
+    "/match/": {
+      "delete": {
+        "summary": "Deletes a match from database",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "match has been deleted",
+            "schema": {
+              "type": "string",
+              "example": "Match has been deleted"
+            }
+          }
+        }
+      }
+    },
+    "/match/all": {
+      "delete": {
+        "summary": "Deletes all match from database",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "all matches have been deleted",
+            "schema": {
+              "type": "string",
+              "example": "All Matches have been deleted"
+            }
+          }
+        }
+      }
+    },
+    "/match/monsters/{player}/health": {
+      "patch": {
+        "summary": "Updates monsters health",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "damage",
+            "in": "path",
+            "description": "how much to decrease monster health by",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user health updated",
+            "schema": {
+              "type": "number",
+              "example": 4
+            }
+          }
+        }
+      }
+    },
+    "/match/monsters/{player}/chat": {
+      "patch": {
+        "summary": "Updates monsters chat",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of chat connection for proximity chat",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user chat updated",
+            "schema": {
+              "type": "string",
+              "example": "ad94nfsdp0213"
+            }
+          }
+        }
+      }
+    },
+    "/match/ninjas/{player}/health": {
+      "patch": {
+        "summary": "Updates ninjas health",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "damage",
+            "in": "path",
+            "description": "how much to decrease ninja health by",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user health updated",
+            "schema": {
+              "type": "number",
+              "example": 4
+            }
+          }
+        }
+      }
+    },
+    "/match/ninjas/{player}/chat": {
+      "patch": {
+        "summary": "Updates ninjas chat",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of chat connection for proximity chat",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user chat updated",
+            "schema": {
+              "type": "string",
+              "example": "ad94nfsdp0213"
+            }
+          }
+        }
+      }
+    },
+    "/match/ninjas/{player}/chat/": {
+      "post": {
+        "summary": "Get ninjas chat",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user chat received",
+            "schema": {
+              "type": "string",
+              "example": "ad94nfsdp0213"
+            }
+          }
+        }
+      }
+    },
+    "/match/monster/{player}/chat/": {
+      "post": {
+        "summary": "Get monster chat",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user chat received",
+            "schema": {
+              "type": "string",
+              "example": "ad94nfsdp0213"
+            }
+          }
+        }
+      }
+    },
+    "/match/source": {
+      "post": {
+        "summary": "Get hexagons in radius of player",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "x",
+            "in": "path",
+            "description": "x coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "in": "path",
+            "description": "y coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "radius",
+            "in": "path",
+            "description": "radius for hexagons",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "user chat received",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/match/shuriken/{direction}": {
+      "patch": {
+        "summary": "Place shurikens in a direction",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "description": "direction of projectile",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x",
+            "in": "path",
+            "description": "x coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "in": "path",
+            "description": "y coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "range",
+            "in": "path",
+            "description": "range for projectile",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          {
+            "name": "effect",
+            "in": "body",
+            "description": "effect of the shuriken",
+            "required": true,
+            "type": "string",
+            "example": "damageMonsters"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "shurikens placed on match",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Match"
+            }
+          }
+        }
+      }
+    },
+    "/match/explosion/{direction}": {
+      "patch": {
+        "summary": "Place bombs in a direction",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "description": "direction of projectile",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x",
+            "in": "path",
+            "description": "x coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "in": "path",
+            "description": "y coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "range",
+            "in": "path",
+            "description": "range for projectile",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          {
+            "name": "effect",
+            "in": "body",
+            "description": "effect of the explosion",
+            "required": true,
+            "type": "string",
+            "example": "damageNinjas"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "bombs placed on match",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Match"
+            }
+          }
+        }
+      }
+    },
+    "/match/move/{player}": {
+      "patch": {
+        "summary": "Move player on the match",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "player",
+            "in": "path",
+            "description": "name of player",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "name": "tarx",
+            "in": "path",
+            "description": "target x coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "tary",
+            "in": "path",
+            "description": "target y coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "srcx",
+            "in": "path",
+            "description": "source x coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "srcy",
+            "in": "path",
+            "description": "source y coordinate of player",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "moved player on match",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Match"
+            }
+          }
+        }
+      }
+    },
+    "/match/clear": {
+      "patch": {
+        "summary": "Clear all hazards on match",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "matchID",
+            "in": "body",
+            "description": "ID of match",
+            "required": true,
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "unexpected condition"
+          },
+          "200": {
+            "description": "all hazards have been cleared",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Match"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "googleID": {
+          "type": "string",
+          "example": "10001000010"
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Bobby"
+        },
+        "imageUrl": {
+          "type": "string",
+          "example": "google.com/catimg"
+        },
+        "points": {
+          "type": "number",
+          "example": 5
+        },
+        "gamesPlayed": {
+          "type": "number",
+          "example": 5
+        },
+        "gamesWon": {
+          "type": "number",
+          "example": 4
+        },
+        "beltRank": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "matchId": {
+          "type": "string",
+          "example": "507f1f77bcf86cd799439011"
+        },
+        "hash": {
+          "type": "string",
+          "example": "sd][nqwdm"
+        }
+      }
+    },
+    "Match": {
+      "type": "object",
+      "properties": {
+        "matchMap": {
+          "schema": {
+            "type": "array",
+            "$ref": "#/definitions/Map"
+          }
+        },
+        "matchNinjas": {
+          "type": "array",
+          "example": [
+            { "name": "Andy", "skin": "1ninja" },
+            { "name": "Andy5", "skin": "2ninja" },
+            { "name": "b", "skin": "3ninja" },
+            { "name": "a", "skin": "4ninja" }
+          ]
+        },
+        "matchMonsters": {
+          "type": "array",
+          "example": [{ "name": "Calvin", "skin": "1monster" }]
+        }
+      }
+    },
+    "Map": {
+      "type": "array",
+      "example": ["#3D8B00", []]
+    }
+  }
 }

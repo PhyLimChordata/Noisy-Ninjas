@@ -9,8 +9,8 @@ var User = new Schema({
   points: { type: Number, default: 0 },
   gamesPlayed: { type: Number, default: 0 },
   gamesWon: { type: Number, default: 0 },
-  beltRank: { type: String, default: "#FFFFFF"},
-  matchId: { type: String, default: "N/A"},
+  beltRank: { type: String, default: '#FFFFFF' },
+  matchId: { type: String, default: 'N/A' },
   hash: String,
 })
 
