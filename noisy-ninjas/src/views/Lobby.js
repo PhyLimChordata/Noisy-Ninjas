@@ -18,63 +18,12 @@ export function Lobby() {
 
   const [ninjaIndex, setNinjaIndex] = useState(0)
   const [monsterIndex, setMonsterIndex] = useState(0)
-
-//   const [peerID, setPeerID] = useState(null);
-//   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-//   const remoteAudioRef = useRef(null);
-//   const peerInstance = useRef(null);
-
-//   //https://www.youtube.com/watch?v=5JTpRCo0e8s
-//   useEffect(() => {
-//     const peer = new Peer();
-
-//     peer.on('open', (id) => {
-//       setPeerID(id)
-//     });
-
-//     peer.on('proxChat', (chat) => {
-//       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-//       getUserMedia({ video: true, audio: true }, (remoteAudio) => {
-//         chat.answer(remoteAudio)
-//         chat.on('stream', function(remoteStream) {
-//           remoteAudioRef.current.srcObject = remoteStream
-//           remoteAudioRef.current.play();
-//         });
-//       });
-//     })
-
-//     peerInstance.current = peer;
-
-//   }, [])
-
-//     // proxChat(remotePeerIdValue)
-
-//   const proxChat = (remotePeerId) => {
-//     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-//     getUserMedia({ video: true, audio: true }, (remoteAudio) => {
-
-//       const chat = peerInstance.current.proxChat(remotePeerId, remoteAudio)
-
-//       chat.on('stream', (remoteStream) => {
-//         remoteAudioRef.current.srcObject = remoteStream
-//         remoteAudioRef.current.play();
-//       });
-//     });
-//   }
-  
-//   console.log(peerID);
-
-
   const navigate = useNavigate();
 
     const username = getUsername()
     function toggleSignOutPopup() {
         setSignOutPopup(!signOutPopup)
     }
-
-   
 
     function toggleLobbyPopup() {
         setLobbyPopup(!lobbyPopup)
@@ -111,29 +60,6 @@ export function Lobby() {
       setSkin(monsterKeys[monsterIndex])
     }
   }, [role])
-
-  useEffect(() => {
-    getUser(username).then((user) => {
-      if (user.matchID != "N/A") {
-        getNinjas(user.matchID).then((ninja) => {
-          if (ninja.displayName === username) {
-            navigate('/game', {
-              state: { role: ninja.skin, matchID: user.matchID },
-            });
-          }
-        })
-
-        getMonsters(user.matchID).then((monster) => {
-          if (monster.displayName == username) { 
-            navigate('/game', {
-              state: { role: monster.skin, matchID: user.matchID },
-            });
-          }
-        })
-        
-      }
-    })
-  })
 
   function selectPrev() {
     if (role === 'ninja') {
