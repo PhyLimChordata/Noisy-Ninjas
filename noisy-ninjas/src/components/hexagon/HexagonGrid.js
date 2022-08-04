@@ -21,6 +21,9 @@ import {
 } from '../../apiService'
 
 import { client } from '../popups/QueuePopup'
+import { characterPOV, eloGain, eloLoss, timePerRound } from '../../assets/mappings/character-mappings'
+import { ninjaBombRange, ninjaShurikenRange } from '../../assets/mappings/ninja-mapping'
+import { monsterScreamRange, monsterEchoRange } from '../../assets/mappings/monster-mapping'
 
 export function HexagonGrid(props) {
   const { matchID, routeRole, role, mode, setMode, setTimer, POV, x, y, setHearts, setLive, setElo, setWon, setSummaryTitle, proximityChat, closeProxChat } = props
@@ -28,13 +31,14 @@ export function HexagonGrid(props) {
   const [srcx, setSrcX] = useState(x)
   const [srcy, setSrcY] = useState(y)
   const [playersInRange, setPlayersInRange] = useState({})
+
+  // Process end of player turns
   client.onmessage = (message) => {
     let parsedData = JSON.parse(message.data);
     //TODO: Check if in game
     if (parsedData.message === "ready" && matchID === parsedData.data) {
-      //Consider health
-      updatePOV(srcx,srcy, 3);
-      setTimer(5);
+      updatePOV(srcx,srcy, characterPOV);
+      setTimer(timePerRound);
       setMode("move");
     }
     if (parsedData.message === "monster won" && matchID === parsedData.data.matchId) {
@@ -49,16 +53,14 @@ export function HexagonGrid(props) {
     }
   };
   
+  // Update hp of players, provide the hexes to determine if the player is standing on 
+  // a hex that hurts them
   const processHP = (hex) => {
     if (role === "ninja") {
       if (hex["type"] && hex["type"][0] === "scream" || hex["type"][0] === "echo") {
         ninjaHealth(matchID).then((updated_health) => {
-          if (updated_health < 0) {
-            setHearts(0);
-          } else {
-            setHearts(updated_health)
-          }
-           new Audio(require('../../assets/sound-effects/heart.wav')).play()
+          updated_health < 0 ? setHearts(0) : setHearts(updated_health);
+          new Audio(require('../../assets/sound-effects/heart.wav')).play()
           if (updated_health === 0) {
             lose();
             setTimer(0)
@@ -69,17 +71,10 @@ export function HexagonGrid(props) {
     else {
       if (hex["type"] && hex["type"][0] === "shuriken" || hex["type"][0] === "bomb") {
         monsterHealth(matchID).then((updated_health) => {
-          if (updated_health < 0) {
-            setHearts(0);
-          } else {
-            setHearts(updated_health)
-          }
+          updated_health < 0 ? setHearts(0) : setHearts(updated_health)
           new Audio(require('../../assets/sound-effects/heart.wav')).play()
-
           if (updated_health === 0) {
-            
             lose();
-            //Award ninjas the win
             setTimer(0);
           }
         })
@@ -92,17 +87,18 @@ const lose = () => {
   setLive(false);
   setWon(false);
   setSummaryTitle("You died");
+
   client.send(JSON.stringify({
     type: "death",
     matchId: matchID,
     name: getUsername(),
     skin: routeRole
   }))
+
   losePoints().then((res) => {
     if (res.demoted) {
-      console.log("demoted");
     }
-    setElo(res.user.points - 3);
+    setElo(res.user.points - eloLoss);
   })
 }
 
@@ -113,22 +109,22 @@ const win = () => {
   setSummaryTitle("You Won!");
   winPoints().then((res) => {
     if(res.promoted) {
-      console.log("Promoted")
     }
-    setElo(res.user.points + 5);
+    setElo(res.user.points + eloGain);
   })
 }
 
+// Updates the game on every mouse click -> Takes in information regarding the hex clicked
   const update = (x, y, direction, hexInfo) => {
+    // Edge of the map / Unclickable
     if (!hexInfo.type) {
       return;
     }
+
     if (mode === 'move') {
       movePlayer(matchID, srcx, srcy, x, y, routeRole).then(() => {
-
-        //processHP(hexinfo)
-        updatePOV(x, y, 3)
-        setTimer(5)
+        updatePOV(x, y, characterPOV)
+        setTimer(timePerRound)
         setSrcX(x)
         setSrcY(y)
         updateMode()
@@ -136,33 +132,73 @@ const win = () => {
     }
 
     if (mode === 'direction-S') {
-      setTimer(5)
+
+      // Determines direction of action "S"
+      let dir = 'up'
+      let dirLetter = direction.slice(2, direction.length - 1)
+
+      if (dirLetter === 'U') {
+        dir = 'up'
+      } else if (dirLetter === 'D') {
+        dir = 'down'
+      } else if (dirLetter === 'L') {
+        dir = 'left'
+      } else if (dirLetter === 'R') {
+        dir = 'right'
+      } else {
+        return;
+      }
+      setTimer(timePerRound)
+
+      //Complete action
       if (role === 'ninja') {
-        throwShuriken(3, direction).then(() => {
+        throwShuriken(ninjaShurikenRange, dir).then(() => {
           updateMode()
         })
       } else {
-        yellEcho(6, direction).then(() => {
-        updateMode()
+        yellEcho(monsterEchoRange, dir).then(() => {
+          updateMode()
       })
       }
     }
 
     if (mode === 'direction-E') {
-      setTimer(5)
+      
+      // Determines direction of action "E"
+      let dirLetter = direction.slice(2, direction.length - 1)
+
+      if (dirLetter.length === 2) {
+        dirLetter = dirLetter.slice(0, dirLetter.length - 1)
+      }
+
+      let dir = 'up'
+      if (dirLetter === 'U') {
+        dir = 'up'
+      } else if (dirLetter === 'D') {
+        dir = 'down'
+      } else if (dirLetter === 'L') {
+        dir = 'left'
+      } else if (dirLetter === 'R') {
+        dir = 'right'
+      } else {
+        return false
+      }
+
+      setTimer(timePerRound)
 
       if (role === 'ninja') {
-        throwBomb(3, direction).then(() => {
+        throwBomb(ninjaBombRange, direction).then(() => {
           updateMode()
         })
       } else {
-        yellScream(6, direction).then(() => {
+        yellScream(monsterScreamRange, direction).then(() => {
           updateMode()
         })
       }
     }
   }
 
+  // Updates the mode of the user's state (Move, Action, Direction(optional), Wait, Dead)
   const updateMode = () => {
     if (mode === 'dead') {
       getNinjas(matchID).then((ninjas) => {
@@ -194,6 +230,7 @@ const win = () => {
     }
   }
 
+  // Updates what the users see based on where they are on the map
   const updatePOV = (x = -1, y = -1, radius = 0) => {
     if (x === -1) {
       return
@@ -205,49 +242,39 @@ const win = () => {
       let players = {}
       let newPlayersInRange = playersInRange
 
-      // Name: id
       hexes.forEach((hex) => {
         grid[hex['newCor']] = hex
+
+        // Determines if you are standing on a hex (0,0) that will harm you
         if (hex['newCor'] === "cor0,0") {
           processHP(hex);
         }
 
         if (hex['players']) {
+          // Determines if a player should engage in proximity chat with another player
           hex['players'].forEach((player) => {
-            console.log("Player:")
-            console.log(playersInRange);
-
             if (player.displayName !== null && !Object.keys(playersInRange).includes(player.displayName)) {
               if (["draco", "screamer", "tiny"].includes(player.skin)) {
                   getMonsterChat(player.displayName, matchID).then((chatId) => {
                     proximityChat(chatId);
-                    // playersInRange[player.displayName] = chatId;
                     players[player.displayName] = chatId;
                     newPlayersInRange[player.displayName] = chatId
-                    // console.log(playersInRange);
                   })
                 } else {
                   getNinjaChat(player.displayName, matchID).then((chatId) => {
                     proximityChat(chatId);
                     players[player.displayName] = chatId;
                     newPlayersInRange[player.displayName] = chatId
-                    // console.log(playersInRange);
                 })
               }
             }
           })
         }
       })
-      console.log(playersInRange)
+
+      // Determines if a player should disengage from a proximity call
       Object.keys(playersInRange).forEach((player) => {
-        console.log("New PLayer")
-        console.log(player)
         if (!Object.keys(players).includes(player)) {
-          console.log("Found a non existing user");
-          console.log(player);
-          console.log(player === "x")
-          console.log(newPlayersInRange)
-          console.log(newPlayersInRange['x'])
           closeProxChat(newPlayersInRange[player]);
           delete newPlayersInRange[player]
         }
@@ -257,89 +284,24 @@ const win = () => {
     })
   }
 
-  const throwShuriken = (range = 0, direction) => {
-    let dir = 'up'
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
+  const throwShuriken = (range = 0, dir) => {
     return shuriken(matchID, dir, srcx, srcy, range)
   }
 
-  const throwBomb = (range = 0, direction) => {
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter.length === 2) {
-      dirLetter = dirLetter.slice(0, dirLetter.length - 1)
-    }
-
-    let dir = 'up'
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const throwBomb = (range = 0, dir) => {
     return explosion(matchID, dir, srcx, srcy, range)
   }
 
-  const yellEcho = (range = 0, direction) => {
-    let dir = 'up'
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const yellEcho = (range = 0, dir) => {
     return echo(matchID, dir, srcx, srcy, range)
   }
 
-  const yellScream = (range = 0, direction) => {
-    let dirLetter = direction.slice(2, direction.length - 1)
-
-    if (dirLetter.length === 2) {
-      dirLetter = dirLetter.slice(0, dirLetter.length - 1)
-    }
-
-    let dir = 'up'
-    if (dirLetter === 'U') {
-      dir = 'up'
-    } else if (dirLetter === 'D') {
-      dir = 'down'
-    } else if (dirLetter === 'L') {
-      dir = 'left'
-    } else if (dirLetter === 'R') {
-      dir = 'right'
-    } else {
-      return false
-    }
-
+  const yellScream = (range = 0, dir) => {
     return scream(matchID, dir, srcx, srcy, range)
   }
 
+  // Hover animation showing users what hexes their actions will cover
+  // Affected hexes will highlight orange. Accomplishes this by manipulating IDs of the hex on certain modes
   let showDirection = (id, range) => {
     if (mode === 'direction-S') {
       if (id.slice(0, 1) !== 'S') {
@@ -386,6 +348,9 @@ const win = () => {
     }
   }
 
+
+  // Unhover animation reverting the highlighted hexes of the actions being decided on
+  // Affected hexes will revert to being purple. Accomplishes this by manipulating IDs of the hex on certain modes
   let unshowdirection = (id, range) => {
     if (mode !== 'direction-S' && mode !== 'direction-E') {
       for (let i = 1; i < 5; i++) {
@@ -451,6 +416,7 @@ const win = () => {
     }
   }
 
+  // The grid of hexagons -> Each holding properties representing the state of the game at a certain location
   return (
     <div className="main">
       <Hexagon

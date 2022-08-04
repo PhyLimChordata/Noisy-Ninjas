@@ -4,7 +4,7 @@ import { Button } from '../components/Button'
 import { ConfirmationPopup } from '../components/popups/ConfirmationPopup'
 import { QueuePopup } from '../components/popups/QueuePopup'
 import { useNavigate } from 'react-router'
-import { getUsername, signOut, generateMatch } from '../apiService'
+import { getUsername, getUser, getNinjas, getMonsters, signOut } from '../apiService'
   
 import { client } from '../components/popups/QueuePopup'
 import {ninjaMapping} from "../assets/mappings/ninja-mapping";
@@ -111,6 +111,29 @@ export function Lobby() {
       setSkin(monsterKeys[monsterIndex])
     }
   }, [role])
+
+  useEffect(() => {
+    getUser(username).then((user) => {
+      if (user.matchID != "N/A") {
+        getNinjas(user.matchID).then((ninja) => {
+          if (ninja.displayName === username) {
+            navigate('/game', {
+              state: { role: ninja.skin, matchID: user.matchID },
+            });
+          }
+        })
+
+        getMonsters(user.matchID).then((monster) => {
+          if (monster.displayName == username) { 
+            navigate('/game', {
+              state: { role: monster.skin, matchID: user.matchID },
+            });
+          }
+        })
+        
+      }
+    })
+  })
 
   function selectPrev() {
     if (role === 'ninja') {

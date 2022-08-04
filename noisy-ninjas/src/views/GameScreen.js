@@ -19,7 +19,7 @@ import {client} from '../components/popups/QueuePopup';
 import { Peer } from "peerjs";
 import {ninjaMapping} from "../assets/mappings/ninja-mapping";
 import {monsterMapping} from "../assets/mappings/monster-mapping";
-
+import { timePerRound } from '../assets/mappings/character-mappings'
 
 export function GameScreen() {
   const routeProps = useLocation().state;
@@ -73,7 +73,7 @@ export function GameScreen() {
         modeRef.current !== 'monster won' &&
         modeRef.current !== 'ninjas won'
       ) {
-        setTimer(5)
+        setTimer(timePerRound)
         if (modeRef.current === 'move') {
           setMode('action')
           document.getElementById('move1').style.visibility = 'visible'
@@ -86,7 +86,7 @@ export function GameScreen() {
         ) {
           setMode('wait')
           setTimer(0)
-          //socket time
+
           document.getElementById("move1").style.visibility = "hidden";
           document.getElementById("move2").style.visibility = "hidden";
 
@@ -104,9 +104,7 @@ export function GameScreen() {
 
 
   const [proxChatId, setProxChatId] = useState('');
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
   const remoteAudioRef = useRef(null);
-  const currentUserVideoRef = useRef(null);
   const proxChatInstance = useRef(null);
   const [proxChats, setProxChats] = useState({})
   useEffect(() => {
@@ -120,8 +118,6 @@ export function GameScreen() {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
       getUserMedia({ audio: true }, (audio) => {
-        // currentUserVideoRef.current.srcObject = audio;
-        // currentUserVideoRef.current.play();
         otheruser.answer(audio)
         otheruser.on('stream', function(audioStream) {
           remoteAudioRef.current.srcObject = audioStream
@@ -142,7 +138,6 @@ export function GameScreen() {
 
   }, [proxChatId]);
 
-  //proximityChat(proxchatID)
   const proximityChat = (proxChatId) => {
     const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
