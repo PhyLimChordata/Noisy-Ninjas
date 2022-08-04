@@ -47,9 +47,9 @@ export function QueuePopup(props) {
     const monsterQueue = parsedData.monsterQueue
     const matchID = parsedData.matchID
 
-    const inNinjaQueue = undefined
-    const inMonsterQueue = undefined
-    
+    let inNinjaQueue = undefined
+    let inMonsterQueue = undefined
+
     if (ninjaQueue) {
       inNinjaQueue = ninjaQueue.find((e) => e.name === getUsername())
     }
