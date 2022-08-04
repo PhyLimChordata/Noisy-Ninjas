@@ -16,10 +16,22 @@ export function Hexagon(props) {
       return skin
     }
 
-    let isMonster = monsters.includes(players[0].skin)
-    let isNinja = ninjas.includes(players[0].skin)
-    let playerExists = players && players[0]
-    let uniqueHex = type && type[0]
+    let playerExists = false;
+    let isMonster = false;
+    let isNinja = false;
+    let uniqueHex = false;
+    
+    if (players) {
+      playerExists = players && players[0]
+    }
+
+    if (playerExists) {
+      isMonster = monsters.includes(players[0].skin)
+      isNinja = ninjas.includes(players[0].skin)
+    }
+    if (type) {
+      uniqueHex = type && type[0]
+    }
 
     // Shows off user/element in Hexagon in game
     if (playerExists && isMonster) {
