@@ -87,3 +87,5 @@ Annas Rahuma
 Final Demo: https://www.youtube.com/watch?v=7ErIkUZ4tl0
 Deployed App: https://noisy-ninjas.nn.r.appspot.com/
 Documentation: https://app.swaggerhub.com/apis/ANNASRAHUMA_1/Noisy-Ninjas/1
+Figma: https://www.figma.com/file/7wJWGyRVnMTbcITtFzIuTx/Noisy-Ninjas?node-id=42%3A24185
+Majority of art assests are made by Andy PhyLim (me) - please refer to credits in the src folder for reference of other material
